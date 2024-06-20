@@ -1,0 +1,590 @@
+---
+title: "Figure 1 - overview"
+author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+        self_contained: true
+params:
+    rds150: "data/ipms_150_sce.rds"
+    rds500: "data/ipms_500_sce.rds"
+    rdsrnaseq: "data/rnaseq_del.rds"
+    dbdtxt: "data/TF_DBD_annotation.txt"
+    peakcsv: "data/fused_peaks_filtered.csv.gz"
+    baitclass: "data/ipms_bait_class.txt"
+    idmap: "data/id_mapping_table.txt"
+    tagcntfile: "data/taggedTFs_counts.csv"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+options(scipen = 6)
+```
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages and helper functions
+
+```{r load-packages, class.source="fold-show"}
+suppressPackageStartupMessages({
+    library(SingleCellExperiment)
+    library(ggplot2)
+    library(cowplot)
+    library(einprot)
+    library(dplyr)
+    library(forcats)
+    library(jsonlite)
+    library(ComplexHeatmap)
+    library(ggrepel)
+    library(colorspace)
+})
+
+source("params/plot_settings.R")
+source("params/get_testres_function.R")
+source("params/ipms_params.R")
+source("params/mapping_functions.R")
+```
+
+# Read data
+
+We load two `SingleCellExperiment` objects, containing data and results from the 
+low- and high-salt IPMS experiments, respectively.
+
+```{r load-data, class.source="fold-show"}
+sce150 <- readRDS(params$rds150)
+sce500 <- readRDS(params$rds500)
+```
+
+We extract the full list of baits, as well as load a classification in terms of 
+the number of interaction partners.
+
+```{r, class.source="fold-show"}
+## Feature ID mapping table
+idmap <- read.delim(params$idmap)
+
+## Experiment names
+allexps <- unique(sub("(ID[0-9]+|SPB4482)_([^_]*)_?.*", "\\2", colnames(sce150)))
+allexps <- allexps[allexps != "untagged"]
+
+## Corresponding bait protein names
+stopifnot(all(allexps %in% idmap$bait))
+allbaits <- idmap$unique_einprot_id[match(allexps, idmap$bait)]
+
+baitclass <- read.delim(params$baitclass)
+stopifnot(all(.capitalize(allexps) %in% baitclass$Gene_name))
+table(class150 = baitclass$class, 
+      class500 = baitclass$class500, useNA = "ifany")
+```
+
+In the following set of IPs, we identified the bait as not pulled down in the 
+low-salt condition.
+
+```{r define-nobait}
+(nobait_150 <- baitclass$Gene_name[baitclass$class == "nobait"])
+```
+
+Next, we load a `SummarizedExperiment` with quantifications from RNA-seq data.
+
+```{r, class.source="fold-show"}
+rnaseq <- readRDS(params$rdsrnaseq)
+stopifnot(all(allbaits %in% rownames(rnaseq)))
+```
+
+We also load the information about the DNA-binding domain family for each 
+transcription factor.
+
+```{r load-dbd, class.source="fold-show"}
+dbd <- read.delim(params$dbdtxt) |>
+    dplyr::group_by(DBD_class, Conserved_human) |>
+    dplyr::tally() |>
+    dplyr::mutate(cons = ifelse(Conserved_human, "Conserved in human",
+                                "Not conserved in human")) |>
+    dplyr::group_by(DBD_class) |>
+    dplyr::mutate(totn = sum(n)) |>
+    dplyr::ungroup()
+```
+
+Here, we load the filtered peaks identified from ChIP-seq experiments, with
+the information about which baits showed enrichments for each peak.
+
+```{r load-peaks, class.source="fold-show"}
+peaks <- read.csv(params$peakcsv, row.names = 1)
+enrcolumns <- grep("^is_enr_in[.]", colnames(peaks))
+peakenr <- as.matrix(peaks[, enrcolumns])
+colnames(peakenr) <- sub("^is_enr_in[.]", "", colnames(peakenr))
+nbrPeaks <- colSums(peakenr)
+nbrPeaksSpec <- colSums(peakenr[peaks$peaktype == "specific peaks", ])
+```
+
+Finally, we load the number of ChIP-seq fragments in input samples that did not
+map to the wild-type genome sequence, but to one of the tagged transcription
+factor constructs.
+
+```{r load-tagcnt, class.source="fold-show"}
+tagcnt <- as.matrix(read.csv(file = params$tagcntfile, row.names = 1))
+```
+
+# Preprocessing
+
+## Number of interactors in IP-MS for each TF
+
+We summarize the number of observed proteins pulled down for each TF in 
+the IP-MS data (low and high salt conditions), excluding the bait itself. 
+A protein is considered pulled down if the adjusted p-value in a comparison 
+against the large complement group (see manuscript for details) is below 
+`r adjpThreshold` and the log-fold change exceeds `r log2fcThreshold`.
+
+```{r calc-nbr-interactors-by-tf}
+#| message: false
+#| warning: false
+
+tc150 <- .getTestCols(sce150, adjp_cutoff = adjpThreshold,
+                      logfc_cutoff = log2fcThreshold)
+tc500 <- .getTestCols(sce500, adjp_cutoff = adjpThreshold,
+                      logfc_cutoff = log2fcThreshold)
+
+## Get matrix indicating whether the proteins pass the interaction threshold 
+## in the experiments
+interactors150 <- tc150$interactor
+bait_idx150 <- cbind(match(.getProteinNameFromComparison(colnames(interactors150)), 
+                           rownames(interactors150)), 
+                     seq_len(ncol(interactors150)))
+interactors150[bait_idx150] <- NA
+colnames(interactors150) <- .getOrigBaitNameFromComparison(colnames(interactors150),
+                                                           idmap = idmap)
+interactors150 <- lapply(structure(colnames(interactors150), names = colnames(interactors150)), 
+                         function(cn) {
+                             rownames(interactors150)[which(interactors150[, cn])]
+                         })
+
+interactors500 <- tc500$interactor
+bait_idx500 <- cbind(match(.getProteinNameFromComparison(colnames(interactors500)), 
+                           rownames(interactors500)), 
+                     seq_len(ncol(interactors500)))
+interactors500[bait_idx500] <- NA
+colnames(interactors500) <- .getOrigBaitNameFromComparison(colnames(interactors500),
+                                                           idmap = idmap)
+interactors500 <- lapply(structure(colnames(interactors500), names = colnames(interactors500)), 
+                         function(cn) {
+                             rownames(interactors500)[which(interactors500[, cn])]
+                         })
+## For this figure, we only care about the interactors that are _retained_ in 500 mM
+## (not new ones that are detected e.g. due to the different complements)
+for (nm in names(interactors500)) {
+    interactors500[[nm]] <- intersect(interactors500[[nm]], interactors150[[nm]])
+}
+intdf <- dplyr::bind_rows(
+    data.frame(exp = "150 mM NaCl IP-MS",
+               id = names(interactors150),
+               nbrInteractions = vapply(interactors150, length, NA_real_),
+               inHighSalt = names(interactors150) %in% names(interactors500)),
+    data.frame(exp = "Retained in 500 mM NaCl IP-MS",
+               id = names(interactors500),
+               nbrInteractions = vapply(interactors500, length, NA_real_),
+               inHighSalt = TRUE)
+) |>
+    dplyr::left_join(baitclass, by = c("id" = "Gene_name")) |>
+    dplyr::mutate(idorig = id) |>
+    dplyr::mutate(id = .getProteinFromOrigBait(idorig,
+                                               idmap = idmap)) |>
+    dplyr::mutate(id = replace(id, idorig == "Untagged", "Untagged"))
+```
+
+# Facts and numbers - ChIP-seq
+
+```{r calc-bound-sites, class.source="fold-show"}
+## How many TFs did we analyze by ChIP-seq?
+is_TF <- colnames(peakenr) != "Untagged"
+sum(is_TF)
+
+## How many unique peak regions did we identify?
+nrow(peaks)
+
+## How many binding events (any TF) do we have in total?
+sum(peakenr[, is_TF])
+
+## How many TFs have at least one peak?
+summary(colSums(peakenr)[is_TF] > 0)
+colnames(peakenr)[is_TF & colSums(peakenr) == 0]
+
+## What is the range of numbers of peaks over TFs?
+summary(colSums(peakenr)[is_TF])
+summary(colSums(peakenr)[is_TF & colSums(peakenr) > 0]) # without zero-peak TFs
+
+## What fraction of TFs is bound at a given site?
+## ... for all peaks
+summary(rowMeans(peakenr[, is_TF]))
+
+## ... for peaks by type
+table(peaks$peaktype)
+summary(rowSums(peakenr[peaks$peaktype == "common peaks (ubiquitous)", is_TF]))
+summary(rowSums(peakenr[peaks$peaktype == "common peaks (frequent)", is_TF]))
+summary(rowSums(peakenr[peaks$peaktype == "specific peaks", is_TF]))
+```
+
+# Facts and numbers - IP-MS
+
+```{r numbers-ipms, class.source="fold-show"}
+## Number of NCBI Conserved Domains shown in the figure (excluding "Other")
+length(setdiff(unique(dbd$DBD_class), "Other"))
+
+## Percentage of domains conserved in human
+round(100 * sum(dbd$n[dbd$Conserved_human]) / sum(dbd$n), 2)
+
+## Number of analyzed TFs
+## ... 150 mM NaCl
+length(setdiff(unique(sce150$Gene_name), "untagged"))
+
+## ... 500 mM NaCl
+length(setdiff(unique(sce500$Gene_name), "untagged"))
+```
+
+# Figure 1
+
+## Number of TFs for each DBD family
+
+The figure below shows the number of transcription factors belonging to each 
+DNA-binding domain family, further stratified by whether or not they have a 
+human ortholog.
+
+```{r plot-dbd}
+#| fig.width: 6
+#| fig.height: 4
+
+(gg_dbd <- ggplot(dbd, aes(x = fct_reorder(DBD_class, totn, .desc = TRUE), y = n, 
+                           fill = cons)) + 
+     geom_col() + 
+     scale_fill_manual(values = c("Conserved in human" = lighten(main_colors[1], 0.3),
+                                  "Not conserved in human" = main_colors[1]), 
+                       name = "") + 
+     labs(x = "DBD family (NCBI Conserved Domains)",
+          y = "Number of\ntranscription factors") + 
+     theme_cowplot() + 
+     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+           legend.position = "inside",
+           legend.position.inside = c(0.55, 0.9)))
+```
+
+## WT RNA-seq TPM values for TFs
+
+Next, we extract the average expression (in TPM - transcripts per million) for 
+each transcription factor across three wild-type samples. 
+
+```{r plot-tpm-tfs}
+#| fig.width: 6
+#| fig.height: 4
+
+ave_tpm <- data.frame(
+    bait = allbaits, 
+    bait_pulled = factor(
+        ifelse(.capitalize(allexps) %in% nobait_150, 
+               "Bait not pulled down (150 mM NaCl IP-MS)",
+               "Bait pulled down (150 mM NaCl IP-MS)"),
+        levels = c("Bait pulled down (150 mM NaCl IP-MS)",
+                   "Bait not pulled down (150 mM NaCl IP-MS)")),
+    tpm = rowMeans(assay(rnaseq, "abundance")[allbaits, 
+                                              rnaseq$Group_name == "wt_WT_mRNA"])
+)
+gg_tpm <- ggplot(ave_tpm, aes(x = fct_reorder(bait, tpm, .desc = TRUE), y = tpm, 
+                              color = bait_pulled)) + 
+    geom_hline(yintercept = 0, linetype = "dashed", color = na_color) +
+    geom_point(size = 1) + 
+    theme_cowplot() + 
+    theme(legend.position = "inside", legend.position.inside = c(0.15, 0.9)) +
+    scale_color_manual(values = c("Bait pulled down (150 mM NaCl IP-MS)" = pt_color,
+                                  "Bait not pulled down (150 mM NaCl IP-MS)" = na_color),
+                       name = "") + 
+    guides(color = guide_legend(nrow = 2, byrow = TRUE)) + 
+    labs(x = "Transcription factors",
+         y = "Transcription factor\ngene expression (TPM)")
+(gg_tpm + theme(axis.text.x = element_blank(), 
+                axis.ticks.x = element_blank()))
+```
+
+## Number of interactors in IP-MS for each TF
+
+Here, we plot the number of interactors for each TF in the 150 mM NaCl 
+condition, as well as the number of interactors retained in the 500 mM NaCl
+condition. 
+
+```{r nbr-interactors-by-tf}
+#| fig.width: 8
+#| fig.height: 5
+#| message: false
+#| warning: false
+
+idOrder <- intdf |>
+    dplyr::filter(exp == "150 mM NaCl IP-MS") |>
+    dplyr::arrange(desc(nbrInteractions)) |>
+    dplyr::pull(id)
+(gg_nbrint <- ggplot(intdf |>
+                         dplyr::filter(!id %in% nobait_150 & 
+                                           id != "Untagged") |>
+                         dplyr::filter(inHighSalt),
+                     aes(x = fct_relevel(id, idOrder),
+                         y = nbrInteractions)) +
+        geom_hline(yintercept = 0, linetype = "dashed", color = na_color) + 
+        geom_line(color = na_color) + 
+        geom_point(shape = 21, aes(fill = exp, color = exp, size = exp)) +
+        scale_fill_manual(values = c(`150 mM NaCl IP-MS` = main_colors[5], 
+                                     `Retained in 500 mM NaCl IP-MS` = pt_color), 
+                          name = "") + 
+        scale_color_manual(values = c(`150 mM NaCl IP-MS` = main_colors[5], 
+                                      `Retained in 500 mM NaCl IP-MS` = "transparent"),
+                           name = "") + 
+        scale_size_manual(values = c(`150 mM NaCl IP-MS` = 3, 
+                                     `Retained in 500 mM NaCl IP-MS` = 2),
+                          name = "") + 
+        theme_cowplot() + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1,
+                                         size = 9, vjust = 0.5), 
+              legend.position = c(0.35, 0.9)) + 
+        labs(x = "", y = "Number of interactors") + 
+        coord_cartesian(ylim = c(0, NA)))
+```
+
+```{r}
+(gg_nbrint_all <- ggplot(
+    intdf |>
+        dplyr::filter(exp == "150 mM NaCl IP-MS" & 
+                          id != "Untagged"),
+    aes(x = fct_relevel(id, levels(fct_reorder(.capitalize(ave_tpm$bait),
+                                               ave_tpm$tpm, .desc = TRUE))), 
+        y = nbrInteractions)) + 
+     geom_hline(yintercept = 0, linetype = "dashed", colour = na_color) +
+     geom_line() + 
+     geom_point(shape = 21, size = 3, colour = main_colors[5],
+                fill = main_colors[5]) +
+     theme_cowplot() + 
+     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5), 
+           legend.position = "bottom") + 
+     labs(x = "", y = "Number of interactors") + 
+     coord_cartesian(ylim = c(0, NA)))
+```
+
+## Number of peaks for each TF
+
+```{r nbr-peaks-by-tf-main}
+#| fig.width: 8
+#| fig.height: 5
+#| warning: false
+
+## Number of peaks per TF (unfiltered)
+pd0 <- intdf |>
+    dplyr::filter(exp == "150 mM NaCl IP-MS" & id != "Untagged") |>
+    dplyr::mutate(nbrPeaks = nbrPeaks[id],
+                  nbrPeaksSpec = nbrPeaksSpec[id]) |>
+    dplyr::mutate(chipped = !is.na(nbrPeaks))
+
+## Only chipped TFs, in long format
+pd <- pd0 |>
+    dplyr::filter(chipped) |>
+    dplyr::mutate(id = fct_reorder(factor(id), .x = nbrPeaks,
+                                   .fun = function(x) x, .desc = TRUE)) |>
+    tidyr::pivot_longer(cols = c("nbrPeaks", "nbrPeaksSpec"),
+                        names_to = "peakType",
+                        values_to = "peakNumber") |>
+    dplyr::mutate(peakType = fct_relabel(
+        peakType,
+        function(x) c(nbrPeaks = "All ChIP peaks",
+                      nbrPeaksSpec = "Specific ChIP peaks")[x]))
+
+(gg_nbrpeaks_all_narrow_by_npeaks <- ggplot(pd |> dplyr::filter(chipped),
+    aes(x = id, y = peakNumber)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = na_color) +
+    geom_line(color = na_color) +
+    geom_point(mapping = aes(color = peakType, fill = peakType, size = peakType), shape = 21) +
+    scale_fill_manual(values = c(`All ChIP peaks` = main_colors[5],
+                                 `Specific ChIP peaks` = pt_color), name = "") +
+    scale_color_manual(values = c(`All ChIP peaks` = main_colors[5],
+                                  `Specific ChIP peaks` = pt_color), name = "") +
+    scale_size_manual(values = c(`All ChIP peaks` = 1.75,
+                                 `Specific ChIP peaks` = 1),
+                      name = "") +
+    theme_cowplot() + 
+    theme(axis.text.x = element_blank(), 
+          axis.ticks.x = element_blank(), 
+          legend.position = c(0.55, 0.9)) + 
+    labs(x = "Transcription factors",
+         y = "Number of enriched peaks\n(IP/input > 2)") + 
+    coord_cartesian(ylim = c(0, NA)))
+```
+
+```{r nbr-peaks-by-tf-supp}
+#| fig.width: 8
+#| fig.height: 5
+#| warning: false
+
+(gg_nbrpeaks_all_wide <- ggplot(pd0,
+    aes(x = fct_relevel(id, levels(fct_reorder(.capitalize(ave_tpm$bait), ave_tpm$tpm, .desc = TRUE))))) + 
+    geom_hline(yintercept = 0, linetype = "dashed", color = na_color) +
+    geom_segment(
+        mapping = aes(y = nbrPeaks, yend = nbrPeaksSpec,
+                      xend = fct_relevel(id, levels(fct_reorder(.capitalize(ave_tpm$bait), ave_tpm$tpm, .desc = TRUE)))),
+        color = na_color) +
+    geom_point(mapping = aes(y = nbrPeaks),
+               shape = 21, size = 3.5, fill = main_colors[5], color = main_colors[5]) +
+    geom_point(mapping = aes(y = nbrPeaksSpec),
+               shape = 21, size = 2.5, fill = pt_color) +
+    geom_tile(data = pd0 |> dplyr::filter(!chipped),
+              aes(x = fct_relevel(id, levels(fct_reorder(.capitalize(ave_tpm$bait), ave_tpm$tpm, .desc = TRUE))),
+                  y = I(0)),
+              width = 0.75, height = Inf, fill = na_color) +
+    geom_point(aes(x = 3, y = 400), size = 3.5, fill = main_colors[5], color = main_colors[5], shape = 21) +
+    geom_point(aes(x = 3, y = 375), size = 2.5, fill = pt_color, shape = 21) +
+    geom_tile(aes(x = 3, y = 350), width = 2, height = 15, fill = na_color) +
+    annotate("text", x = 5, y = c(400, 375, 350), hjust = 0, vjust = 0.5,
+             label = c("All ChIP peaks", "Specific ChIP peaks", "No ChIP data"),
+             size = 4.2, fontface = "plain") +
+    theme_cowplot() + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+    labs(x = "", y = "Number of peaks (IP/input > 2)") + 
+    coord_cartesian(ylim = c(0, NA)))
+```
+
+## Sequence evidence for tagged transcription factors
+
+In order to validate the genomic sequences of tagged transcription factors
+in the engineered strains, we used all reads from ChIP input samples that
+did not map to the *S. pombe* reference (wildtype) genome.
+
+For each sample, the unmapped reads were aligned against all tagged
+transcription factor sequences. The resulting  alignment counts are summarized
+in the `tagcnt` matrix of `r nrow(tagcnt)` rows by `r ncol(tagcnt)` columns.
+The rows correspond to tagged transcription factor sequences, and the columns
+to *S. pombe* strains in which a transcription factor has been tagged.
+The values correspond to the number of read pairs from ChIP input samples of
+each strain, that mapped unambigously to one of the expected tagged
+transcription factor constructs.
+
+Tagged transcription factor sequences and *S. pombe* strains are ordered
+in the same way, expect for an additional column on the right side
+corresponding to the untagged parent strain (`r colnames(tagcnt)[ncol(tagcnt)]`).
+
+To account for differences in sequencing depth, the counts are normalized
+by dividing through the total number of read pairs that mapped to each 
+tagged transcription factor sequence, and then visualized as a heatmap.
+
+```{r plot-taggedTFs}
+#| fig.width: 6
+#| fig.height: 6
+
+# define heatmap dimensions
+w_taggedTFs <- 130  # total heatmap width (mm)
+h_taggedTFs <- 130  # total heatmap height (mm)
+fs <- 5  # small font size
+fl <- 10  # large font size
+
+# normalize (percent of reads)
+perc <- sweep(tagcnt, 1, rowSums(tagcnt), "/") * 100
+
+rng <- range(perc)
+hm5 <- Heatmap(matrix = perc, name = "Percent of reads mapped to\ntagged transcription factor ",
+               cluster_rows = FALSE, cluster_columns = FALSE,
+               layer_fun = function(j, i, x, y, width, height, fill) {
+                   grid.rect(x = x, y = y, width = width, height = height, 
+                             gp = gpar(col = "grey95", fill = NA))
+               },
+               column_title = "Strains",
+               row_title = "Tagged transcription factor",
+               row_title_gp = gpar(fontsize = fl),
+               row_names_gp = gpar(fontsize = fs),
+               column_title_gp = gpar(fontsize = fl),
+               column_names_gp = gpar(fontsize = fs),
+               col = circlize::colorRamp2(breaks = seq(rng[1], rng[2], length.out = 64),
+                                          colors = rev(hcl.colors(64, "Purples"))),
+               heatmap_legend_param = list(labels_gp = gpar(fontsize = fs),
+                                           border = "gray10",
+                                           legend_direction = "horizontal",
+                                           legend_width = unit(20, "mm"),
+                                           title_position = "lefttop",
+                                           title_gp = gpar(fontsize = fl)),
+               heatmap_width = unit(w_taggedTFs, "mm"), # total heatmap width
+               heatmap_height = unit(h_taggedTFs, "mm"), # total heatmap height
+               use_raster = TRUE)
+
+hm_taggedTFs <- grid.grabExpr(
+    hm5 <- draw(hm5, heatmap_legend_side = "bottom"),
+    width = w_taggedTFs, height = h_taggedTFs
+)
+
+plot_grid(hm_taggedTFs)
+```
+
+## Put together
+
+```{r Fig1}
+#| fig.width: 12
+#| fig.height: 17.3
+#| warning: false
+
+fig1c <- ggdraw() + 
+    draw_image("schematics/Fig1C_placeholder_screen_overview_Arial.png")
+
+cowplot::plot_grid(
+    cowplot::plot_grid(
+        gg_dbd, 
+        gg_tpm + theme(axis.text.x = element_blank(), 
+                       axis.ticks.x = element_blank()),
+        nrow = 1,
+        labels = c("A", "B"),
+        align = "vh",
+        axis = "b"
+    ),
+    fig1c,
+    cowplot::plot_grid(
+        gg_nbrint,
+        gg_nbrpeaks_all_narrow_by_npeaks,
+        nrow = 1, 
+        labels = c("D", "E"),
+        align = "vh", 
+        axis = "b"
+    ),
+    nrow = 3,
+    labels = c(NA, "C", NA),
+    align = "v",
+    axis = "b",
+    rel_heights = c(50, 73, 50)
+)
+```
+
+## Supplementary figure
+
+```{r suppFig1}
+#| fig.width: 15
+#| fig.height: 15
+#| warning: false
+#| message: false
+
+cowplot::plot_grid(
+    gg_tpm + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+        labs(x = "") + geom_point(size = 3), 
+    gg_nbrint_all,
+    gg_nbrpeaks_all_wide,
+    ncol = 1, 
+    align = "v", 
+    axis = "l",
+    labels = c("A", "B", "C"),
+    rel_heights = c(1, 1, 1)
+)
+```
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
+
