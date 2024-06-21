@@ -1,0 +1,90 @@
+TFID	PomBaseID	Gene_name	UniprotID	Taxonomic_distribution	DBD_class	DBD_feature	Conserved_human	Predicted_conserved_mouse
+ID1	SPAC6G10.12c	ace2	O14258	other	COG5048	Zinc-coordinated	FALSE	FALSE
+ID2	SPBC336.12c	cdc10	P01129	fungi only	KilA-N	TF homology	FALSE	FALSE
+ID3	SPBC1683.13c	cha4	Q9P6I9	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID4	SPAC31A2.11c	cuf1	Q09728	fungi only	Copper-fist	TF homology	FALSE	FALSE
+ID5	SPCC584.02	cuf2	O94588	fungi only	Copper-fist	TF homology	FALSE	FALSE
+ID6	SPAC1B1.01	deb1	O13862	other	zf-C2H2	Zinc-coordinated	FALSE	FALSE
+ID7	SPAC56F8.16	esc1	Q04635	other	bHLH_SF	Basic helix-loop-helix	FALSE	FALSE
+ID8	SPAC23E2.01	fep1	Q10134	other	ZnF_GATA	Zinc-coordinated	FALSE	TRUE
+ID9	SPAC1142.08	fhl1	O14270	other	COG5025 (FH)	Forkhead	FALSE	FALSE
+ID10	SPCC1393.08	fil1	O94720	other	ZnF_GATA	Zinc-coordinated	FALSE	TRUE
+ID11	SPBC16G5.15c	fkh2	O60129	other	COG5025 (FH)	Forkhead	FALSE	TRUE
+ID12	SPBC1289.10c	adn2	O94619	fungi only	Other	TF homology	FALSE	FALSE
+ID13	SPCC1902.01	gaf1	Q10280	eukaryotes only, fungi and metazoa	ZnF_GATA	Zinc-coordinated	TRUE	TRUE
+ID14	SPAC2E12.02	hsf1	Q02953	eukaryotes only, fungi and metazoa	HSF_DNA-bind	Heat shock factors	TRUE	TRUE
+ID15	SPCC1494.10	adn3	O74522	fungi only	Other	TF homology	FALSE	FALSE
+ID16	SPCC290.04	ams2	Q9URT4	fungi only	ZnF_GATA	Zinc-coordinated	FALSE	FALSE
+ID17	SPBC725.16	res1	P33520	fungi only	KilA-N	TF homology	FALSE	FALSE
+ID18	SPBC29B5.01	atf1	P52890	other	bZIP	Basic leucine zipper	FALSE	FALSE
+ID19	SPAC3G9.14	sak1	P48383	eukaryotes only, fungi and metazoa	Other	TF homology	TRUE	TRUE
+ID20	SPAC13G7.10	teb1	Q10274	eukaryotes only, fungi and metazoa	SANT	TF homology	TRUE	TRUE
+ID21	SPBC2F12.09c	atf21	P78962	other	bZIP	Basic leucine zipper	FALSE	FALSE
+ID22	SPBC1198.04c	zas1	Q9UTS5	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID23	SPAC22F3.02	atf31	Q09771	other	bZIP	Basic leucine zipper	FALSE	FALSE
+ID24	SPCC736.08	cbf11	O74954	eukaryotes only, fungi and metazoa	BTD	TF homology	TRUE	TRUE
+ID25	SPCC1223.13	cbf12	O74412	eukaryotes only, fungi and metazoa	BTD	TF homology	TRUE	TRUE
+ID26	SPAC25B8.19c	loz1	Q9UTA1	other	zf-C2H2	Zinc-coordinated	FALSE	FALSE
+ID27	SPAC11E3.06	map1	P78926	eukaryotes only, fungi and metazoa	MADS SRF-like	TF homology	TRUE	TRUE
+ID28	SPBC19G7.06	mbx1	O42954	eukaryotes only, fungi and metazoa	MADS SRF-like	TF homology	TRUE	TRUE
+ID29	SPBC317.01	mbx2	Q9HGP0	other	MADS SRF-like	TF homology	FALSE	TRUE
+ID30	SPAPB1A11.04c	mca1	Q9HDX1	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID31	SPBC32H8.11	mei4	O13606	other	COG5025 (FH)	Forkhead	FALSE	TRUE
+ID32	SPAC821.07c	moc3	Q9UT46	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID33	SPAC1783.07c	pap1	Q01663	fungi only	bZIP	Basic leucine zipper	FALSE	FALSE
+ID34	SPAC21E11.03c	pcr1	Q09926	other	bZIP	Basic leucine zipper	FALSE	FALSE
+ID35	SPBC27B12.11c	pho7	O13658	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID36	SPBC725.11c	php2	P24488	eukaryotes only, fungi and metazoa	Other	TF homology	TRUE	TRUE
+ID37	SPAC23C11.08	php3	P36611	eukaryotes only, fungi and metazoa	Other	TF homology	TRUE	TRUE
+ID38	SPBC3B8.02	php5	P79007	eukaryotes and prokaryotes	Other	TF homology	TRUE	TRUE
+ID39	SPAC32A11.03c	phx1	Q10328	other	Other	Homeobox	FALSE	FALSE
+ID40	SPAC8C9.14	prr1	O14283	fungi only	HSF_DNA-bind	Heat shock factors	FALSE	TRUE
+ID41	SPBC530.05	prt1	O59741	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID42	SPAC4G8.13c	prz1	Q09838	other	COG5048	Zinc-coordinated	FALSE	FALSE
+ID43	SPBC1198.11c	reb1	Q9P6H9	eukaryotes only, fungi and metazoa	SANT	TF homology	TRUE	TRUE
+ID44	SPAC22F3.09c	res2	P41412	fungi only	KilA-N	TF homology	FALSE	FALSE
+ID45	SPAC6F12.02	rst2	P78871	other	COG5048	Zinc-coordinated	FALSE	FALSE
+ID46	SPBP4H10.09	rsv1	Q9P7D9	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID47	SPBC1105.14	rsv2	Q9Y815	fungi only	zf-C2H2	Zinc-coordinated	FALSE	FALSE
+ID48	SPBC1D7.02c	scr1	O14335	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID49	SPBC4C3.12	sep1	O43058	other	COG5025 (FH)	Forkhead	FALSE	TRUE
+ID50	SPAC16.05c	sfp1	Q9UTH8	eukaryotes only, fungi and metazoa	zf-C2H2	Zinc-coordinated	TRUE	TRUE
+ID51	SPAC3H1.11	hsr1	Q10076	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID52	SPBPB8B6.04c	grt1	Q9C469	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID53	SPBC15D4.02	gsf1	O74308	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID54	SPAC1039.05c	klf1	Q9US36	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID57	SPBC19C2.09	sre1	Q9UUD1	eukaryotes only, fungi and metazoa	bHLH_SF	Basic helix-loop-helix	TRUE	TRUE
+ID58	SPBC354.05c	sre2	O43019	eukaryotes only, fungi and metazoa	bHLH_SF	Basic helix-loop-helix	TRUE	TRUE
+ID59	SPBC1652.01	stb3	Q9P7B0	fungi only	Other	TF homology	FALSE	FALSE
+ID60	SPBC32C12.02	ste11	P36631	fungi only	HMG-box	HMG-box	FALSE	FALSE
+ID61	SPAC1486.10	thi1	P36598	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID62	SPBP8B7.30c	thi5	O94278	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID63	SPAC1399.05c	toe1	Q9HE16	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID64	SPAC139.03	toe2	Q9UTN0	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID65	SPAPB24D3.01	toe3	Q9C0Z1	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID66	SPAC11D3.07c	toe4	Q10086	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID67	SPAC25G10.03	zip1	Q10424	fungi only	bZIP	Basic leucine zipper	FALSE	FALSE
+ID68	SPAC105.03c	NA	Q9P7H9	fungi only	Other	fungal TF domain	FALSE	FALSE
+ID69	SPAC11D3.11c	NA	G2TRN9	other	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID70	SPAC11D3.17	NA	Q10096	fungi only	COG5048	Zinc-coordinated	FALSE	FALSE
+ID71	SPAC1327.01c	NA	Q1MTM9	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID72	SPAC1F7.11c	NA	Q09922	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID73	SPAC25B8.11	NA	Q9UTA7	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID74	SPAC2H10.01	NA	O94392	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID75	SPAC3C7.04	NA	O14130	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID76	SPAC3F10.12c	NA	Q10186	other	bHLH_SF	Basic helix-loop-helix	FALSE	TRUE
+ID77	SPAC3H8.08c	NA	Q10144	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID78	SPBC1348.12	NA	G2TRT1	other	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID79	SPBC16G5.16	NA	O60130	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID80	SPBC16G5.17	NA	O60131	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID81	SPBC1773.12	NA	O94569	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID82	SPBC1773.16c	NA	O94573	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID83	SPBC530.08	NA	O59744	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID84	SPBC530.11c	NA	O59746	fungi only	Other	fungal TF domain	FALSE	FALSE
+ID85	SPBC56F2.05c	NA	O60056	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID86	SPCC18.03	NA	O74853	eukaryotes only, fungi and metazoa	Other	Zinc-coordinated	TRUE	TRUE
+ID87	SPCC320.03	NA	O59780	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID88	SPCC417.09c	NA	O94490	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID89	SPCC757.04	NA	O74915	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID90	SPCC777.02	NA	O74541	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE
+ID91	SPCC965.10	NA	O59830	fungi only	Zn(II)2Cys6	Zinc-coordinated	FALSE	FALSE

@@ -1,0 +1,91 @@
+Gene_name	class	class500
+Ace2	150and500	Lost in 500 mM
+Cdc10	150and500	Retained in 500 mM
+Cha4	nobait	NA
+Cuf1	150only	NA
+Cuf2	nobait	NA
+Deb1	150and500	Lost in 500 mM
+Esc1	150only	NA
+Fep1	150only	NA
+Fhl1	150only	NA
+Fil1	150only	NA
+Fkh2	150and500	Retained in 500 mM
+Adn2	150and500	Retained in 500 mM
+Gaf1	150and500	Retained in 500 mM
+Hsf1	150and500	Retained in 500 mM
+Adn3	150and500	Retained in 500 mM
+Ams2	150and500	Lost in 500 mM
+Res1	150and500	Retained in 500 mM
+Atf1	150and500	Retained in 500 mM
+Sak1	150and500	Lost in 500 mM
+Teb1	150only	NA
+Atf21	nobait	NA
+Zas1	150only	NA
+Atf31	150only	NA
+Cbf11	150and500	Lost in 500 mM
+Cbf12	nobait	NA
+Loz1	150only	NA
+Map1	150and500	Retained in 500 mM
+Mbx1	150only	NA
+Mbx2	150only	NA
+Mca1	150only	NA
+Mei4	150only	NA
+Moc3	150and500	Retained in 500 mM
+Pap1	150and500	Retained in 500 mM
+Pcr1	150and500	Retained in 500 mM
+Pho7	150and500	Retained in 500 mM
+Php2	150and500	Lost in 500 mM
+Php3	150and500	Retained in 500 mM
+Php5	150and500	Retained in 500 mM
+Phx1	150and500	Lost in 500 mM
+Prr1	150and500	Retained in 500 mM
+Prt1	150and500	Lost in 500 mM
+Prz1	150only	NA
+Reb1	150only	NA
+Res2	150and500	Retained in 500 mM
+Rst2	150and500	Retained in 500 mM
+Rsv1	150only	NA
+Rsv2	150only	NA
+Scr1	150and500	Lost in 500 mM
+Sep1	150only	NA
+Sfp1	150only	NA
+Hsr1	150only	NA
+Grt1	150and500	Lost in 500 mM
+Gsf1	150only	NA
+Klf1	150only	NA
+Sre1	150and500	Lost in 500 mM
+Sre2	nobait	NA
+Stb3	150and500	Lost in 500 mM
+Ste11	150and500	Lost in 500 mM
+Thi1	150only	NA
+Thi5	150only	NA
+Toe1	150only	NA
+Toe2	150only	NA
+Toe3	150only	NA
+Toe4	150only	NA
+Zip1	150and500	Lost in 500 mM
+SPAC105.03c	150and500	Retained in 500 mM
+SPAC11D3.11c	150only	NA
+SPAC11D3.17	150and500	Retained in 500 mM
+SPAC1327.01c	150only	NA
+SPAC1F7.11c	150only	NA
+SPAC25B8.11	150and500	Retained in 500 mM
+SPAC2H10.01	150only	NA
+SPAC3C7.04	150and500	Retained in 500 mM
+SPAC3F10.12c	150only	NA
+SPAC3H8.08c	150only	NA
+SPBC1348.12	nobait	NA
+SPBC16G5.16	150and500	Retained in 500 mM
+SPBC16G5.17	150only	NA
+SPBC1773.12	150only	NA
+SPBC1773.16c	150only	NA
+SPBC530.08	150and500	Retained in 500 mM
+SPBC530.11c	150only	NA
+SPBC56F2.05c	150only	NA
+SPCC18.03	150and500	Lost in 500 mM
+SPCC320.03	150only	NA
+SPCC417.09c	150only	NA
+SPCC757.04	150only	NA
+SPCC777.02	150only	NA
+SPCC965.10	150and500	Lost in 500 mM
+Untagged	nobait	
