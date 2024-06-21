@@ -1,0 +1,667 @@
+---
+title: "Figure 6 - heterodimer"
+author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+params:
+    rds500: "data/ipms_500_sce.rds"
+    rdsrnaseq_del: "data/rnaseq_del.rds"
+    rdsrnaseq_ko: "data/rnaseq_ko.rds"
+    dist_from_ne: "data/Fig6_lacR_quantification_distance_radius.txt"
+    gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
+    idmap: "data/id_mapping_table.txt"
+    rnatracks_ko: "data/genome_browser_tracks_rnaseq_ko.csv.gz"
+    chiptracks_ko: "data/genome_browser_tracks_chipseq_ko.csv.gz"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+```
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages and helper functions
+
+```{r load-packages, class.source="fold-show"}
+suppressPackageStartupMessages({
+    library(SingleCellExperiment)
+    library(ggplot2)
+    library(cowplot)
+    library(dplyr)
+    library(ggrepel)
+    library(colorspace)
+    library(DESeq2)
+    library(ggh4x)
+    library(ggtext)
+    library(patchwork)
+    library(ggsignif)
+    library(kableExtra)
+    library(scales)
+    library(broom)
+})
+
+source("params/plot_settings.R")
+source("params/get_testres_function.R")
+source("params/mapping_functions.R")
+```
+
+# Read data
+
+We load a `SingleCellExperiment` object, containing data and results from the 
+high-salt IP-MS experiment.
+
+```{r load-data, class.source="fold-show"}
+sce500 <- readRDS(params$rds500)
+```
+
+Next, we load two `SummarizedExperiment` objects with quantifications 
+from RNA-seq experiments.
+
+```{r, class.source="fold-show"}
+rnaseq_del <- readRDS(params$rdsrnaseq_del)
+rnaseq_ko <- readRDS(params$rdsrnaseq_ko)
+idmap <- read.delim(params$idmap)
+```
+
+# Figure 6
+
+## Zone quantification
+
+```{r}
+## Read data with distances from nuclear envelope + cell radius and 
+## calculate relative distance from NE
+dist_ne <- read.delim(params$dist_from_ne) |>
+    group_by(Condition, Replicate) |>
+    mutate(rel_distance_from_ne = Distance_from_nuc_envelope / Radius_of_cell) |>
+    mutate(Condition = ifelse(Condition == "ntu1D", "ntu1\U141E", 
+                              ifelse(Condition == "ntu2D", "ntu2\U141E", Condition))) |>
+    mutate(SampleID = factor(paste0(Condition, "\n", Replicate),
+                             levels = c("wt\nrep1", "wt\nrep2", "ntu1\U141E\nrep1",
+                                        "ntu1\U141E\nrep2", "ntu2\U141E\nrep1",
+                                        "ntu2\U141E\nrep2")))
+
+## Remove one cell where Distance was slightly larger than the Radius
+# table(dist_ne$rel_distance_from_ne > 1)
+dist_ne <- dist_ne |>
+    filter(rel_distance_from_ne >= 0 & rel_distance_from_ne <= 1) |>
+    dplyr::mutate(Condition = factor(Condition, 
+                                     levels = c("wt", "ntu1\U141E", "ntu2\U141E")),
+                  Replicate = factor(Replicate, 
+                                     levels = c("rep1", "rep2")))
+
+## Get zone classification
+zone_thresholds <- 1 - c(1, sqrt(2), sqrt(3)) / sqrt(3)
+zone_byrep <- dist_ne |>
+    mutate(Zone = ifelse(rel_distance_from_ne > zone_thresholds[1], "Zone III", 
+                         ifelse(rel_distance_from_ne > zone_thresholds[2], 
+                                "Zone II", "Zone I"))) |>
+    group_by(Condition, Replicate, Zone) |>
+    tally() |>
+    group_by(Condition, Replicate) |>
+    mutate(fraction_by_zone = n / sum(n)) |>
+    mutate(Zone = factor(Zone, levels = c("Zone I", "Zone II", "Zone III"))) |>
+    ungroup()
+zone_byrep |>
+    mutate(fraction_by_zone = label_percent(accuracy = 0.01)(fraction_by_zone)) |>
+    rename(`Number of cells` = n, 
+           `Percentage of cells` = fraction_by_zone) |>
+    kbl() |>
+    kable_styling()
+
+## Average zone distribution over replicates
+zone_avg <- zone_byrep |> 
+    dplyr::group_by(Zone, Condition) |> 
+    dplyr::summarize(avg_fraction_by_zone = mean(fraction_by_zone), 
+                     sd_fraction_by_zone = sd(fraction_by_zone), 
+                     .groups = "drop")
+```
+
+```{r}
+## Fraction of cells in Zone I
+zone_byrep |> filter(Zone == "Zone I") |>
+    group_by(Zone, Condition) |>
+    summarize(average_percentage = label_percent(accuracy = 0.01)(mean(fraction_by_zone)), 
+              individual_percentages = paste(label_percent(accuracy = 0.01)(fraction_by_zone), 
+                                             collapse = ","), 
+              .groups = "drop") |>
+    rename(`Average percentage` = average_percentage,
+           `Percentages for replicates` = individual_percentages) |>
+    kbl() |>
+    kable_styling()
+
+## Fraction of cells in Zone III
+zone_byrep |> filter(Zone == "Zone III") |>
+    group_by(Zone, Condition) |>
+    summarize(average_percentage = label_percent(accuracy = 0.01)(mean(fraction_by_zone)), 
+              individual_percentages = paste(label_percent(accuracy = 0.01)(fraction_by_zone), 
+                                             collapse = ","), 
+              .groups = "drop") |>
+    rename(`Average percentage` = average_percentage,
+           `Percentages for replicates` = individual_percentages) |>
+    kbl() |>
+    kable_styling()
+```
+
+### Plot relative distance to perimeter in all conditions
+
+```{r}
+#| warning: false
+
+## Number of cells per condition
+table(dist_ne$Replicate, dist_ne$Condition)
+
+get_xlabs <- function(x) {
+    vapply(x, function(xx) sub("\n", "<br>", paste0("*", xx, "*", "<br>(n = ", 
+                                                    length(which(paste0(dist_ne$Condition, "\n", 
+                                                                        dist_ne$Replicate) == xx)), ")"), fixed = TRUE), "")
+}
+
+## Calculate p-values (average values per sample followed by linear model)
+dps <- dist_ne |>
+    group_by(SampleID, Condition, Replicate) |>
+    summarize(mean_dist = mean(rel_distance_from_ne),
+              median_dist = median(rel_distance_from_ne),
+              .groups = "drop")
+(aggreg <- summary(lm(median_dist ~ Condition, data = dps)) |> tidy())
+
+## wt vs ntu1D
+p_ntu1 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu1\U141E"], 3))
+
+## wt vs ntu2D
+p_ntu2 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu2\U141E"], 3))
+
+(p_rel_dis <- ggplot(dist_ne, 
+                     aes(x = SampleID, y = rel_distance_from_ne, 
+                         fill = Condition)) + 
+        geom_violin(trim = TRUE, bounds = c(0, 1)) +
+        geom_signif(annotations = c(p_ntu1, p_ntu2),
+                    xmin = c(1.5, 1.5), xmax = c(3.5, 5.5), 
+                    y = c(1.05, 1.15),
+                    tip_length = 0, step_increase = 0.1, parse = TRUE) + 
+        geom_boxplot(width = 0.1, fill = "white") +
+        labs(title = "Relative distance from nuclear envelope",
+             x = "", y = "Distance from NE relative to radius") + 
+        scale_fill_manual(values = c(na_color, main_colors[5], main_colors[1]),
+                          name = "") + 
+        scale_x_discrete(labels = get_xlabs) +
+        scale_y_continuous(breaks = c(0, 0.5, 1), limits = c(0, 1.2)) + 
+        theme_cowplot() + 
+        theme(axis.text.x = element_markdown(),
+              legend.text = element_text(face = "italic")))
+```
+
+### Plot zone distribution by condition
+
+```{r}
+#| warning: false
+
+(p_zone <- ggplot(zone_avg, aes(fill = Zone, y = 100 * avg_fraction_by_zone, 
+                                x = Condition)) + 
+     geom_bar(position = "stack", stat = "identity") +
+     labs(title = "Relative zone distribution\nincl. both replicates", 
+          x = "", y = "Relative distribution [%]") +
+     scale_fill_manual(values = c(main_colors[1], main_colors[3], main_colors[5]),
+                       name = "") + 
+     scale_x_discrete(labels = get_xlabs) + 
+     theme_cowplot() + 
+     theme(axis.text.x = element_markdown()))
+```
+
+## Ntu1/Ntu2 500 mM NaCl IP-MS
+
+Here we extract and visualize the t-statistics for all proteins in the 
+ntu1 and ntu2 high-salt IP-MS experiments. In each case the condition of 
+interest is compared to a broad complement group consisting of all other 
+high-salt IP-MS samples. 
+
+```{r tstat-500-ntu1-ntu2}
+#| fig.width: 4
+#| fig.height: 4
+#| warning: false
+
+## Extract t-statistics for the two comparisons
+rdhigh <- rowData(sce500)
+contrasts_high <- c(
+    "Ntu1_500_plate_vs_compl_Ntu1_500_plate.t", 
+    "Ntu2_500_plate_vs_compl_Ntu2_500_plate.t")
+high <- as.data.frame(rdhigh[, c("einprotId", contrasts_high)]) |>
+    setNames(c("einprotId", c("Ntu1", "Ntu2")))
+
+## Plot t-statistics
+(gg_ipdimer <- ggplot(high, aes(x = Ntu1, y = Ntu2)) +
+    geom_abline(data = high |> 
+                    dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")), 
+                aes(slope = mean(Ntu2 / Ntu1), intercept = 0), 
+                linetype = "dashed", color = "grey50") + 
+    geom_text_repel(data = high |> 
+                        dplyr::filter(einprotId %in% c("Ntu1", "Ntu2") | 
+                                          Ntu2 > 5),
+                    aes(label = einprotId), min.segment.length = 0) + 
+    geom_point(alpha = 0.25) + 
+    geom_point(data = high |> 
+                   dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")) |>
+                   dplyr::mutate(type = "Baits"),
+               mapping = aes(fill = type), color = main_colors[3],
+               shape = 21, alpha = 1, size = 2) + 
+    scale_fill_manual(values = c(Baits = main_colors[3])) + 
+    theme_cowplot() + 
+    labs(x = "500 mM NaCl mod. t-stat. (Ntu1)", 
+         y = "500 mM NaCl mod. t-stat. (Ntu2)") + 
+    theme(strip.text = element_blank(),
+          legend.position = "inside",
+           legend.position.inside = c(0.8, 0.1)) + 
+    guides(fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+```
+
+## RNA-seq expression levels for genes around the tna1 locus
+
+```{r}
+#| fig.width: 8
+#| fig.height: 6
+
+wt_tpm <- assay(rnaseq_del[, rnaseq_del$Group_name == "wt_WT_mRNA"], "abundance")
+genepos <- rowRanges(rnaseq_del)
+mcols(genepos) <- NULL
+genepos <- as.data.frame(genepos)
+stopifnot(rownames(wt_tpm) == rownames(genepos))
+genepos$ave_tpm <- rowMeans(wt_tpm)
+genepos$id <- rownames(genepos)
+
+chrom <- genepos["tna1", "seqnames"]
+startpos <- genepos["tna1", "start"]
+endpos <- genepos["tna1", "end"]
+windowsize <- 30000
+
+(genomeplot_tpm <- 
+        ggplot(genepos |> 
+                   dplyr::filter(seqnames == chrom & 
+                                     start > startpos - windowsize & 
+                                     end < endpos + windowsize), 
+               aes(x = start / 1e6, y = ave_tpm, label = id)) +
+        geom_hline(yintercept = 0, color = na_color) + 
+        geom_point(size = 3, alpha = 0.8, aes(color = id == "tna1")) +
+        scale_color_manual(values = c(`TRUE` = main_colors[4], `FALSE` = pt_color)) + 
+        geom_text_repel(min.segment.length = 0, max.overlaps = Inf, size = 3, 
+                        force = 3) + 
+        labs(x = "Genome position (Mb)", y = "Gene expression (TPM)") + 
+        scale_y_continuous(expand = expansion(mult = c(0, 0), add = c(200, 50))) + 
+        theme_cowplot() + 
+        theme(legend.position = "none"))
+```
+
+
+## RNA-seq differential expression analysis - KO experiments
+
+```{r rnaseq-de}
+#| fig.width: 15
+#| fig.height: 4
+#| message: false
+#| warning: false
+
+## Filter lowly expressed genes and create DESeqDataSet
+rnaseqfilt_ko <- rnaseq_ko[rowSums(assay(rnaseq_ko, "counts") >= 5) >= 2, ]
+dds <- DESeq2::DESeqDataSet(rnaseqfilt_ko, design = ~ MappedGene)
+dds <- DESeq2::estimateSizeFactors(dds)
+
+## Filter genes with high inferential variance
+highInfRV <- 10^(-0.75)
+dds <- dds[rowData(dds)$meanInfRV < highInfRV, ]
+
+## Perform differential expression analysis
+dds <- DESeq2::DESeq(dds)
+groups <- setdiff(dds$MappedGene, "wt")
+names(groups) <- groups
+resList <- lapply(groups, function(gr) {
+    DESeq2::results(dds, contrast = c("MappedGene", gr, "wt"), 
+                    alpha = 0.05)
+})
+
+## Create MA plots
+rngY <- range(sapply(resList, function(rl) rl$log2FoldChange))
+rngX <- range(sapply(resList, function(rl) log10(rl$baseMean)))
+maplots <- lapply(structure(names(resList), names = names(resList)), function(nm) {
+    ggplot(as.data.frame(resList[[nm]]), 
+           aes(x = log10(baseMean), y = log2FoldChange)) + 
+        geom_point(mapping = aes(color = abs(log2FoldChange) > 3 & 
+                                     padj < 0.001), alpha = 0.25) + 
+        scale_color_manual(values = c(`TRUE` = main_colors[4], `FALSE` = pt_color)) + 
+        coord_cartesian(xlim = rngX, ylim = rngY) + 
+        geom_text_repel(data = as.data.frame(resList[[nm]]) |>
+                            tibble::rownames_to_column("gene") |>
+                            dplyr::filter(gene == nm | 
+                                              (log2FoldChange > 4.5 & padj < 0.05)), 
+                        aes(label = gene), 
+                        min.segment.length = 0, max.overlaps = Inf) + 
+        theme_cowplot() + 
+        labs(x = "Mean expression", y = "log2(fold-change)", 
+             title = paste0(nm, "\U141E")) + 
+        theme(legend.position = "none",
+              plot.title = element_text(face = "italic"))
+})
+
+## Correlation between log2 fold changes for ntu1/ntu2
+stopifnot(all(rownames(resList$ntu1) == rownames(resList$ntu2)))
+dfcorr <- data.frame(gene = rownames(resList$ntu1), 
+                     ntu1 = resList$ntu1$log2FoldChange,
+                     ntu2 = resList$ntu2$log2FoldChange)
+corrplot <- list(
+    ggplot(dfcorr, aes(x = ntu1, y = ntu2)) + 
+        geom_abline(slope = 1, intercept = 0, linetype = "dashed", 
+                    color = "grey50") + 
+        geom_point(alpha = 0.25) + 
+        geom_text_repel(data = dfcorr |>
+                            dplyr::filter(gene %in% c("tna1", "SPCC576.17c")), 
+                        aes(label = gene), 
+                        min.segment.length = 0, max.overlaps = Inf) + 
+        labs(x = "*ntu1\U141E* log2(fold-change)",
+             y = "*ntu2\U141E* log2(fold-change)") + 
+        theme_cowplot() + 
+        theme(axis.title = element_markdown())
+)
+
+cowplot::plot_grid(
+    plotlist = maplots, nrow = 1, align = "hv", axis = "b"
+)
+```
+
+## Coverage tracks
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+#| message: false
+#| warning: false
+
+covs_rna <- read.csv(params$rnatracks_ko) |>
+    left_join(data.frame(sample = colnames(rnaseq_ko),
+                         libsize = colSums(assay(rnaseq_ko, "counts")))) |>
+    mutate(cpm = score / libsize * 1e6)
+covs_chip <- read.csv(params$chiptracks_ko)
+gtf <- rtracklayer::import(params$gtf)
+
+goi <- c("med6", "SPAC1002.16c", "urg2", "urg3", "SPCC576.17c", "SPNCRNA.1263")
+gtf <- subset(gtf, (gene_id %in% goi | gene_name %in% goi) & type == "gene") |>
+    as.data.frame() |>
+    left_join(idmap, by = join_by("gene_id" == "gene_stable_id")) |>
+    dplyr::select(seqnames, start, end, strand, unique_einprot_id) |>
+    mutate(y = ifelse(unique_einprot_id == "SPCC576.17c", 0, 1)) |>
+    mutate(start2 = ifelse(strand == "+", start, end),
+           end2 = ifelse(strand == "+", end, start)) |>
+    mutate(unique_einprot_id_label = ifelse(grepl("^SP", unique_einprot_id), 
+                                            unique_einprot_id, 
+                                            paste0("*", unique_einprot_id, "\U207A*")))
+
+## Create data frames for plotting
+plotdf_chip1 <- covs_chip |>
+    mutate(sample = sub("_rep[0-9]", "", sample)) |>
+    mutate(exptype = stringr::str_extract(sample, "ChIP|IN")) |>
+    mutate(pair = sub("_ChIP|_IN", "", sample)) |>
+    mutate(flag = .capitalize(sub("_*TAG", "", sub(".*_KO_", "", pair)))) |>
+    mutate(label = ifelse(pair == "ntu1_KO_ntu2TAG", "*ntu1\U141E*",
+                          ifelse(pair == "ntu1_TAG", "*ntu2\U207A*",
+                                 ifelse(pair == "ntu2_TAG", "*ntu1\U207A*",
+                                        ifelse(pair == "ntu2_KO_ntu1TAG", "*ntu2\U141E*", 
+                                               ""))))) |>
+    mutate(cpm = score) |>
+    mutate(pos = start) |>
+    group_by(flag, seqnames) |>
+    mutate(cpmnorm = cpm / max(abs(cpm))) |>
+    ungroup() |>
+    filter(pair %in% c("ntu2_TAG", "ntu2_KO_ntu1TAG", 
+                       "ntu1_TAG", "ntu1_KO_ntu2TAG")) |>
+    mutate(pair = factor(pair, levels = c("ntu1_TAG", "ntu2_KO_ntu1TAG",
+                                          "ntu2_TAG", "ntu1_KO_ntu2TAG")))
+plotdf_rna <- covs_rna |>
+    filter(sample %in% c("SPBC530.08_KO_mRNA_rep1",
+                         "SPBC16G5.16_KO_mRNA_rep1",
+                         "wt_KO_mRNA_rep1")) |>
+    mutate(sample = sub("_KO_mRNA_rep[0-9]", "", sample)) |>
+    mutate(sample = replace(sample, sample == "SPBC16G5.16", "ntu1\U141E")) |>
+    mutate(sample = replace(sample, sample == "SPBC530.08", "ntu2\U141E")) |>
+    mutate(gene = sample) |>
+    group_by(seqnames) |>
+    mutate(cpmnorm = cpm / max(abs(cpm))) |>
+    ungroup() |>
+    mutate(sample = factor(sample, 
+                           levels = c("wt", "ntu1\U141E", "ntu2\U141E")))
+plotdf_label <- covs_rna |>
+    filter(sample == "wt_KO_mRNA_rep1") |>
+    mutate(cpmnorm = 0)
+
+.get_empty_label <- function(x) {
+    c("ntu1_TAG" = "", "ntu2_KO_ntu1TAG" = "",
+      "ntu2_TAG" = "", "ntu1_KO_ntu2TAG" = "")
+}
+.add_space_to_label <- function(x) {
+    paste(x, "    ")
+}
+
+maxIII <- max(plotdf_label$pos[plotdf_label$seqnames == "III"])
+g1c <- ggplot(plotdf_label,
+              aes(x = pos, y = cpmnorm)) + 
+    geom_line(color = "white") + 
+    geom_segment(x = maxIII - 2000, xend = maxIII,
+                 y = 0, yend = 0, color = "black") + 
+    geom_text(data = data.frame(seqnames = "III",
+                                x = maxIII - 1000,
+                                y = 0,
+                                label = "2kb"),
+              aes(x = x, y = y, label = label),
+              vjust = -1) + 
+    facet_grid(~ seqnames, scales = "free_x", space = "free_x")
+g1a <- ggplot(plotdf_chip1 |>
+                  mutate(seqnames = paste0("chr", seqnames)), 
+              aes(x = pos, y = cpmnorm)) + 
+    geom_area(aes(group = exptype, fill = interaction(exptype, flag))) + 
+    geom_richtext(data = plotdf_chip1 |> 
+                      mutate(seqnames = paste0("chr", seqnames)) |>
+                      select(flag, pair, seqnames, pos, label) |>
+                      filter(seqnames == "chrI") |>
+                      filter(pos == min(pos)),
+                  aes(x = pos, y = 0.65, label = label),
+                  fill = NA, label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt"),
+                  hjust = 0, size = 4) + 
+    scale_fill_manual(values = c(`ChIP.Ntu1` = main_colors[5], 
+                                 `IN.Ntu1` = na_color,
+                                 `ChIP.Ntu2` = main_colors[1], 
+                                 `IN.Ntu2` = na_color)) + 
+    facet_nested(flag + pair ~ seqnames, scale = "free_x", space = "free_x",
+                 switch = "y",
+                 labeller = labeller(pair = .get_empty_label, 
+                                     flag = .add_space_to_label),
+                 nest_line = element_line(),
+                 strip = strip_nested(size = "variable")) + 
+    scale_y_continuous(limits = c(0, 0.9), expand = c(0, 0))
+g1b <- ggplot(plotdf_rna, 
+              aes(x = pos, y = cpmnorm)) + 
+    geom_area(aes(group = strand, fill = gene)) + 
+    scale_fill_manual(values = c(wt = "black", "ntu1\U141E" = main_colors[5], 
+                                 "ntu2\U141E" = main_colors[1])) + 
+    facet_grid(sample ~ seqnames, scale = "free_x", space = "free_x",
+               switch = "y") + 
+    scale_y_continuous(limits = c(-0.9, 0.3), expand = c(0, 0))
+g2 <- ggplot(gtf, aes(x = start2, xend = end2, y = y, yend = y, 
+                      color = unique_einprot_id %in% c("tna1", "SPCC576.17c"), 
+                      label = unique_einprot_id_label)) + 
+    geom_segment(arrow = grid::arrow(length = unit(0.05, "inches")), 
+                 linewidth = 2) + 
+    geom_richtext(
+        aes(x = (start2 + end2) / 2, y = y - 0.5),
+        fill = NA, label.color = NA,
+        label.padding = grid::unit(rep(0, 4), "pt"),
+        size = 4
+    ) + 
+    # geom_text(aes(x = (start2 + end2) / 2, y = y - 0.5), 
+    #           size.unit = "in", size = 0.1) + 
+    scale_color_manual(values = c(`FALSE` = "black", `TRUE` = main_colors[4])) + 
+    facet_grid(~ seqnames, scales = "free_x", space = "free_x") + 
+    ylim(-0.75, 1.5)
+gcov <- cowplot::plot_grid(
+    g1c + theme_void() + theme(strip.text = element_blank()),
+    g1a + theme_void() + theme(legend.position = "none", 
+                               strip.text.y = element_text(size = 12),
+                               strip.text.x = element_text(size = 12, hjust = 0.95)), 
+    NULL,
+    g1b + theme_void() + theme(strip.text.y = element_text(size = 12, 
+                                                           face = "italic"), 
+                               legend.position = "none",
+                               strip.text.x = element_blank()), 
+    g2 + theme_void() + 
+        theme(legend.position = "none",
+              strip.text = element_blank()), 
+    ncol = 1, rel_heights = c(0.75, 2, 0.5, 2, 1),
+    align = "v", axis = "lr")
+(gcov2 <- cowplot::plot_grid(
+    g1c + theme_bw() + theme(axis.text.x = element_text(size = 5)),
+    g1a + theme_bw() + theme(legend.position = "none",
+                             axis.text.x = element_text(size = 5)), 
+    g1b + theme_bw() + theme(legend.position = "none",
+                             axis.text.x = element_text(size = 5)), 
+    g2 + theme_bw() + 
+        theme(legend.position = "none",
+              axis.text.x = element_text(size = 5)), 
+    ncol = 1, rel_heights = c(0.75, 2, 2, 1),
+    align = "v", axis = "lr"))
+```
+
+## Put together
+
+```{r Fig6}
+#| fig.width: 13
+#| fig.height: 14
+#| warning: false
+
+fig6b <- ggdraw() + 
+    draw_image("schematics/Fig6B_Nattou_protein_domains_cartoon_Arial.png")
+fig6e <- ggdraw() + 
+    draw_image("schematics/Fig6E_Nattou_lacR_cartoon_images_Arial.png")
+fig6f <- ggdraw() + 
+    draw_image("schematics/Fig6F_Nattou_lacR_microscopy_images_Arial.png")
+
+fig6c <- wrap_plots(maplots, ncol = 1) | corrplot[[1]]
+
+cowplot::plot_grid(
+    cowplot::plot_grid(
+        gg_ipdimer, 
+        fig6c,
+        nrow = 1, 
+        rel_widths = c(1, 2), 
+        labels = c("A", "C"),
+        align = "h", axis = "bt"
+    ),
+    cowplot::plot_grid(
+        fig6b, 
+        gcov,
+        rel_widths = c(1, 1),
+        labels = c("B", "D")
+    ),
+    cowplot::plot_grid(
+        fig6e,
+        NULL,
+        fig6f,
+        NULL,
+        p_rel_dis,
+        labels = c("E", "", "F", "", "G"),
+        # rel_widths = c(7.65, 0.5, 1.45, 0.5, 9)
+        rel_widths = c(6, 0.75, 1.2, 0.75, 10.4), nrow = 1
+    ), 
+    ncol = 1
+)
+```
+
+
+## Supplementary Figure
+
+```{r suppFig6-chip}
+#| warning: false
+#| message: false
+
+plotdf_chip2 <- covs_chip |>
+    mutate(sample = sub("_rep[0-9]", "", sample)) |>
+    mutate(exptype = stringr::str_extract(sample, "ChIP|IN")) |>
+    mutate(pair = sub("_ChIP|_IN", "", sample)) |>
+    mutate(flag = sub("_*TAG", "", sub(".*_KO_", "", pair))) |>
+    mutate(label = ifelse(pair == "ntu2_delTMD", "delTMD",
+                          ifelse(pair == "ntu2_TAG", "ntu2+", ""))) |>
+    mutate(cpm = score) |>
+    mutate(pos = start) |>
+    group_by(seqnames) |>
+    mutate(cpmnorm = cpm / max(abs(cpm))) |>
+    ungroup() |>
+    filter(pair %in% c("ntu2_TAG", "ntu2_delTMD")) |>
+    mutate(pair = ifelse(pair == "ntu2_delTMD", "Ntu2\U141E\U1D40\U1D39\U1D30", 
+                         ifelse(pair == "ntu2_TAG", "Ntu2", pair))) |>
+    mutate(pair = factor(pair, levels = c("Ntu2", "Ntu2\U141E\U1D40\U1D39\U1D30")))
+
+gtr <- ggplot(plotdf_chip2 |>
+                  mutate(seqnames = paste0("chr", seqnames)), 
+              aes(x = pos, y = cpmnorm)) + 
+    geom_area(aes(group = exptype, fill = interaction(exptype, flag))) + 
+    scale_fill_manual(values = c(ChIP.ntu2_delTMD = main_colors[3], 
+                                 IN.ntu2_delTMD = na_color,
+                                 ChIP.ntu2 = main_colors[1], 
+                                 IN.ntu2 = na_color)) + 
+    facet_grid(pair ~ seqnames, scale = "free_x",
+               space = "free_x", switch = "y") + 
+    scale_y_continuous(limits = c(0, 0.9), expand = c(0, 0))
+gcovdel <- cowplot::plot_grid(
+    gtr + theme_void() + theme(strip.text.y = element_text(size = 12, vjust = 0.05),
+                               legend.position = "none", 
+                               strip.text.x = element_text(size = 12, hjust = 0.95)), 
+    g2 + theme_void() + 
+        theme(legend.position = "none",
+              strip.text = element_blank()), 
+    ncol = 1, rel_heights = c(2, 1),
+    align = "v", axis = "lr")
+```
+
+```{r suppFig6}
+#| fig.width: 13
+#| fig.height: 10
+#| warning: false
+
+figs6a <- ggdraw() + 
+    draw_image("schematics/FigS6A_Nattou_AF2_fl_Arial.png")
+
+cowplot::plot_grid(
+    cowplot::plot_grid(
+        figs6a, 
+        NULL,
+        p_zone + theme(legend.position = "top"), 
+        nrow = 1, 
+        rel_widths = c(1.75, 0.25, 1.25), 
+        labels = c("A", "", "B")
+    ),
+    cowplot::plot_grid(
+        genomeplot_tpm,
+        gcovdel,
+        # maplots$ID83delTMD,
+        nrow = 1, 
+        rel_widths = c(1.2, 1),
+        labels = c("C", "D")
+    ),
+    ncol = 1, rel_heights = c(1, 0.7)
+)
+```
+
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
