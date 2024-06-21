@@ -1,0 +1,479 @@
+PomBaseID	Gene_name	Product_description	UniprotID
+SPAC2C4.07c	dis32	3'-5'-exoribonuclease activity Dis3L2	O14040
+SPBP22H7.08	rps1002	40S ribosomal protein S10	O13614
+SPAC31G5.17c	rps1001	40S ribosomal protein S10	O14112
+SPAC31G5.03	rps1101	40S ribosomal protein S11	P0CT73
+SPAC144.11	rps1102	40S ribosomal protein S11	P0CT74
+SPAC6F6.07c	rps13	40S ribosomal protein S13	P28189
+SPCC1393.03	rps1501	40S ribosomal protein S15	O94715
+SPAC1071.07c	rps1502	40S ribosomal protein S15	Q9UTQ6
+SPBC18H10.14	rps1601	40S ribosomal protein S16	P0CT64
+SPAC664.04c	rps1602	40S ribosomal protein S16	P0CT65
+SPBC16D10.11c	rps1801	40S ribosomal protein S18	P0CT66
+SPCC1259.01c	rps1802	40S ribosomal protein S18	P0CT67
+SPBC21C3.13	rps1901	40S ribosomal protein S19	P58234
+SPBC649.02	rps1902	40S ribosomal protein S19	P79016
+SPCC576.08c	rps2	40S ribosomal protein S2	O74892
+SPAC806.03c	rps2601	40S ribosomal protein S26	Q9UT56
+SPAC1805.11c	rps2602	40S ribosomal protein S26	Q9UTG4
+SPBC1685.10	rps27	40S ribosomal protein S27	O74330
+SPBC16G5.14c	rps3	40S ribosomal protein S3	O60128
+SPAC959.07	rps403	40S ribosomal protein S4	Q9P4W9
+SPBC19F8.08	rps401	40S ribosomal protein S4	P87158
+SPBC21B10.10	rps402	40S ribosomal protein S4	Q9USW5
+SPAC328.10c	rps502	40S ribosomal protein S5	Q9P3T6
+SPAC8C9.08	rps5	40S ribosomal protein S5	O14277
+SPBC29A3.12	rps902	40S ribosomal protein S9	O59675
+SPAC24H6.07	rps901	40S ribosomal protein S9	Q09757
+SPBC887.14c	pfh1	5' to 3' DNA helicase Pif1/Pfh1	Q9UUA2
+SPAC26A3.12c	dhp1	5'-3' exoribonuclease Dhp1	P40848
+SPCC18.14c	rpp0	60S acidic ribosomal protein Rpp0	O74864
+SPBC30D10.18c	rpl102	60S ribosomal protein L10a	O14363
+SPCC1183.08c	rpl101	60S ribosomal protein L10a	O74836
+SPBC17G9.10	rpl1102	60S ribosomal protein L11	P0CT78
+SPAC26A3.07c	rpl1101	60S ribosomal protein L11	P0CT77
+SPAC664.05	rpl13	60S ribosomal protein L13	O74175
+SPBC839.13c	rpl1601	60S ribosomal protein L13/L16	O42991
+SPBC2G2.05	rpl1603	60S ribosomal protein L13/L16	O43004
+SPAC23A1.11	rpl1602	60S ribosomal protein L13/L16	O42848
+SPAC1805.13	rpl14	60S ribosomal protein L14	O94238
+SPCC576.11	rpl15	60S ribosomal protein L15	O74895
+SPAC1783.08c	rpl1502	60S ribosomal protein L15	Q9US22
+SPAPB17E12.13	rpl1802	60S ribosomal protein L18	Q8TFH1
+SPBC11C11.07	rpl1801	60S ribosomal protein L18	Q10192
+SPCC1682.14	rpl1902	60S ribosomal protein L19	O42699
+SPBC56F2.02	rpl1901	60S ribosomal protein L19	P05734
+SPAC11E3.15	rpl22	60S ribosomal protein L22	Q09668
+SPAC3G9.03	rpl2301	60S ribosomal protein L23	P0CT60
+SPCC1322.11	rpl2302	60S ribosomal protein L23	P0CT61
+SPAC6G9.09c	rpl2401	60S ribosomal protein L24	Q92354
+SPCC330.14c	rpl2402	60S ribosomal protein L24	O74884
+SPBC106.18	rpl2501	60S ribosomal protein L25	Q10330
+SPBC4F6.04	rpl2502	60S ribosomal protein L25	O74391
+SPBC29B5.03c	rpl26	60S ribosomal protein L26	P78946
+SPAC1250.05	rpl3002	60S ribosomal protein L30	Q9UTP0
+SPAC9G1.03c	rpl3001	60S ribosomal protein L30	P52808
+SPCC613.05c	rpl35	60S ribosomal protein L35	O74904
+SPBC1921.01c	rpl35A02	60S ribosomal protein L35A	Q9USX4
+SPCC1223.05c	rpl3702	60S ribosomal protein L37	P05733
+SPAPB17E12.05	rpl3703	60S ribosomal protein L37	P59289
+SPBP8B7.03c	rpl402	60S ribosomal protein L4	P35679
+SPBC1711.06	rpl401	60S ribosomal protein L4	Q9P784
+SPAC3H5.12c	rpl501	60S ribosomal protein L5	P52822
+SPBC11C11.09c	rpl502	60S ribosomal protein L5	O74306
+SPCC622.18	rpl6	60S ribosomal protein L6	P79071
+SPAC3H5.07	rpl702	60S ribosomal protein L7b	P25457
+SPBC839.04	rpl803	60S ribosomal protein L8/L2	P0CT72
+SPBC2F12.07c	rpl802	60S ribosomal protein L8/L2	P0CT71
+SPAC1F7.13c	rpl801	60S ribosomal protein L8/L2	P0CT70
+SPCC613.06	rpl902	60S ribosomal protein L9	O74905
+SPAC4G9.16c	rpl901	60S ribosomal protein L9	Q10232
+SPCC736.11	ago1	argonaute	O74957
+SPAC13G7.07	arb2	argonaute binding protein 2	Q10271
+SPBC21B10.03c	ath1	ataxin-2 homolog	Q9USW1
+SPCC645.10	cca2	ATP 3'tRNA nucleotidyltransferase Cca2	Q9Y7U9
+SPAC6G9.10c	sen1	ATP-dependent 5' to 3' DNA/RNA helicase Sen1	Q92355
+SPBC19C2.01	cdc28	ATP-dependent RNA helicase Cdc28	Q10752
+SPBC29A10.10c	dbl8	ATP-dependent RNA helicase Dbl8	O94387
+SPAC31A2.07c	dbp10	ATP-dependent RNA helicase Dbp10	Q09719
+SPBP8B7.16c	dbp2	ATP-dependent RNA helicase Dbp2	P24782
+SPBC17D1.06	dbp3	ATP-dependent RNA helicase Dbp3	Q10202
+SPAC30D11.03	ddx27	ATP-dependent RNA helicase Ddx27/Drs1	Q09903
+SPAC1F7.02c	has1	ATP-dependent RNA helicase Has1	Q09916
+SPAC2G11.11c	prh1	ATP-dependent RNA helicase Prh1	Q03319
+SPBC776.09	ste13	ATP-dependent RNA helicase Ste13/Dhh1	Q09181
+SPCC895.09c	ucp12	"ATP-dependent RNA helicase Ucp12, unknown location and role, implicated in mRNA processing"	O94536
+SPAC16C9.06c	upf1	ATP-dependent RNA helicase Upf1	Q09820
+SPBC15C4.05	dhx29	"ATP-dependent RNA helicase, human DHX29 ortholog"	O60114
+SPAPB1A10.06c	dhx37	"ATP-dependent RNA helicase, small-subunit processome Dhx37"	Q9HDY4
+SPAC10F6.02c	prp22	"ATP-dependent RNA helicase, spliceosomal Prp22"	O42643
+SPBC16H5.10c	prp43	"ATP-dependent RNA helicase, spliceosomal Prp43"	O42945
+SPBC1711.17	prp16	"ATP-dependent RNA helicase, splicosomal Prp16"	Q9P774
+SPBC2A9.10	bmc1	"Bin3 family, RNA methyltransferase Bmc1"	Q9Y7L2
+SPAP27G11.13c	nop10	box H/ACA snoRNP complex protein	Q9P7M5
+SPBC20F10.01	gar1	box H/ACA snoRNP complex subunit Gar1	Q06975
+SPAC1782.10c	nhp2	box H/ACA snoRNP complex subunit Nhp2	Q9P7H0
+SPAC4F8.04		Brix domain protein Rpf1	O14180
+SPAC926.08c	rpf2	Brix domain ribosome biogenesis protein Rpf2	Q9UUG1
+SPBC13G1.09	enp1	bystin family U3 and U14 snoRNA associated protein Enp1	O60071
+SPCC18.06c	caf1	CCR4-Not complex CAF1 family ribonuclease subunit 7/8	O74856
+SPAC29B12.06c	rcd1	CCR4-Not complex RNA-binding protein subunit 9	Q92368
+SPAC16C9.04c	mot2	CCR4-Not complex ubiquitin-protein ligase E3 subunit 4	Q09818
+SPBC530.06c	clu1	clustered mitochondria ortholog Clu1	O59742
+SPAC30C2.04	asc1	cofactor for cytoplasmic methionyl-and glutamyl-tRNA synthetases Asc1	Q9P6K7
+SPAC1093.04c	cca1	CTP 3'-tRNA nucleotidyltransferase Cca1	Q9UTQ0
+SPBC17G9.05	rct1	"cyclophilin family peptidyl-prolyl cis-trans isomerase, RRM-containing Rct1"	Q9UUE4
+SPCC1223.07c	drs1	cytoplasmic aspartate-tRNA ligase Drs1	O74407
+SPBC12C2.06	dbp5	cytoplasmic ATP-dependent RNA helicase Dbp5	Q09747
+SPBC8D2.06	irs1	cytoplasmic isoleucine-tRNA ligase Irs1	O13651
+SPBC17G9.03c	krs1	cytoplasmic lysine-tRNA ligase Krs1	Q9UUE6
+SPAC4G9.05	mpf1	cytoplasmic meiotic pumilio family RNA-binding protein Mpf1	Q10238
+SPCC16C4.09	sts5	"cytoplasmic P body 3'-5'-exoribonuclease, Dis3L2-related"	O74454
+SPBC609.01		"cytoplasmic P body 3'-5'-exoribonuclease, Dis3L2-related"	O94525
+SPAC3G9.06	frs2	cytoplasmic phenylalanine-tRNA ligase alpha subunit Frs2	O42870
+SPAC23A1.12c	frs1	cytoplasmic phenylalanine-tRNA ligase beta subunit Frs1	O42849
+SPAC821.04c	cid13	cytoplasmic poly(A) polymerase Cid13	Q9UT49
+SPAC4G8.03c	puf5	cytoplasmic pumilio family RNA-binding protein Puf5	Q09829
+SPAC29A4.15	srs1	cytoplasmic serine-tRNA ligase Srs1	O14018
+SPAC1834.01	erf1	cytoplasmic translation release factor class I eRF1	P79063
+SPBC2G5.03	ctu1	cytosolic thiouridylase subunit Ctu1	O94282
+SPBC19C2.13c	ctu2	cytosolic thiouridylase subunit Ctu2	Q9UUC7
+SPAC8C9.05	dtd1	D-Tyr-tRNA deacylase Dtd1	O14274
+SPCC188.13c	dcr1	dicer	Q09884
+SPBC16D10.04c	dna2	DNA replication endonuclease-helicase Dna2	Q9URU2
+SPBC660.13c	ssb1	DNA replication factor A subunit Ssb1	Q92372
+SPBC29B5.01	atf1	"DNA-binding transcription factor, Atf-CREB family Atf1"	P52890
+SPACUNK4.06c	rpb7	DNA-directed RNA polymerase complex II subunit Rpb7	O14459
+SPAC23G3.01	rpb2	DNA-directed RNA polymerase II complex subunit Rpb2	Q02061
+SPBC30B4.08	eri1	double-strand siRNA ribonuclease Eri1	Q08I43
+SPBC119.11c	pac1	double-strand-specific ribonuclease Pac1	P22192
+SPBC36B7.09	gcn2	eIF2 alpha kinase Gcn2	Q9HGN1
+SPBC18E5.05c	elp5	elongator complex subunit Elp5	O94495
+SPAC29A4.20	elp3	elongator complex tRNA uridine(34) acetyltransferase subunit Elp3	O14023
+SPBC36.07	elp1	elongator complex WD repeat protein Elp1	O59704
+SPBC18E5.11c	edc3	enhancer of mRNA decapping Edc3	O94752
+SPAC1F5.10	fal1	"exon junction complex subunit, ATP-dependent RNA helicase Fal1 (conflicting process, human yeast)"	Q10055
+SPAC23A1.09	rbm8	"exon junction complex subunit, RNA-binding protein Rbm8"	O42847
+SPBC13G1.14c	rns1	"exon junction complex subunit, RNA-binding protein Rns1"	Q1MTR2
+SPBC19C7.01	mni1	"exon-exon junction complex disassembly factor, human partner of Y14 and mago ortholog"	Q9USW8
+SPAC17A5.14	exo2	exonuclease II Exo2	P40383
+SPBC26H8.10	dis3	exosome 3'-5' exoribonuclease subunit Dis3	P37202
+SPAC1F3.01	rrp6	exosome 3'-5' exoribonuclease subunit Rrp6	Q10146
+SPCC1739.07	cti1	exosome C1D family subunit Cti1	O74469
+SPCC1840.11	csl4	exosome subunit Csl4	O59821
+SPAC2F7.14c	rrp4	exosome subunit Rrp4	Q09704
+SPAC22A12.12c	rrp40	exosome subunit Rrp40	O13903
+SPBC115.01c	rrp46	exosome subunit Rrp46	O42894
+SPBC2D10.10c	fib1	"fibrillarin, rRNA and histone methyltransferase"	P35551
+SPAC20H4.08	whi2	"G-patch RNA-binding protein, involved in splicing"	Q7LKV1
+SPBP4H10.16c		"G-patch RNA-binding protein, involved in splicing"	Q9P7D3
+SPAC17H9.13c	pro2	glutamate 5-kinase Pro2	O13810
+SPAC20H4.09	gih35	"Gpl1-Gih35-Wdr83 complex RNA helicase subunit, Gih35"	Q9HE06
+SPAC20H4.06c	gpl1	Gpl1-Gih35-Wdr83 complex RNA-binding subunit	Q9HE07
+SPBC31E1.06	bms1	GTP binding protein Bms1	O94653
+SPAC16.02c	srp2	guard protein for 5'-capping of pre-mRNAs Srp2/Npl3	P78814
+SPAC18G6.02c	chp1	heterochromatin (HP1) family chromodomain protein Chp1	Q10103
+SPAC664.01c	swi6	heterochromatin (HP1) family chromodomain protein Swi6	P40381
+SPCC306.04c	set1	histone H3-K4 methyltransferase Set1	Q9Y7R4
+SPBC428.08c	clr4	histone lysine H3-K9 methyltransferase Clr4	O60016
+SPAC1F12.06c		inosine-containing RNA endoribonuclease	Q10348
+SPAC328.01c	msn5	karyopherin/importin beta family nuclear import/export signal receptor	O14116
+SPBP8B7.09c	los1	karyopherin/importin-beta family nuclear import receptor Los1	O94258
+SPCC962.06c	bpb1	KH and CC/hC domain splicing factor Bpb1	O74555
+SPCC550.14	vgl1	"KH domain RNA binding protein, vigilin"	O59810
+SPAC2C4.11c	pno1	KH domain RNA-binding protein Pno1	O14044
+SPCC757.09c	rnc1	KH domain RNA-binding protein Rnc1	O74919
+SPAC30D11.14c		"KH domain RNA-binding protein, involved in splicing"	Q09911
+SPAC17G6.17	pof8	LARP7 family RNA-binding protein Pof8/Lar7	O13795
+SPBC3D6.08c	lsm1	Lsm1-7 complex subunit Lsm1	P87173
+SPCC1620.01c	lsm2	Lsm2-8 complex subunit Lsm2	O94408
+SPBC9B6.05c	lsm3	Lsm2-8 complex subunit Lsm3	Q9Y7M4
+SPBC30D10.06	lsm4	Lsm2-8 complex subunit Lsm4	O14352
+SPBC20F10.09	lsm5	Lsm2-8 complex subunit Lsm5	O42978
+SPAC2F3.17c	lsm6	Lsm2-8 complex subunit Lsm6	Q9UUI1
+SPCC285.12	lsm7	Lsm2-8 complex subunit Lsm7	O74499
+SPCC1840.10	lsm8	Lsm2-8 complex subunit Lsm8	O74483
+SPBP4H10.20	nhm1	m7G(5')pppN diphosphatase Nhm1	Q9P7C9
+SPAC57A7.04c	pabp	major poly(A) binding protein Pabp/Pab1	P31209
+SPCC16A11.17	mcm4	MCM complex subunit Mcm4/Cdc21	P29458
+SPBC211.04c	mcm6	MCM complex subunit Mcm6	P49731
+SPBC25D12.03c	mcm7	MCM complex subunit Mcm7	O75001
+SPCC1682.08c	mpf2	meiotic pumilio family RNA-binding protein Mpf2	O74438
+SPBC29A10.02	spo5	meiotic RNA-binding protein 1	Q2L4W6
+SPCC1322.01	rpm1	mitochondrial 3'-5' exonuclease for RNA 3' ss-tail	Q1MTN7
+SPAC23C11.09	ala1	mitochondrial and cytoplasmic alanine-tRNA ligase Ala1	O13914
+SPBC2G2.12	hrs1	mitochondrial and cytoplasmic histidine-tRNA ligase Hrs1	O43011
+SPBC1198.10c	slm5	mitochondrial asparagine-tRNA ligase Slm5	Q9P6I0
+SPAC8C9.06c	ppr4	mitochondrial Cox1 translation regulator Ppr4	O14275
+SPAPB1A10.11c	mse1	mitochondrial glutamyl-tRNA ligase Mse1	Q9HDX9
+SPCC18B5.08c	ism1	mitochondrial isoleucine-tRNA ligase	Q9USL3
+SPAC4G8.09		mitochondrial leucine-tRNA ligase	Q09828
+SPCC18.08	msk1	mitochondrial lysine-tRNA ligase Msk1	O74858
+SPCC736.03c	msf1	mitochondrial phenylalanyl-tRNA synthetase Msf1	O74952
+SPBC1604.02c	ppr1	mitochondrial PPR repeat protein Ppr1	O94368
+SPBC106.19	ppr10	mitochondrial PPR repeat protein Ppr10	Q10340
+SPAC1093.01	ppr5	mitochondrial PPR repeat protein Ppr5	Q10451
+SPCC11E10.04	ppr6	mitochondrial PPR repeat protein Ppr6	Q9USP3
+SPBC1347.13c	mrm1	mitochondrial ribose methyltransferase Mrm1	O94631
+SPAC1610.02c	mrpl1	mitochondrial ribosomal protein subunit L1	Q9P6M9
+SPBC16G5.04	mrpl23	mitochondrial ribosomal protein subunit L13	O60118
+SPBC887.07	mrpl38	mitochondrial ribosomal protein subunit L14	O94292
+SPBC1105.03c	mrpl16	mitochondrial ribosomal protein subunit L16	Q9Y822
+SPCC16C4.15	rml2	mitochondrial ribosomal protein subunit L2	Q9Y7P4
+SPAC4F8.02c	mrpl40	mitochondrial ribosomal protein subunit L24	O14178
+SPBC3B9.14c	mrpl3	mitochondrial ribosomal protein subunit L44	O43042
+SPAC12G12.08	mrpl6	mitochondrial ribosomal protein subunit L6	Q09865
+SPCC1795.07	sws2	mitochondrial ribosomal protein subunit S13	O59772
+SPBC11B10.04c	mrps28	mitochondrial ribosomal protein subunit S15	O13602
+SPBC409.14c	mrps17	mitochondrial ribosomal protein subunit S17	Q9UUB0
+SPCC18B5.04	rsm18	mitochondrial ribosomal protein subunit S18	Q9USL7
+SPAC1751.02c	rsm19	mitochondrial ribosomal protein subunit S19	Q9US30
+SPAC24C9.10c	mrp4	mitochondrial ribosomal protein subunit S2	O13970
+SPBC13G1.01c	nam9	mitochondrial ribosomal protein subunit S4	O60063
+SPAC4G9.17c	mrp5	mitochondrial ribosomal protein subunit S5	Q10234
+SPAC343.08c	mrp17	mitochondrial ribosomal protein subunit S6	Q9UT82
+SPAC16E8.10c	rsm7	mitochondrial ribosomal protein subunit S7	O13744
+SPAC29A4.03c	mrps9	mitochondrial ribosomal protein subunit S9	O14006
+SPBC83.05	yme2	mitochondrial RNA-binding protein Yme2	O94689
+SPAC25B8.06c	dia4	mitochondrial serine-tRNA ligase	Q9UTB2
+SPBC9B6.04c	tuf1	mitochondrial translation elongation factor EF-Tu Tuf1	Q9Y700
+SPBC1271.15c	mti2	mitochondrial translation initiation factor IF-2Mt/Mti2	O59683
+SPBC25D12.05	trm1	mitochondrial tRNA (guanine-N2-)-methyltransferase Trm1.1	Q9P804
+SPCC895.03c	sua5	mitochondrial tRNA N6-threonyl-carbamoyl-adenosine (t6A) Sua5	O94530
+SPAC23H4.04	slm3	mitochondrial tRNA-specific 2-thiouridylase Slm3	O13947
+SPCC576.06c		mitochondrial tyrosine-tRNA ligase	O74890
+SPAC644.16	rna15	mRNA cleavage and polyadenylation specificity factor complex RNA-binding protein Rna15	Q9P6P7
+SPBC3B9.11c	ctf1	mRNA cleavage and polyadenylation specificity factor complex RNA-binding subunit Ctf1	O43040
+SPAC4G9.04c	pcf11	mRNA cleavage and polyadenylation specificity factor complex RNA-binding subunit Pcf11	Q10237
+SPAC6F12.17	rna14	mRNA cleavage and polyadenylation specificity factor complex subunit Rna14	O14233
+SPAC227.08c	yth1	mRNA cleavage and polyadenylation specificity factor complex zinc finger subunit Yth1	Q9UTD1
+SPBC660.15	msi2	mRNA cleavage factor complex subunit Msi2	O94432
+SPAC19A8.12	dcp2	mRNA decapping complex catalytic subunit Dcp2	O13828
+SPBC3B9.21	dcp1	mRNA decapping complex regulatory subunit Dcp1	Q9P805
+SPBC1921.03c	mex67	"mRNA export receptor, Tap, nucleoporin Mex67"	Q9Y8G3
+SPAC25G10.01		mRNA splicing or mRNA surveillance facor	Q10422
+SPAC458.02c		mRNP complex	Q9P3W6
+SPAC17H9.02	mtl1	MTREC (exosome adaptor) complex RNA helicase subunit Mtl1	O13799
+SPBC902.04	rmn1	MTREC (exosome adaptor) complex RNA-binding subunit Rmn1	Q9USP9
+SPCC1442.16c	zta1	NADPH quinone oxidoreductase/ARE-binding protein	O74489
+SPBC947.03c	naa38	NatC N-acetyltransferase non-catalytic Sm-like domain subunit Naa38	O43080
+SPAC19A8.08	upf2	nonsense-mediated decay protein Upf2	O13824
+SPAC6G10.07	cbc1	nuclear cap-binding complex large subunit	O14253
+SPBC13A2.01c	cbc2	nuclear cap-binding complex small subunit	Q9P383
+SPCC16C4.16c	cbc3	nuclear cap-binding complex variant subunit Cbc3	O74460
+SPBC16E9.12c	pab2	nuclear poly(A) binding protein (PABP) Pab2	O14327
+SPAC14C4.06c	nab2	nuclear poly(A) binding protein Nab2	O13713
+SPBC14C8.19	tam10	"nucleolar RNA binding protein, human KNOP1 ortholog, implicated in mRNA processing"	G2TRQ9
+SPCC1827.05c		nucleolar RNA-binding protein NIFK	O74978
+SPBC215.06c		"nucleolar RNA-binding protein, human LYAR homolog, involved in rRNA processing"	O94311
+SPAC140.02	gar2	"nucleolin, nucleolar histone chaperone required for rRNA metabolism"	P41891
+SPAC1486.05	nup189	nucleoporin Nup98 and Nup96	Q9UTK4
+SPCC736.12c	mmi1	nucleur exosome adaptor Mmi1	O74958
+SPAC1B1.04c	pan3	PAN complex protein phosphotransferase subunit Pan3	O13865
+SPBC336.14c	ppk26	PAN complex protein phosphotransferase subunit Ppk26	Q9UST1
+SPBC428.12c		peptidyl-prolyl cis-trans isomerase E	O94359
+SPBC19F5.05c	ppp1	pescadillo-family BRCT domain protein Ppp1	O60164
+SPAC1610.03c	crp79	poly(A) binding protein Crp79	Q9P6M8
+SPAC3H8.09c	nab3	poly(A) binding protein Nab3	Q10145
+SPAC222.09	seb1	poly(A)site selection protein Seb1	Q9UTE3
+SPAC139.01c	mkt1	post-transcriptional RNA stability regulator Mkt1	Q9UTN2
+SPBC337.06c	cwf15	Prp19 complex subunit Cwf15	P78794
+SPCC550.02c	cwf5	"Prp19 complex subunit, RNA-binding Cwf5"	O59800
+SPBC6B1.10	prp17	Prp19 complex WD repeat protein Prp17	O43071
+SPAC29A4.04c	cbf5	pseudouridine synthase Cbf5	O14007
+SPAC6G9.02c	nop9	pumilio family RNA-binding protein Nop9	Q92347
+SPBC56F2.08c	puf1	pumilio family RNA-binding protein Puf1	O60059
+SPBP35G2.14	puf2	pumilio family RNA-binding protein Puf2	Q9P789
+SPAC1687.22c	puf3	pumilio family RNA-binding protein Puf3	O94462
+SPAC6G9.14	puf4	pumilio family RNA-binding protein Puf4	Q92359
+SPCP1E11.11	puf6	pumilio family RNA-binding protein Puf6	Q9UU76
+SPAC4G9.02	rnh201	ribonuclease H2 complex subunit Rnh201	Q10236
+SPAC664.06	rlp7	ribosomal protein L7-like Rlp7 involved in ribosome biogenesis	P17937
+SPBC800.06	brx1	ribosome biogenesis protein Brx1	Q9HGL6
+SPAC1486.09	nob1	ribosome biogenesis protein Nob1	Q9UTK0
+SPBP16F5.06	nop8	ribosome biogenesis protein Nop8	Q9HFE6
+SPBC947.07	rrp1402	ribosome biogenesis protein Rrp14	O43082
+SPAC8C9.10c	rrp14	ribosome biogenesis protein Rrp14	O14279
+SPAPB21F2.03	slx9	ribosome biogenesis protein Slx9	Q9C0Z3
+SPAC1952.02	tma23	ribosome biogenesis protein Tma23	Q9UUK4
+SPAC23H4.15	tsr1	ribosome biogenesis protein Tsr1	O13956
+SPAC890.05	pxr1	"ribosome biogenesis protein, G-patch domain, PINX1 family Pxr1"	Q9URX9
+SPBP22H7.02c	mrd1	ribosome biogenesis RNA-binding protein Mrd1	O13620
+SPBC651.01c	nog1	ribosome export GTP binding protein Nog1	O94659
+SPBC16A3.08c	oga1	"ribosome preservation factor, Stm1 homolog Oga1"	O42914
+SPCC132.01c	rqc2	ribosome quality control complex subunit Rqc2	Q9USN8
+SPAC24C9.11	sgd1	ribosome small subunit biogenesis protein Sgd1	O13971
+SPBC1D7.04	mlo3	RNA binding protein Mlo3	Q09330
+SPBC16A3.05c	rae1	"RNA export factor, nucleoporin Rae1"	P41838
+SPBC651.09c	prf1	RNA polymerase II associated Paf1 complex	O94667
+SPBC13E7.08c	leo1	RNA polymerase II associated Paf1 complex subunit Leo1	Q9P6R2
+SPBC16A3.18	cip1	RNA-binding protein Cip1	O42923
+SPAC12G12.03	cip2	RNA-binding protein Cip2	Q09868
+SPAC17A2.09c	csx1	RNA-binding protein Csx1	O13759
+SPBC887.05c	cwf29	RNA-binding protein Cwf29	O94290
+SPAC328.05	hrb1	RNA-binding protein involved in export of mRNAs Hrb1	Q9P3U1
+SPAC17H9.04c	dri1	RNA-binding protein involved in heterochromatin assembly Dri1	O13801
+SPAC27D7.03c	mei2	RNA-binding protein involved in meiosis Mei2	P08965
+SPAC1B9.03c		RNA-binding protein involved in ribosomal large subunit assembly and maintenance	O14206
+SPCC320.07c	mde7	RNA-binding protein Mde7	O59784
+SPAC13G7.13c	msa1	RNA-binding protein Msa1	Q10277
+SPAC343.07	mug28	RNA-binding protein Mug28	Q9UT83
+SPAC16E8.06c	nop12	RNA-binding protein Nop12	O13741
+SPBC4F6.14	nop4	RNA-binding protein Nop4	O74400
+SPAC2F7.11	nrd1	RNA-binding protein Nrd1	Q09702
+SPBC1861.04c	prp24	RNA-binding protein Prp24	Q9USY2
+SPAC57A7.13	rbm10	RNA-binding protein Rbm10	P87143
+SPAC3G6.04	rnp24	RNA-binding protein Rnp24	Q09100
+SPAC19G12.07c	rsd1	RNA-binding protein Rsd1	O13845
+SPCC16C4.07	scw1	RNA-binding protein Scw1	O74452
+SPBC31F10.12	tma20	RNA-binding protein Tma20	P87313
+SPAC10F6.06	vip1	RNA-binding protein Vip1	P87216
+SPBC1604.16c		"RNA-binding protein, G-patch type, human GPANK1 ortholog"	O94728
+SPAC6F6.19		"RNA-binding protein, G-patch type, human GPATCH11 ortholog"	C6Y4A5
+SPBC28E12.02		"RNA-binding protein, Human BICC1 ortholog"	O74359
+SPBC365.04c		"RNA-binding protein, involved in ribosome biogenesis"	Q9Y7Y3
+SPAC1527.03	slr1	"RNA-binding protein, LARP1 family Slr1"	Q9P6K0
+SPCC74.09	mug24	"RNA-binding protein, rrm type"	O13674
+SPCC126.11c		"RNA-binding protein, rrm type"	O94403
+SPCC320.11c	nip7	RNA-binding ribosome biogenesis protein Nip7	Q1MTQ9
+SPAC1486.03c	ntr1	RNA-binding splicing factor Ntr1	Q9UTK6
+SPCC1739.03	hrr1	RNAi-mediated heterochromatin assembly helicase Hrr1	O74465
+SPAC323.08	rmp1	RNase MRP subunit Rmp1/NEPRO	Q9UT91
+SPBC18H10.12c	rpl701	"RNase MRP subunit, ribosomal protein L7-like Rpl701"	O60143
+SPAC3A12.04c	rpp1	"RNase P and RNase MRP subunit p30, Rpp1"	P87120
+SPAC25B8.16	pop100	RNase P and RNase MRP subunit Pop100	Q9UTA4
+SPBC1703.01c	pop4	RNase P and RNase MRP subunit Pop4	Q9P7W9
+SPCC830.09c	pop5	RNase P and RNase MRP subunit Pop5	Q9UU90
+SPBP8B7.20c	nop2	rRNA (cytosine-C5-)-methyltransferase activity Nop2	O94268
+SPAC18G6.07c	mra1	rRNA (pseudouridine) methyltransferase Mra1	Q10107
+SPBC4.02c		rRNA 2'-O-methyltransferase fibrillarin-like	Q9USS8
+SPAC29A4.09	rrp17	rRNA exonuclease Rrp17	O14012
+SPBC1734.01c	esf1	rRNA processing protein Esf1	O74828
+SPBC25B2.05	mis3	rRNA processing protein Mis3	O74777
+SPAPB8E5.07c	rrp12	rRNA processing protein Rrp12	Q9C0X8
+SPAC22F8.09	rrp16	rRNA processing protein Rrp16	Q9UUI4
+SPCC18.12c	utp23	rRNA processing protein Utp23	O74862
+SPAC20G8.09c	nat10	rRNA/tRNA cytidine N-acetyltransferase	P87115
+SPCC1682.05c	srp68	signal recognition particle subunit	O74436
+SPCC126.15c	sec65	signal recognition particle subunit Sec65	O94407
+SPAC19B12.09	srp14	signal recognition particle subunit Srp14	Q9P372
+SPAC17H9.07	srp21	signal recognition particle subunit Srp21	O13804
+SPCC188.06c	srp54	signal recognition particle subunit Srp54	P21565
+SPCC320.10	srp72	signal recognition particle subunit Srp72	O59787
+SPBC660.11	tcg1	single-stranded telomeric binding protein Tcg1	Q9HEQ9
+SPCC550.03c	ski2	Ski complex RNA helicase Ski2	O59801
+SPAC26A3.08	smb1	Sm snRNP core protein Smb1	Q10163
+SPAC27D7.07c	smd1	Sm snRNP core protein Smd1	O42661
+SPAC2C4.03c	smd2	Sm snRNP core protein Smd2	O14036
+SPBC19C2.14	smd3	Sm snRNP core protein Smd3	Q9UUC6
+SPBC11G11.06c	sme1	Sm snRNP core protein Sme1	Q9USZ3
+SPBC3E7.14	smf1	Sm snRNP core protein Smf1	O59734
+SPBC4B4.05	smg1	Sm snRNP core protein Smg1	O74966
+SPBC776.08c	utp22	"small-subunit processome, UTP-C complex subunit Utp22"	O94676
+SPBC13E7.03c	vts1	Smaug family RNA-binding protein Vts1	Q9P6R7
+SPAC4D7.15	gem6	SMN complex subunit Gem6	G2TRK8
+SPBC32F12.16	gem7	SMN complex subunit Gem7	G2TRR1
+SPBC30D10.15	naf1	snoRNP assembly factor Naf1	O14360
+SPBC13E7.01	cwf22	splicing factor Cwf22	Q9P6R9
+SPBC23E6.01c	cxr1	splicing factor Cxr1	O60176
+SPBC365.05c	slu7	splicing factor Slu7	Q9Y7Y2
+SPAC22E12.02		"splicing factor, WW domain -binding Rbm42"	Q10355
+SPAC29A4.06c		"splicing protein, human NSRP1 ortholog"	O14009
+SPBC11C11.08	srp1	"SR family protein, human SRFS2 ortholog Srp1"	Q10193
+SPAC222.18		Srp1 family splicing factor	C6Y4C0
+SPAC1565.05	utp8	t-UTP complex subunit Utp8	Q9P3A9
+SPBC2D10.13	est1	telomerase regulator Est1	O74804
+SPBC29A3.14c	trt1	telomerase reverse transcriptase 1 protein Trt1	O13339
+SPAC19D5.03	cid1	terminal uridylyltransferase Cid1	O13833
+SPAC1D4.14	tho2	THO complex subunit Tho2	Q09779
+SPBC106.12c	tho4	THO complex subunit Tho4	Q9URV0
+SPBC19G7.10c	pdc2	topoisomerase II-associated deadenylation-dependent mRNA-decapping factor Pdc2	O42958
+SPAC6F12.16c	mtr4	TRAMP complex ATP-dependent RNA helicase subunit Mtr4	O14232
+SPBP35G2.08c	air1	TRAMP complex zinc knuckle subunit Air1	Q9P795
+SPAC144.09c	sfc2	transcription factor TFIIIA	Q9UTL5
+SPBC336.10c	tif512	translation elongation and termination factor eIF5A	Q9UST4
+SPAC26H5.10c	tif51	translation elongation and termination factor eIF5A	P56289
+SPBC18H10.04c	sce3	translation initiation factor	O14369
+SPBC23G7.05	sui1	translation initiation factor eIF1	P79060
+SPBC25H2.07	tif11	translation initiation factor eIF1A	P55877
+SPBC146.08c	tif1102	translation initiation factor eIF1A-like	Q9Y803
+SPAC3G9.09c	tif211	translation initiation factor eIF2 alpha subunit	P56286
+SPAC32A11.04c	tif212	translation initiation factor eIF2 beta subunit	P56329
+SPBC17G9.09	tif213	translation initiation factor eIF2 gamma subunit	Q09130
+SPBC17D11.05	tif301	translation initiation factor eIF3a	O74760
+SPAC25G10.08	tif302	translation initiation factor eIF3b (p84)	Q10425
+SPAC4A8.16c	tif303	translation initiation factor eIF3c	O14164
+SPBC18H10.03	tif307	translation initiation factor eIF3g	P78795
+SPAC4D7.05	sum1	translation initiation factor eIF3i	P79083
+SPAC3A12.13c	tif310	translation initiation factor eIF3j (p35)	P87128
+SPBC1709.18	tif452	"translation initiation factor eIF4E, 4F complex E subunit isoform 2, stress response factor"	O74743
+SPAC16E8.15	tif45	"translation initiation factor eIF4E, 4F complex subunit"	P78954
+SPAC17C9.03	tif471	translation initiation factor eIF4G	Q10475
+SPBC800.09	sum2	translation initiation inhibitor	Q9HGL3
+SPCC1795.11	sum3	translation initiation RNA helicase Sum3	O13370
+SPBC16C6.05	tma22	translation machinery associated protein ortholog Tma22	O42929
+SPAC13D6.02c	byr3	"translational activator, zf-CCHC type zinc finger protein"	P36627
+SPAC30.03c	tsn1	translin	Q9P7V3
+SPCC736.09c	tfx1	TRAX	O74955
+SPAC17G6.14c	uap56	"TREX complex subunit, ATP-dependent RNA helicase Uap56"	O13792
+SPBC1105.07c	pci2	TREX/TREX2 complex subunit Pci2	Q9Y820
+SPBC29A10.09c	tri1	"triman, ribonuclease involved in priRNA formation Tri1"	O94386
+SPAC23C4.17	trm402	tRNA (cytosine-5-)-methyltransferase	O13935
+SPAC17D4.04	trm401	tRNA (cytosine-5-)-methyltransferase	Q9HGQ2
+SPBC19C2.02	pmt1	tRNA (cytosine-5-)-methyltransferase Pmt1	P40999
+SPBC16D10.02	trm11	tRNA (guanine-N2-)-methyltransferase catalytic subunit Trm11	O94636
+SPCPB16A4.04c	trm8	tRNA (guanine-N7-)-methyltransferase catalytic subunit Trm8	Q96WV1
+SPBC1306.02	trm734	tRNA (guanosine 34-2'-O)-methyltransferase regulator Trm734	Q9USZ0
+SPBC800.08	gcd10	tRNA (m1A) methyltransferase non-catalytic subunit Gcd10	Q9HGL4
+SPBC25H2.10c	tan1	tRNA acetyltransferase Tan1	P87151
+SPAC57A10.10c	sla1	"tRNA chaperone, La protein, Sla1"	P87058
+SPBC887.11	pus2	tRNA pseudouridine synthase Pus2	O94295
+SPCC16C4.06c	pus3	tRNA pseudouridine synthase Pus3	O74451
+SPBC11C11.10	pus4	tRNA pseudouridine synthase Pus4	O59721
+SPAC18B11.02c	pus9	tRNA pseudouridine synthase Pus9	Q09709
+SPBC16A3.06	tad1	tRNA specific adenosine-37 deaminase Tad1	O42912
+SPAC25B8.05	deg1	tRNA-pseudouridine synthase Deg1	Q9UTB3
+SPBC1A4.09	pus7	tRNA/snRNA/rRNA pseudouridine synthase Pus7	O74343
+SPCC126.03	pus1	tRNA/U2 snRNA pseudouridine synthase Lsp1	O94396
+SPCC645.08c	snd1	"tudor domain and nuclease, Snd1"	Q9Y7U7
+SPCC16A11.13	luc7	U1 snRNP-associated protein Luc7	Q9USM4
+SPAC19A8.13	usp101	U1 snRNP-associated protein Usp101	O13829
+SPBC4B4.07c	usp102	U1 snRNP-associated protein Usp102	O74968
+SPBP35G2.09	usp103	U1 snRNP-associated protein Usp103	Q9P794
+SPAC4D7.13	usp104	U1 snRNP-associated protein Usp104	O14176
+SPBC4B4.09	usp105	U1 snRNP-associated protein Usp105	O74970
+SPBC839.10	usp107	U1 snRNP-associated protein Usp107	Q8WZK0
+SPAC23D3.08	usp108	U1 snRNP-associated protein Usp108	Q09848
+SPBC1289.12	usp109	U1 snRNP-associated protein Usp109	O94621
+SPAP8A3.06	uaf2	"U2 small nuclear RNA auxiliary factor small subunit, U2AF-23"	Q09176
+SPBC146.07	prp2	"U2 small nuclear RNA auxiliary factor small subunit, U2AF-59"	P36629
+SPBC1861.08c	lea1	U2 snRNP-associated protein Lea1	Q9USX8
+SPBC8D2.09c	msl1	U2 snRNP-associated protein Msl1	Q7LL14
+SPAC22A12.09c	sap114	U2 snRNP-associated protein Sap114	O13900
+SPAC22F8.10c	sap145	U2 snRNP-associated protein Sap145	Q9UUI3
+SPBC36.09	sap61	U2 snRNP-associated protein sap61	O59706
+SPBC21C3.05	sap62	U2 snRNP-associated protein Sap62	Q9P7L8
+SPAC27F1.09c	prp10	U2 snRNP-associated protein SF3B1	Q10178
+SPBC29A3.07c	sap14	U2 snRNP-associated protein SF3B14 Sap14	O59670
+SPBC1289.02c	uap2	U2 snRNP-associated protein Uap2	O43120
+SPAPJ698.03c	prp12	"U2 snRNP-associated protein, WD repeat protein Sap130"	Q9UTT2
+SPAC31G5.01	sap49	U2 snRNP-associated RNA-binding protein Sap49	O14102
+SPBC11C11.01		U2-associated protein	Q10200
+SPBC18H10.07	wbp4	U2-type precatalytic spliceosome WW domain-binding protein Wbp4	O60138
+SPBC646.02	cwf11	U2-type spliceosomal complex ATPase Cwf11	O94508
+SPCC1827.01c	utp25	U3 associated protein Utp25	O74974
+SPBC3D6.12	dip2	U3 snoRNA associated protein Dip2	P87177
+SPBC28E12.05	esf2	U3 snoRNP-associated protein Esf2	O74362
+SPAC19D5.05c	imp3	U3 snoRNP-associated protein Imp3	O13835
+SPAC19A8.07c	imp4	U3 snoRNP-associated protein Imp4	O13823
+SPAC18B11.06	lcp5	U3 snoRNP-associated protein Lcp5	Q09713
+SPBC3F6.04c	nop14	U3 snoRNP-associated protein Nop14	O43051
+SPBC646.10c	nop56	U3 snoRNP-associated protein Nop56	O94514
+SPAC23G3.06	nop58	U3 snoRNP-associated protein Nop58	Q9P7S7
+SPCC1183.07	rrp5	U3 snoRNP-associated protein Rrp5	O74835
+SPAC2E1P5.05	rrp9	U3 snoRNP-associated protein Rrp9	Q9P7C0
+SPAC607.03c	snu13	U3 snoRNP-associated protein Snu13	O74690
+SPBC1A4.07c	sof1	U3 snoRNP-associated protein Sof1	O74340
+SPBC713.04c	pwp2	U3 snoRNP-associated protein Utp1	Q9C1X1
+SPBC23E6.04c	utp10	U3 snoRNP-associated protein Utp10	O60179
+SPAC18G6.06	utp11	U3 snoRNP-associated protein Utp11	Q10106
+SPCC16A11.02	utp13	U3 snoRNP-associated protein Utp13	Q9USN3
+SPAC57A7.06	utp14	U3 snoRNP-associated protein Utp14	P87137
+SPBP8B7.10c	utp16	U3 snoRNP-associated protein Utp16	O94259
+SPBC56F2.04	utp20	U3 snoRNP-associated protein Utp20	O60055
+SPBC3B8.09	utp3	U3 snoRNP-associated protein Utp3	Q1MTS0
+SPAC20H4.01	utp5	U3 snoRNP-associated protein Utp5	Q9HE11
+SPBC244.02c	utp6	U3 snoRNP-associated protein Utp6	O60188
+SPAC959.03c	utp7	U3 snoRNP-associated protein Utp7	Q9P4X3
+SPAC1B3.13	nan1	U3 snoRNP-associated WD repeat protein Nan1/Utp17	O13878
+SPBC428.19c	utp15	U3 snoRNP-associated WD repeat protein Utp15	O94365
+SPBC19F5.02c	utp4	U3 snoRNP-associated WD repeat protein Utp4	O60161
+SPCC162.01c	snp27	U4/U6 x U5 tri-snRNP complex subunit	O74418
+SPAC227.12	rna4	U4/U6 x U5 tri-snRNP complex WD repeat subunit Rna4	Q9UTC7
+SPAC4F8.12c	spp42	U5 snRNP complex subunit Spp42	O14187
+SPBC215.12	cwf10	U5 snRNP GTPase subunit Cwf10	O94316
+SPCC63.11	prp28	U5 snRNP-associated ATP-dependent RNA helicase Prp28	Q9Y7T7
+SPBP8B7.11	nxt3	ubiquitin protease cofactor Nxt3	O94260
+SPAC13G7.03	upf3	up-frameshift suppressor 3 family protein	Q10267
+SPBC1718.07c	zfs1	"zf-CCCH tandem zinc finger protein, human Tristetraprolin homolog Zfs1, involved in mRNA catabolism"	P47979
+SPAC3A12.11c	cwf2	"zf-CCCH type zinc finger protein, Prp19 complex subunit, RNA-binding Cwf2"	P87126

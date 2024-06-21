@@ -1,0 +1,380 @@
+PomBaseID	Gene_name	Product_description	UniprotID
+SPBC887.14c	pfh1	5' to 3' DNA helicase Pif1/Pfh1	Q9UUA2
+SPAC1250.04c	atl1	alkyltransferase-like protein Atl1	Q9UTN9
+SPAC17C9.01c	nuc2	anaphase-promoting complex TPR lobe subcomplex subunit Apc3	P10505
+SPCC622.17	apn1	"AP endonuclease, minor transcript isoform Apn1"	P50525
+SPBC3D6.10	apn2	AP-endonuclease Apn2	P87175
+SPCC18.09c	hnt3	aprataxin Hnt3	O74859
+SPAC20H4.04	fml2	ATP-dependent 3' to 5' DNA helicase	Q9HE09
+SPAC9.05	fml1	"ATP-dependent 3' to 5' DNA helicase, FANCM ortholog Fml1"	Q9UT23
+SPAC6G9.10c	sen1	ATP-dependent 5' to 3' DNA/RNA helicase Sen1	Q92355
+SPAC13G6.01c	rad8	ATP-dependent chromatin remodeller/ubiquitin-protein ligase E3 Rad8	P36607
+SPAC3G6.11	chl1	ATP-dependent DNA helicase Chl1	O14147
+SPAC4H3.05	srs2	"ATP-dependent DNA helicase, UvrD subfamily"	Q10213
+SPAC22F3.03c	rdh54	ATP-dependent DNA translocase Rdh54	Q09772
+SPBC29A10.10c	dbl8	ATP-dependent RNA helicase Dbl8	O94387
+SPAC16C9.06c	upf1	ATP-dependent RNA helicase Upf1	Q09820
+SPBC839.16	thf1	"C1-5,6,7,8-tetrahydrofolate (THF) synthase, trifunctional enzyme Thf1"	Q8WZJ7
+SPBC725.11c	php2	CCAAT-binding factor complex subunit Php2	P24488
+SPAC23C11.08	php3	CCAAT-binding factor complex subunit Php3	P36611
+SPAC1783.05	hrp1	"CENP-A chaperone, CHD family Hrp1"	Q9US25
+SPAC9E9.10c	cbh1	"CENP-B homolog Cbh1, domesticated transposable element"	O14423
+SPBC14F5.12c	cbh2	"CENP-B homolog Cbh2, domesticated transposable element"	O60108
+SPBC1105.04c	cbp1	"CENP-B homolog Cbp1, domesticated transposable element"	P49777
+SPBC1861.01c	cnp3	CENP-C ortholog Cnp3	Q9USR9
+SPBC2D10.16	mhf1	"CENP-S ortholog, FANCM-MHF complex subunit Mhf1"	O74807
+SPBC800.13	cnp20	"CENP-T histone fold, kinetochore scaffold protein"	Q9HGK9
+SPCC576.12c	mhf2	"CENP-X ortholog, FANCM-MHF complex subunit Mhf2"	O74896
+SPBC1105.17	cnp1	centromere-specific histone H3 CENP-A	Q9Y812
+SPAC23C4.09c		chaperonin-containing T-complex associated protein	O13929
+SPAC3G6.01	hrp3	CHD family chromatin remodeller Hrp3	O14139
+SPAC694.06c	mrc1	"claspin, Mrc1"	Q9P7T4
+SPAC14C4.12c	laf1	Clr6 associated factor 1 Laf1	O13719
+SPCC1682.13	laf2	"Clr6 associated factor 2, Laf2"	O74443
+SPAC31A2.05c	mis4	cohesin loading factor (adherin) Mis4/Scc2	Q09725
+SPAC1687.18c	ssl3	cohesin loading factor Ssl3	O94459
+SPBC428.17c	wpl1	cohesin loading/unloading factor (WAPL) Wpl1	O94364
+SPBC776.13	cnd1	condensin complex non-SMC subunit Cnd1	O94679
+SPCC306.03c	cnd2	condensin complex non-SMC subunit Cnd2	Q9Y7R3
+SPCC188.03	cnd3	condensin complex non-SMC subunit Cnd3	Q10429
+SPBP4H10.06c	cut14	condensin complex SMC subunit Smc2	P41003
+SPBC146.03c	cut3	condensin complex SMC subunit Smc4	P41004
+SPAC25G10.02	cce1	cruciform-cutting endonuclease Cce1	Q10423
+SPBC902.02c	ctf18	Ctf18 RFC-like complex subunit Ctf18	Q9USQ1
+SPBC1347.01c	rev1	deoxycytidyl transferase Rev1	O94623
+SPCC188.13c	dcr1	dicer	Q09884
+SPCC553.07c	kpa1	"DinB translesion DNA repair polymerase, pol kappa"	O74944
+SPAC22A12.01c	pso2	DNA 5' exonuclease	Q10264
+SPAC26A3.02	myh1	DNA adenine glycosylase Myh1	Q10159
+SPBC19G7.13	tbf1	DNA binding factor Trf1	Q6E434
+SPAC30D11.07	nth1	DNA endonuclease III	Q09907
+SPBC336.01	fbh1	"DNA helicase I, ubiquitin ligase F-box adaptor Fbh1"	Q9USU3
+SPAC23C11.04c	pnk1	DNA kinase/phosphatase Pnk1	O13911
+SPCC553.09c	spb70	DNA polymerase alpha B-subunit	O74946
+SPAC3H5.06c	pol1	DNA polymerase alpha catalytic subunit	P28040
+SPCC737.07c		DNA polymerase alpha-associated DNA helicase A	O94247
+SPBC336.04	cdc6	DNA polymerase delta catalytic subunit Cdc6	P30316
+SPAC27E2.05	cdc1	DNA polymerase delta small subunit Cdc1	P87324
+SPBP8B7.14c	dpb2	"DNA polymerase epsilon catalytic subunit B, Dpb2"	O94263
+SPBC25H2.13c	cdc20	DNA polymerase epsilon catalytic subunit Pol2	P87154
+SPBC3D6.09	dpb4	DNA polymerase epsilon subunit Dpb4	P87174
+SPAC2F7.06c	pol4	DNA polymerase X family	Q09693
+SPBC17D11.06	spp2	DNA primase large subunit Spp2	O74761
+SPAC30D11.10	rad52	DNA recombination mediator Rad52 (previously Rad22)	P36592
+SPBC28F2.07	sfr1	DNA recombination mediator Sfr1	Q9USV1
+SPAC3C7.03c	rad55	"DNA recombination mediator, RecA family ATPase Rad55/Rhp55"	O14129
+SPAC20H4.07	rad57	"DNA recombination mediator, RecA family ATPase Rad57/Rhp57"	Q9UUL2
+SPBC4F6.15c	swi10	DNA repair endonuclease non-catalytic (ERCC1) subunit Swi10	Q06182
+SPCC970.01	rad16	DNA repair endonuclease XPF	P36617
+SPCC1183.05c	lig4	DNA repair ligase Lig4	O74833
+SPBC3E7.08c	rad13	DNA repair nuclease Rad13	P28706
+SPBC146.06c	fan1	DNA repair protein Fan1	Q9Y804
+SPAC1556.01c	rad50	DNA repair protein Rad50	Q9UTJ8
+SPAC12B10.12c	rhp41	DNA repair protein Rhp41	Q10445
+SPCC4G3.10c	rhp42	DNA repair protein Rhp42	P87235
+SPAC26H5.02c	mgs1	DNA replication ATPase Mgs1	O13984
+SPBC660.13c	ssb1	DNA replication factor A subunit Ssb1	Q92372
+SPCC23B6.05c	ssb3	DNA replication factor A subunit Ssb3	Q92374
+SPBC947.11c	elg1	DNA replication factor C complex subunit Elg1	O43086
+SPBC23E6.07c	rfc1	DNA replication factor C complex subunit Rfc1	O60182
+SPAC23D3.02	rfc2	DNA replication factor C complex subunit Rfc2	Q09843
+SPAC27E2.10c	rfc3	DNA replication factor C complex subunit Rfc3	O14003
+SPAC1687.03c	rfc4	DNA replication factor C complex subunit Rfc4	O94449
+SPBC83.14c	rfc5	DNA replication factor C complex subunit Rfc5	O94697
+SPBC428.18	cdt1	DNA replication licensing factor Cdt1	P40382
+SPAC6B12.11	drc1	DNA replication preinitiation complex assembly protein	O14216
+SPBC1703.14c	top1	DNA topoisomerase I	P07799
+SPBC1A4.03c	top2	DNA topoisomerase II	P08096
+SPBC16G5.12c	top3	DNA topoisomerase III	O60126
+SPAC17A5.11	rec12	DNA topoisomerase type II (DSB-forming) Rec12/Spo11	P40384
+SPBC582.10c	rhp1602	DNA translocase Rhp16b	Q10332
+SPCC330.01c	rhp16	"DNA translocase/ubiquitin protein ligase E3, human ERCC4 ortholog Rhp16/Rad16"	P79051
+SPAPB24D3.04c	mag1	DNA-3-methyladenine glycosylase Mag1	Q92383
+SPBC23G7.11	mag2	DNA-3-methyladenine glycosylase Mag2	O94468
+SPAC1142.08	fhl1	DNA-binding forkhead transcription factor Fhl1	O14270
+SPBC16G5.15c	fkh2	DNA-binding forkhead transcription factor Fkh2	O60129
+SPBC4C3.12	sep1	DNA-binding forkhead transcription factor Sep1	O43058
+SPBC32H8.11	mei4	"DNA-binding forkhead transcription factor, meiotic Mei4"	O13606
+SPAC3C7.04		DNA-binding transcription factor	O14130
+SPCC757.04		DNA-binding transcription factor	O74915
+SPBC1348.12		DNA-binding transcription factor	G2TRT1
+SPAC105.03c		DNA-binding transcription factor	Q9P7H9
+SPCC777.02		DNA-binding transcription factor	O74541
+SPAC25B8.11		DNA-binding transcription factor	Q9UTA7
+SPAPB24D3.01	toe3	DNA-binding transcription factor	Q9C0Z1
+SPCC417.09c		DNA-binding transcription factor	O94490
+SPCC965.10		DNA-binding transcription factor	O59830
+SPBC530.05	prt1	DNA-binding transcription factor	O59741
+SPAC3F10.12c		DNA-binding transcription factor	Q10186
+SPBC56F2.05c		DNA-binding transcription factor	O60056
+SPCC320.03		DNA-binding transcription factor	O59780
+SPAC3H8.08c		DNA-binding transcription factor	Q10144
+SPAC6G10.12c	ace2	DNA-binding transcription factor Ace2	O14258
+SPBC1289.10c	adn2	DNA-binding transcription factor Adn2	O94619
+SPCC1494.10	adn3	DNA-binding transcription factor Adn3	O74522
+SPAC22F3.02	atf31	DNA-binding transcription factor Atf31	Q09771
+SPBC1683.13c	cha4	DNA-binding transcription factor Cha4	Q9P6I9
+SPAC1B1.01	deb1	DNA-binding transcription factor Deb1/Rdp1	O13862
+SPAC56F8.16	esc1	DNA-binding transcription factor Esc1	Q04635
+SPCC290.04	ams2	"DNA-binding transcription factor for histones, zf-GATA-type Ams2"	Q9URT4
+SPBPB8B6.04c	grt1	DNA-binding transcription factor Grt1	Q9C469
+SPAC2E12.02	hsf1	DNA-binding transcription factor Hsf1	Q02953
+SPAC3H1.11	hsr1	DNA-binding transcription factor Hsr1	Q10076
+SPAC821.07c	moc3	DNA-binding transcription factor Moc3	Q9UT46
+SPAC21E11.03c	pcr1	DNA-binding transcription factor Pcr1	Q09926
+SPBC27B12.11c	pho7	DNA-binding transcription factor Pho7	O13658
+SPAC6F12.02	rst2	DNA-binding transcription factor Rst2	P78871
+SPBC1105.14	rsv2	DNA-binding transcription factor Rsv2	Q9Y815
+SPAC3G9.14	sak1	DNA-binding transcription factor Sak1	P48383
+SPAC16.05c	sfp1	DNA-binding transcription factor Sfp1	Q9UTH8
+SPBC1652.01	stb3	DNA-binding transcription factor Stb3	Q9P7B0
+SPBC32C12.02	ste11	DNA-binding transcription factor Ste11	P36631
+SPAC13G7.10	teb1	DNA-binding transcription factor Teb1	Q10274
+SPAC1486.10	thi1	DNA-binding transcription factor Thi1	P36598
+SPBP8B7.30c	thi5	DNA-binding transcription factor Thi5	O94278
+SPAC25B8.19c	loz1	DNA-binding transcription factor zf-C2H2 type	Q9UTA1
+SPAC25G10.03	zip1	DNA-binding transcription factor Zip1	Q10424
+SPBC29B5.01	atf1	"DNA-binding transcription factor, Atf-CREB family Atf1"	P52890
+SPBC2F12.09c	atf21	"DNA-binding transcription factor, Atf-CREB family Atf21"	P78962
+SPAC4G8.13c	prz1	"DNA-binding transcription factor, calcineurin responsive Prz1"	Q09838
+SPCC736.08	cbf11	"DNA-binding transcription factor, CBF1/Su(H)/LAG-1 family Cbf11"	O74954
+SPCC1223.13	cbf12	"DNA-binding transcription factor, CBF1/Su(H)/LAG-1 family Cbf12"	O74412
+SPAC11E3.06	map1	"DNA-binding transcription factor, MADS-box Map1"	P78926
+SPBC19G7.06	mbx1	"DNA-binding transcription factor, MADS-box Mbx1"	O42954
+SPBC317.01	mbx2	"DNA-binding transcription factor, MADS-box Pvg4"	Q9HGP0
+SPBC336.12c	cdc10	"DNA-binding transcription factor, MBF transcription factor complex subunit Cdc10"	P01129
+SPBC530.08	ntu2	"DNA-binding transcription factor, membrane-tethered"	O59744
+SPBC354.05c	sre2	"DNA-binding transcription factor, membrane-tethered Sre2"	O43019
+SPCC584.02	cuf2	"DNA-binding transcription factor, middle-meiotic Cuf2"	O94588
+SPCC1902.01	gaf1	"DNA-binding transcription factor, nutrient sensing, zf-GATA-type Gaf1"	Q10280
+SPAC31A2.11c	cuf1	"DNA-binding transcription factor, nutritional copper sensing Cuf1"	Q09728
+SPAC1783.07c	pap1	"DNA-binding transcription factor, oxidative stress-responsive Pap1/Caf3"	Q01663
+SPAC32A11.03c	phx1	"DNA-binding transcription factor, stationary phase-specific Phx1"	Q10328
+SPBC19C2.09	sre1	"DNA-binding transcription factor, sterol regulatory element binding protein Sre1"	Q9UUD1
+SPAC11D3.17		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q10096
+SPBC1773.16c		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O94573
+SPBC16G5.17		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O60131
+SPAC1F7.11c		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q09922
+SPAC1399.05c	toe1	"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q9HE16
+SPAC1327.01c		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q1MTM9
+SPBC530.11c		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O59746
+SPAC139.03	toe2	"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q9UTN0
+SPBC16G5.16	ntu1	"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O60130
+SPBC1773.12		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O94569
+SPAC2H10.01		"DNA-binding transcription factor, zf-fungal binuclear cluster type"	O94392
+SPAC11D3.07c	toe4	"DNA-binding transcription factor, zf-fungal binuclear cluster type"	Q10086
+SPBC15D4.02	gsf1	"DNA-binding transcription factor, zf-fungal binuclear cluster type Gsf1"	O74308
+SPAC1039.05c	klf1	"DNA-binding transcription factor, zf-fungal binuclear cluster type Klf1"	Q9US36
+SPAPB1A11.04c	mca1	"DNA-binding transcription factor, zf-fungal binuclear cluster type Mca1"	Q9HDX1
+SPAC23E2.01	fep1	"DNA-binding transcription factor, zf-GATA type, iron-sensing Fep1"	Q10134
+SPCC1393.08	fil1	"DNA-binding transcription factor, zf-GATA-type"	O94720
+SPAC11D3.11c		"DNA-binding transcription factor, zn(2)-C6 fungal-type, truncated"	G2TRN9
+SPBP4H10.09	rsv1	DNA-binding transcription repressor Rsv1	Q9P7D9
+SPBC1D7.02c	scr1	DNA-binding transcription repressor Scr1	O14335
+SPAC15A10.03c	rad54	DNA-dependent ATPase Rad54/Rhp54	P41410
+SPACUNK4.06c	rpb7	DNA-directed RNA polymerase complex II subunit Rpb7	O14459
+SPAC1687.01	rpc19	DNA-directed RNA polymerase I and III subunit Rpc19	Q09177
+SPBC1289.07c	rpc40	DNA-directed RNA polymerase I and III subunit Rpc40	O94616
+SPBC4C3.05c	nuc1	DNA-directed RNA polymerase I complex large subunit Nuc1	P15398
+SPBP23A10.07	rpa2	DNA-directed RNA polymerase I complex subunit Rpa2	Q9P7X8
+SPAC2F3.03c	rpa49	DNA-directed RNA polymerase I complex subunit Rpa49	O14086
+SPAC23C4.15	rpb5	"DNA-directed RNA polymerase I, II and III subunit Rpb5"	Q09191
+SPCC1020.04c	rpb6	"DNA-directed RNA polymerase I, II and III subunit Rpb6"	P36595
+SPBC19C2.03	rpc10	"DNA-directed RNA polymerase I, II and III subunit Rpc10"	P48011
+SPAC1B3.12c	rpb10	"DNA-directed RNA polymerase I, II, and III subunit Rpb10"	O13877
+SPBC28F2.12	rpb1	DNA-directed RNA polymerase II complex large subunit Rpb1	P36594
+SPAC3A12.07	rpb11	DNA-directed RNA polymerase II complex subunit Rpb11	P87123
+SPAC23G3.01	rpb2	DNA-directed RNA polymerase II complex subunit Rpb2	Q02061
+SPCC1442.10c	rpb3	DNA-directed RNA polymerase II complex subunit Rpb3	P37382
+SPBC651.08c	rpc1	DNA-directed RNA polymerase III complex large subunit Rpc1	O94666
+SPAC4G9.08c	rpc2	DNA-directed RNA polymerase III complex subunit Rpc2	Q10233
+SPBC2G5.07c	rpc25	DNA-directed RNA polymerase III complex subunit Rpc25	O94285
+SPCC18.07	rpc53	DNA-directed RNA polymerase III complex subunit Rpc53	O74857
+SPAPB1E7.03	rpc82	DNA-directed RNA polymerase III complex subunit Rpc82	Q9C106
+SPBC119.11c	pac1	double-strand-specific ribonuclease Pac1	P22192
+SPCC338.08	ctp1	endonuclease activator Ctp1	O74986
+SPAC23H4.09	cdb4	endonuclease Cdb4	Q09184
+SPBC19C7.09c	uve1	endonuclease Uve1	Q10988
+SPBC29A10.05	exo1	exonuclease I Exo1	P53695
+SPCC1739.07	cti1	exosome C1D family subunit Cti1	O74469
+SPAC3G6.06c	rad2	FEN-1 endonuclease Rad2	P39750
+SPAC12G12.16c		"Fen1 family nuclease, XP-G family"	Q09708
+SPAC20H4.03c	tfs1	general transcription elongation factor TFIIS	P49373
+SPAC1751.01c	gti1	gluconate transmembrane transporter inducer Gti1	O14367
+SPAC18G6.02c	chp1	heterochromatin (HP1) family chromodomain protein Chp1	Q10103
+SPBC16C6.10	chp2	heterochromatin (HP1) family chromodomain protein Chp2	O42934
+SPAC664.01c	swi6	heterochromatin (HP1) family chromodomain protein Swi6	P40381
+SPBP19A11.06	lid2	"histone demethylase (H3-trimethyl-K4 specific), Lid2 complex subunit Lid2"	Q9HDV4
+SPAC1002.05c	jmj2	histone demethylase Jmj2	Q9US53
+SPAC23E2.02	lsd2	histone demethylase SWIRM2	Q10135
+SPCC622.08c	hta1	histone H2A alpha	P04909
+SPAC19G12.06c	hta2	histone H2A beta	P04910
+SPBC11B10.10c	pht1	histone H2A variant H2A.Z Pht1	P48003
+SPBC609.05	pob3	"histone H2A-H2B chaperone, FACT complex subunit Pob3"	O94529
+SPCC622.09	htb1	histone H2B Htb1	P04913
+SPAC1834.04	hht1	histone H3 h3.1	P09988
+SPBC8D2.04	hht2	histone H3 h3.2	P09988
+SPBC1105.11c	hht3	histone H3 h3.3	P10651
+SPCC1393.02c	spt2	histone H3-H4 chaperone Spt2	O94714
+SPAC1F7.01c	spt6	histone H3-H4 chaperone Spt6	Q09915
+SPAC1834.03c	hhf1	histone H4 h4.1	P09322
+SPBC8D2.03c	hhf2	histone H4 h4.2	P09322
+SPBC1105.12	hhf3	histone H4 h4.3	P09322
+SPBC428.08c	clr4	histone lysine H3-K9 methyltransferase Clr4	O60016
+SPAC57A10.09c	nhp6	HMG-box non-histone chromatin protein	P87057
+SPAPB1E7.06c	eme1	Holliday junction resolvase subunit Eme1	Q9C103
+SPCC4G3.05c	mus81	Holliday junction resolvase subunit Mus81	P87231
+SPBC365.09c	kin17	human KIN ortholog	Q9Y7X9
+SPAC29B12.11c		human WW domain binding protein-2 ortholog	O14032
+SPAC10F6.08c	nht1	Ino80 complex HMG box subunit Nht1	O42648
+SPAC144.02	iec1	Ino80 complex subunit Iec1	Q9UTM0
+SPBC19C7.10	bqt4	integral nuclear inner membrane protein Bqt4	O60158
+SPBC543.03c	pku80	Ku domain helicase (human XRCC5 ortholog) Pku80	Q9HGM8
+SPCC126.02c	pku70	Ku70 (human XRCC6 ortholog) Pku70	O94395
+SPAC18G6.10	lem2	LEM domain nuclear inner membrane protein Heh1/Lem2	Q10109
+SPBC1718.02	hop1	linear element associated protein Hop1	Q9P7P2
+SPBC23G7.09	mat1-Mc	M-specific trancription factor Mc	P0CY17
+SPBC21B10.13c	yox1	MBF complex corepressor Yox1	P40923
+SPBC725.16	res1	MBF transcription factor complex subunit Res1	P33520
+SPAC22F3.09c	res2	MBF transcription factor complex subunit Res2	P41412
+SPBC4.04c	mcm2	MCM complex subunit Mcm2	P40377
+SPCC1682.02c	mcm3	MCM complex subunit Mcm3	P30666
+SPCC16A11.17	mcm4	MCM complex subunit Mcm4/Cdc21	P29458
+SPAC1B2.05	mcm5	MCM complex subunit Mcm5	P41389
+SPBC211.04c	mcm6	MCM complex subunit Mcm6	P49731
+SPBC25D12.03c	mcm7	MCM complex subunit Mcm7	O75001
+SPBC1347.10	cdc23	MCM-associated protein Mcm10	O42709
+SPBC21.04	med8	mediator complex subunit Med8	O94646
+SPAC13A11.03	mcp7	meiosis specific coiled-coil protein Mcp7	Q09739
+SPBC29A10.14	rec8	meiotic cohesin complex kleisin subunit Rec8	P36626
+SPCC4E9.01c	rec11	meiotic cohesin complex STAG protein Rec11	Q92380
+SPBC577.05c	rec27	meiotic recombination protein Rec27	Q9USR4
+SPAC4G9.11c	cmb1	"mitochondrial cytosine-mismatch binding protein 1, candidate TFAM ortholog"	Q10241
+SPMIT.03	cox1-I2b	mitochondrial DNA binding endonuclease (intron encoded)	P22190
+SPMIT.06	cob1-I1	mitochondrial DNA binding endonuclease (intron encoded)	P05511
+SPMIT.02	cox1-I1b	mitochondrial DNA binding endonuclease Cox1-I1b (intron-encoded)	P22191
+SPBC11C11.11c	irc3	mitochondrial DNA branch migration helicase Irc3	Q1MTR1
+SPCC24B10.22	pog1	"mitochondrial DNA polymerase, gamma subunit Pog1"	Q12704
+SPAC688.10	rev3	"mitochondrial DNA polymerase, zeta catalytic subunit Rev3"	Q9P6L6
+SPBC30D10.08	mgm101	mitochondrial DNA repair protein	O14354
+SPAC22F3.06c	lon1	mitochondrial matrix Lon protease	Q09769
+SPAC13F5.01c	msh1	mitochondrial MutS protein Msh1	O13921
+SPAC26H5.12	rpo41	mitochondrial RNA polymerase Rpo41	O13993
+SPAC2F3.04c	rim1	mitochondrial single-stranded DNA binding protein Rim1	O14087
+SPAC110.02	pds5	mitotic and meiotic cohesin loader subunit Pds5	Q9HFF5
+SPCC338.17c	rad21	mitotic cohesin complex kleisin subunit Rad21	P30776
+SPAC17H9.20	psc3	"mitotic cohesin complex, STAG protein subunit Psc3"	O13816
+SPBC16A3.11	eso1	mitotic cohesin N-acetyltransferase/DNA polymerase eta Eso1 fusion protein	O42917
+SPBC29A10.04	psm1	mitotic/meiotic cohesin complex ATPase subunit Psm1/Smc1	O94383
+SPAC10F6.09c	psm3	mitotic/meiotic cohesin complex ATPase subunit Psm3/Smc3	O42649
+SPAC13C5.07	mre11	Mre11 nuclease	Q09683
+SPBC83.17	mbf1	multiprotein bridging factor Mbf1	O94700
+SPAC19G12.02c	pms1	MutL family mismatch-repair protein Pms1	P54280
+SPBC1703.04	mlh1	MutL family protein Mlh1	Q9P7W6
+SPCC285.16c	msh6	MutS protein homolog	O74502
+SPBC19G7.01c	msh2	MutS protein homolog 2	O74773
+SPAC8F11.03	msh3	MutS protein homolog 3	P26359
+SPCC1795.08c	vid21	NuA4 histone acetyltransferase complex scaffold subunit Vid21/Eaf1	O59773
+SPBC685.02	exo5	nuclear single stranded DNA specific 5'-3' exodeoxyribonuclease Exo5.1	Q9Y7L4
+SPBC215.06c		"nucleolar RNA-binding protein, human LYAR homolog, involved in rRNA processing"	O94311
+SPBC29A10.15	orc1	origin recognition complex subunit Orc1	P54789
+SPBC685.09	orc2	origin recognition complex subunit Orc2	Q09142
+SPAC3H1.01c	orc3	origin recognition complex subunit Orc3	Q10067
+SPBP23A10.13	orc4	origin recognition complex subunit Orc4	Q9Y794
+SPBC646.14c	orc5	origin recognition complex subunit Orc5	O43114
+SPBC2A9.12	orc6	origin recognition complex subunit Orc6	O74796
+SPBC16D10.09	pcn1	PCNA	Q03392
+SPAC644.12	cdc5	Prp19 complex subunit Cdc5/Cef1	P39964
+SPBC29A3.13	pdp1	PWWP domain protein Pdp1	O59676
+SPBC1734.06	rhp18	"Rad18 homolog ubiquitin protein ligase E3, Rhp18"	O74747
+SPBC119.14	rti1	Rad22 homolog Rti1	O42905
+SPBC2D10.12	rhp23	Rad23 homolog Rhp23	O74803
+SPAC8E11.03c	dmc1	RecA family ATPase Dmc1	O42634
+SPAC644.14c	rad51	RecA family recombinase Rad51/Rhp51	P36601
+SPAC26A3.03c	rmi1	RecQ mediated genome instability protein Rmi1	Q10160
+SPAC23A1.19c	hrq1	RecQ type DNA helicase Hrq1	O13983
+SPAC2G11.12	rqh1	RecQ type DNA helicase Rqh1	Q09811
+SPBC216.06c	swi1	replication fork protection complex subunit Swi1	Q9UUM2
+SPBC30D10.04	swi3	replication fork protection complex subunit Swi3	O14350
+SPAC8C9.10c	rrp14	ribosome biogenesis protein Rrp14	O14279
+SPBC947.07	rrp1402	ribosome biogenesis protein Rrp14	O43082
+SPBC16A3.08c	oga1	"ribosome preservation factor, Stm1 homolog Oga1"	O42914
+SPBC725.17c	rrn11	RNA polymerase I general transcription initiation factor subunit Rrn11	O94332
+SPBC3B8.11	rrn6	RNA polymerase I general transcription initiation factor subunit Rrn6	O59719
+SPBC336.09c	rrn7	RNA polymerase I general transcription initiation factor subunit Rrn7	Q9UST5
+SPAC22F8.07c	rtf1	RNA polymerase I termination factor Rtf1	Q9UUI6
+SPAC31G5.10	eta2	"RNA polymerase I termination factor, Myb family Eta2"	O14108
+SPBC1198.11c	reb1	RNA polymerase I transcription termination factor/ RNA polymerase II transcription factor Reb1	Q9P6H9
+SPAC22E12.08	rrn10	RNA polymerase I upstream activation factor complex subunit Rrn10	Q10360
+SPAC29A4.10	rrn5	RNA polymerase I upstream activation factor complex subunit Rrn5	O14013
+SPCC285.17	spp27	RNA polymerase I upstream activation factor complex subunit Spp27	O74503
+SPBC651.09c	prf1	RNA polymerase II associated Paf1 complex	O94667
+SPBC14C8.14c	pol5	rRNA processing protein Pol5	O60094
+SPCC1281.05	rsc7	RSC complex subunit Rsc7	O94522
+SPBC1703.02	rsc9	RSC complex subunit Rsc9	Q9P7W8
+SPCC16A11.14	sfh1	RSC complex subunit Sfh1	Q9USM3
+SPAC1250.01	snf21	RSC-type complex ATPase Snf21	Q9UTN6
+SPAC15A10.02	taf12	SAGA complex/transcription factor TFIID complex subunit A Taf12	O13722
+SPAC22E12.19	snt1	Set3 complex SANT/Myb domain subunit Snt1	Q10369
+SPAC26H5.06	pot1	shelterin complex subunit Pot1	O13988
+SPAC16A10.07c	taz1	shelterin complex subunit Taz1	P79005
+SPAC6F6.16c	tpz1	shelterin complex subunit Tpz1	O14246
+SPBC1778.02	rap1	shelterin complex telomere binding subunit Rap1	Q96TL7
+SPBP35G2.10	mit1	SHREC complex ATP-dependent chromatin remodeller Mit1	Q9P793
+SPCC18.03		shuttle craft like transcriptional repressor/ubiquitin-protein ligase E3	O74853
+SPMTR.02	mat2-Pi	silenced P-specific trancription factor Pi	P10842
+SPCC1753.01c	ssb2	single-stranded DNA binding protein Ssb2	Q92373
+SPBC660.11	tcg1	single-stranded telomeric binding protein Tcg1	Q9HEQ9
+SPAC20G8.08c	fft1	SMARCAD1 family ATPase Fft1	P87114
+SPCC1235.05c	fft2	SMARCAD1 family ATPase Fft2	O74842
+SPAC25A8.01c	fft3	SMARCAD1 family ATPase Fft3	O42861
+SPBC20F10.04c	nse4	Smc5-6 complex non-SMC delta-kleisin subunit Nse4	Q6BDR8
+SPCC645.04	nse3	Smc5-6 complex non-SMC MAGE family subunit Nse3	Q9Y7U4
+SPAC14C4.02c	smc5	Smc5-6 complex SMC P-loop ATPase subunit Smc5	O13710
+SPCC5E4.06	smc6	Smc5-6 complex SMC P-loop ATPase subunit Smc6	P53692
+SPAC29B12.01	ino80	SNF2 family ATP-dependent chromatin remodeller Ino80	O14148
+SPAC8C9.14	prr1	stress-responsive DNA-binding transcription factor Prr1	O14283
+SPBC3D6.11c	slx8	SUMO-targeted ubiquitin-protein ligase E3 Slx8	P87176
+SPAC19A8.10	rfp1	SUMO-targeted ubiquitin-protein ligase subunit Rfp1	O13826
+SPAC17G6.10	ssr1	SWI/SNF and RSC complex subunit Ssr1	O13788
+SPAC23H3.10	ssr2	SWI/SNF and RSC complex subunit Ssr2	O14470
+SPCC1620.14c	snf22	SWI/SNF ATP-dependent chromatin remodeler Snf22	O94421
+SPBC30B4.04c	sol1	SWI/SNF complex subunit Sol1	O74365
+SPCC1672.02c	sap1	switch-activating protein Sap1	P40847
+SPAC11E3.01c	swr1	"Swr1 complex histone chaperone module subunit, SNF2 family ATP-dependent chromatin remodeller Swr1"	O13682
+SPAC9G1.13c	swc4	Swr1 complex/NuA4 histone acetyltransferase complex subunit Swc4	O14308
+SPAC29E6.08	tbp1	TATA-binding protein (TBP)	P17871
+SPAC3A12.05c	taf2	TATA-binding protein associated factor Taf2	P87121
+SPBC1826.01c	mot1	TATA-binding protein-associated transcription initiation factor Mot1	O43065
+SPBC2D10.13	est1	telomerase regulator Est1	O74804
+SPBC29A3.14c	trt1	telomerase reverse transcriptase 1 protein Trt1	O13339
+SPBC409.12c	stn1	telomere cap complex subunit Stn1	Q0E7J7
+SPCC1393.14	ten1	telomere cap complex subunit Ten1	P0C5Y7
+SPAC6F6.17	rif1	telomere length regulator protein Rif1	Q96UP3
+SPAC1D4.14	tho2	THO complex subunit Tho2	Q09779
+SPAC16A10.02	sub1	transcription coactivator PC4	P87294
+SPCC645.13	bye1	"transcription elongation regulator, PHD finger Bye1"	Q9Y7V2
+SPAC1D4.12	rad15	transcription factor TFIIH complex DNA helicase (human ERCC2) subunit Rad15	P26659
+SPAC17A5.06	ptr8	transcription factor TFIIH complex DNA helicase (human ERCC3) subunit Ptr8	O13768
+SPBC13G1.13	tfb2	transcription factor TFIIH complex subunit Tfb2	P87303
+SPAC144.09c	sfc2	transcription factor TFIIIA	Q9UTL5
+SPCC1919.14c	bdp1	transcription factor TFIIIB complex subunit Bdp1	O94481
+SPBC13E7.10c	brf1	transcription factor TFIIIB complex subunit Brf1	Q9P6R0
+SPAC6F12.11c	sfc1	transcription factor TFIIIC complex A box associated subunit Sfc1	O14229
+SPBC336.07	sfc3	transcription factor TFIIIC complex B box binding subunit Sfc3	Q9UST7
+SPCC16C4.14c	sfc4	transcription factor TFIIIC complex subunit Sfc4	O74458
+SPBC21H7.05	sfc6	transcription factor TFIIIC complex subunit Sfc6	O60174
+SPAC1250.07	sfc7	transcription factor TFIIIC subunit Sfc7	A6X980
+SPAC17G8.03c	bur6	transcription regulator complex subunit Bur6	Q10315
+SPBC1198.04c	zas1	transcription regulator Zas1	Q9UTS5
+SPAC30.03c	tsn1	translin	Q9P7V3
+SPCC736.09c	tfx1	TRAX	O74955
+SPBP8B7.23	rnf10	ubiquitin-protein ligase E3	O94271
+SPCC1442.07c	wss2	ubiquitin/metalloprotease fusion protein Udp7	O94580
+SPBC1861.02	abp2	"unknown protein, may bind replication origins Abp2"	Q9USY4
+SPBC28F2.11	hmo1	"upstream binding transcription factor, RNA polymerase I specific, Hmo1"	Q9USU7
+SPBC649.03	rhp14	XP-A family homolog Rhp14	O59753
+SPCC24B10.14c	xlf1	"XRCC4-like nonhomologous end joining factor, Cernunnon Xlf1/Nej1"	Q9P7J2
+SPAC13F5.07c	hpz2	zf PARP type zinc finger protein Hpz2	O13706
+SPBC1718.07c	zfs1	"zf-CCCH tandem zinc finger protein, human Tristetraprolin homolog Zfs1, involved in mRNA catabolism"	P47979
+SPBC2A9.07c	hpz1	"zf-PARP type zinc finger protein Hpz1, implicated in DNA repair"	Q9Y7K9
