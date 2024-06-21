@@ -457,7 +457,7 @@ in the engineered strains, we used all reads from ChIP input samples that
 did not map to the *S. pombe* reference (wildtype) genome.
 
 For each sample, the unmapped reads were aligned against all tagged
-transcription factor sequences. The resulting  alignment counts are summarized
+transcription factor sequences (see file [`reference/TFome_pombe_strain_lib.fasta`](reference/TFome_pombe_strain_lib.fasta)). The resulting  alignment counts are summarized
 in the `tagcnt` matrix of `r nrow(tagcnt)` rows by `r ncol(tagcnt)` columns.
 The rows correspond to tagged transcription factor sequences, and the columns
 to *S. pombe* strains in which a transcription factor has been tagged.
