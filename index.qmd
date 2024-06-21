@@ -1,0 +1,103 @@
+---
+title: "A comprehensive Schizosaccharomyces pombe atlas of physical transcription factor interactions with proteins and DNA"
+subtitle: "Analysis code for figures"
+date: today
+author:
+  - name: Merle Skribbe
+    email: merle.skribbe@gmail.com
+    affiliations:
+      - ref: fmi
+      - ref: unibas
+  - name: Charlotte Soneson
+    orcid: 0000-0003-3833-2169
+    email: charlotte.soneson@fmi.ch
+    affiliations:
+      - ref: fmi
+      - ref: sib
+  - name: Michael B Stadler
+    orcid: 0000-0002-2269-4934
+    email: michael.stadler@fmi.ch
+    affiliations:
+      - ref: fmi
+      - ref: unibas
+      - ref: sib
+  - name: Michaela Schwaiger
+    affiliations:
+      - ref: fmi
+      - ref: sib
+  - name: Vishnu Narayanan Suma Sreechakram
+    affiliations:
+      - ref: giessen
+  - name: Vytautas Iesmantavicius
+    affiliations:
+      - ref: fmi
+  - name: Daniel Hess
+    affiliations:
+      - ref: fmi
+  - name: Eliza Pandini Figueiredo Moreno
+    affiliations:
+      - ref: fmi
+  - name: Sigurd Braun
+    affiliations:
+      - ref: giessen
+  - name: Jan Seebacher
+    affiliations:
+      - ref: fmi
+  - name: Sebastien Smallwood
+    affiliations:
+      - ref: fmi
+  - name: Marc Bühler
+    orcid: 0000-0001-6661-9795
+    email: marc.buehler@fmi.ch
+    affiliations:
+      - ref: fmi
+      - ref: unibas
+affiliations:
+  - id: fmi
+    name: Friedrich Miescher Institute for Biomedical Research
+    address: Fabrikstrasse 24
+    postal-code: 4056
+    city: Basel
+    country: Switzerland
+  - id: unibas
+    name: University of Basel
+    address: Petersplatz 10
+    postal-code: 4003
+    city: Basel
+    country: Switzerland
+  - id: sib
+    name: SIB Swiss Institute of Bioinformatics
+    address: Fabrikstrasse 24
+    postal-code: 4056
+    city: Basel
+    country: Switzerland
+  - id: giessen
+    name: Institute for Genetics, Justus-Liebig-University Giessen
+    city: Giessen
+    country: Germany
+license: MIT License
+format: 
+    html:
+        embed-resources: true
+        fig-cap-location: top
+---
+
+## Interactive data exploration with `TFexplorer`
+
+## Links to raw data
+
+## Links to publication
+
+## Links to code for generating figures
+
+All source code is available from GitHub at [https://github.com/fmicompbio/Spombe_TFome](https://github.com/fmicompbio/Spombe_TFome).
+Click on a specific figure below to jump directly to the corresponding sources.
+
+|          |                                                                                                  |     |
+|----------|----------------------------|----------------------------|
+| Figure 1 | [![](ms_figure_1_overview_files/figure-html/Fig1-1.png){width="4cm"}](ms_figure_1_overview.html) |  [![](ms_figure_1_overview_files/figure-html/suppFig1-1.png){width="4cm"}](ms_figure_1_overview.html#Supplementary_figure)   |
+| Figure 2 | [![](ms_figure_2_chip_files/figure-html/Fig2-1.png){width="4cm"}](ms_figure_2_chip.html) | [![](ms_figure_2_chip_files/figure-html/suppFig2-1.png){width="4cm"}](ms_figure_2_chip.html#Supplementary_figure)    |
+| Figure 3 | [![](ms_figure_3_motifs_files/figure-html/Fig3-1.png){width="4cm"}](ms_figure_3_motifs.html) | [![](ms_figure_3_motifs_files/figure-html/suppFig3-1.png){width="4cm"}](ms_figure_3_motifs.html#Supplementary_figure)    |
+| Figure 4 | [![](ms_figure_4_ipms_files/figure-html/Fig4-1.png){width="4cm"}](ms_figure_4_ipms.html) | [![](ms_figure_4_ipms_files/figure-html/suppFig4-1.png){width="4cm"}](ms_figure_4_ipms.html#Supplementary_figure)    |
+| Figure 5 | [![](ms_figure_5_networks_files/figure-html/Fig5-1.png){width="4cm"}](ms_figure_5_networks.html) | [![](ms_figure_5_networks_files/figure-html/suppFig5-1.png){width="4cm"}](ms_figure_5_networks.html#Supplementary_figure)    |
+| Figure 6 | [![](ms_figure_6_heterodimer_files/figure-html/Fig6-1.png){width="4cm"}](ms_figure_6_heterodimer.html) | [![](ms_figure_6_heterodimer_files/figure-html/suppFig6-1.png){width="4cm"}](ms_figure_6_heterodimer.html#Supplementary_figure)    |
