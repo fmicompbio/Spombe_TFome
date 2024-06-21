@@ -1,0 +1,1487 @@
+---
+title: "Figure 4 - IP-MS"
+author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+params:
+    rds150: "data/ipms_150_sce.rds"
+    rds500: "data/ipms_500_sce.rds"
+    rdsdal2: "data/ipms_dal2_sce.rds"
+    complexes: "data/complexes.json"
+    baitclass: "data/ipms_bait_class.txt"
+    dnabinders: "data/Gene_list_DNAbinders_proteincoding.txt"
+    rnabinders: "data/Gene_list_RNAbinders_proteincoding.txt"
+    idmap: "data/id_mapping_table.txt"
+    dbdtxt: "data/TF_DBD_annotation.txt"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+options(scipen = 6)
+```
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages and helper functions
+
+```{r load-packages, class.source="fold-show"}
+suppressPackageStartupMessages({
+    library(SingleCellExperiment)
+    library(ggplot2)
+    library(cowplot)
+    library(einprot)
+    library(dplyr)
+    library(forcats)
+    library(jsonlite)
+    library(ComplexHeatmap)
+    library(colorspace)
+    library(ggrepel)
+    library(DT)
+    library(stringr)
+    library(tidyr)
+    library(kableExtra)
+    library(patchwork)
+})
+
+## Source scripts with required helper functions and settings
+source("params/plot_settings.R")
+source("params/get_testres_function.R")
+source("params/ipms_params.R")
+source("params/mapping_functions.R")
+
+## Heatmap sizes
+w_ipmsHm <-  84 # heatmap body width (mm)
+h_ipmsHm <- 178 # total heatmap height (mm)
+
+fs <- 8  # small font size
+fl <- 10 # large font size
+ft <- 12 # title font size
+```
+
+# Read data
+
+We load two `SingleCellExperiment` objects, containing data and results from the 
+low- and high-salt experiments, respectively, as well as one object with 
+results from a separate run of Dal2.
+
+```{r load-data, class.source="fold-show"}
+sce150 <- readRDS(params$rds150)
+sce500 <- readRDS(params$rds500)
+scedal2 <- readRDS(params$rdsdal2)
+```
+
+We then extract the full list of baits, as well as a classification according 
+to the experiment(s) where a certain bait was pulled down.
+
+```{r, class.source="fold-show"}
+idmap <- read.delim(params$idmap)
+baitclass <- read.delim(params$baitclass)
+DT::datatable(baitclass, rownames = FALSE)
+```
+
+In the following set of IPs, we identified the bait as not pulled down.
+
+```{r define-nobait}
+(nobait_150 <- baitclass$Gene_name[baitclass$class == "nobait"])
+```
+
+We also read a list of known complexes, which will be used for annotation 
+purposes. 
+
+```{r load-complexes, class.source="fold-show"}
+complexes <- jsonlite::read_json(params$complexes, simplifyVector = TRUE)
+complexes$`MBF transcription complex`$color <- main_colors[5]
+complexes$`CCAAT-binding factor complex`$color <- main_colors[1]
+complexes$`Atf1-Pcr1`$color <- main_colors[3]
+names(complexes)
+```
+
+Finally we load a table classifying each TF to its DNA-binding domain family.
+
+```{r, class.source="fold-show"}
+dbd <- read.delim(params$dbdtxt) |>
+    dplyr::mutate(Gene_name = .capitalize(Gene_name))
+DT::datatable(dbd, extensions = "FixedColumns", rownames = FALSE, 
+              filter = list(position = "top", clear = FALSE),
+              options = list(scrollX = TRUE, 
+                             fixedColumns = list(leftColumns = 1),
+                             search = list(regex = FALSE, caseInsensitive = TRUE),
+                             pageLength = 10))
+```
+
+# Helper functions
+
+We define a number of additional helper functions for data extraction and 
+summarization, which will be used below. 
+
+```{r heatmap-helper}
+filterForHeatmap <- function(tstatmat, adjpmat, logfcmat, adjpThreshold, 
+                             logfcThreshold, maxNbrTargets) {
+    ## Filter - require significant in at least one comparison
+    tstatfilt <- tstatmat
+    tstatfilt[adjpmat >= adjpThreshold] <- NA
+    tstatfilt[logfcmat <= logfcThreshold] <- NA
+    # tstatfilt[tstatfilt <= 0] <- NA
+    
+    ## Some experiments pull down a large number of proteins
+    # print(table(colSums(!is.na(tstatfilt))))
+    ## -> remove proteins that are only being pulled down in these experiments
+    keep <- which(colSums(!is.na(tstatfilt)) <= maxNbrTargets)
+    tstatfilt <- tstatfilt[rowSums(!is.na(tstatfilt[, keep])) > 0, ]
+    tstatfilt[is.na(tstatfilt)] <- 0
+    tstatfilt <- tstatfilt[rowSums(tstatfilt) > 0, ]
+    
+    ## Subset the t-statistic matrix to only the retained proteins
+    stopifnot(colnames(tstatfilt) == colnames(tstatmat))
+    tstatmat <- tstatmat[rownames(tstatfilt), colnames(tstatfilt)]
+    colnames(tstatmat) <- .getSimplifiedComparison(colnames(tstatmat))
+    
+    list(tstats = tstatmat, tstatsfilt = tstatfilt)
+}
+
+makeComplexAnnotation <- function(tstatmat, complexes, idmap,
+                                  show_legend = TRUE) {
+    rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
+                           row.names = rownames(tstatmat))
+    rowcols <- list(Complex = c())
+    for (cmplx in names(complexes)) {
+        rowannot$Complex[.getPomBaseIdFromProtein(rownames(rowannot), 
+                                                  idmap = idmap) %in% 
+                             complexes[[cmplx]]$pombase_ids] <- cmplx
+        rowcols$Complex[cmplx] <- complexes[[cmplx]]$color
+    }
+    rowAnnotation(df = rowannot, 
+                  col = rowcols, 
+                  annotation_name_gp = gpar(fontsize = fl),
+                  simple_anno_size_adjust = TRUE,
+                  na_col = bg_color,
+                  show_annotation_name = FALSE,
+                  show_legend = show_legend,
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
+}
+
+makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
+    rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
+                           row.names = rownames(tstatmat))
+    rowcols <- list(Complex = c())
+    for (cmplx in names(complexes)) {
+        rowannot$Complex[.getPomBaseIdFromProtein(rownames(rowannot), 
+                                                  idmap = idmap) %in% 
+                             complexes[[cmplx]]$pombase_ids] <- cmplx
+        rowcols$Complex[cmplx] <- complexes[[cmplx]]$color
+    }
+    rowannot$`DBD fam.` <- dbd$DBD_class[match(
+        .getPomBaseIdFromProtein(rownames(tstatmat), idmap = idmap), 
+        dbd$PomBaseID)]
+    setfam <- c("KilA-N", "Zn(II)2Cys6", "bZIP")
+    unsetfam <- setdiff(unique(dbd$DBD_class), setfam)
+    rowannot$`DBD fam.`[rowannot$`DBD fam.` %in% unsetfam] <- "Other (combined)"
+    rowcols <- c(rowcols, list(`DBD fam.` = c(`KilA-N` = main_colors[5], 
+                                              `Zn(II)2Cys6` = main_colors[4],
+                                              bZIP = main_colors[3], 
+                                              `Other (combined)` = bg_color)))
+    rowAnnotation(df = rowannot, 
+                  col = rowcols, 
+                  annotation_name_gp = gpar(fontsize = fl),
+                  simple_anno_size_adjust = TRUE,
+                  na_col = bg_color,
+                  show_annotation_name = TRUE,
+                  show_legend = FALSE,
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
+}
+
+makeColLabels <- function(tstatmat, colLabel, fontsize) {
+    columnAnnotation(
+        TFnames = anno_mark(which = "column", side = "bottom",
+                            at = match(colLabel, colnames(tstatmat)), 
+                            labels = .getProteinNameFromSimplifiedComparison(colLabel),
+                            labels_gp = gpar(fontsize = fontsize)))
+}
+
+makeRowLabels <- function(tstatmat, rowLabel, fontsize) {
+    rowAnnotation(
+        TFnames = anno_mark(which = "row", side = "left",
+                            at = match(rowLabel, rownames(tstatmat)), 
+                            labels = rowLabel,
+                            labels_gp = gpar(fontsize = fontsize)))
+}
+
+makeHeatmapCol <- function(tstatmat, stringency = "high") {
+    if (stringency == "high") {
+        circlize::colorRamp2(
+            breaks = seq(3.0, 13.0, length.out = 64),
+            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
+    } else {
+        circlize::colorRamp2(
+            breaks = seq(1.5, 13.0, length.out = 64),
+            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
+    }
+}
+
+reorderColsByRows <- function(tstat) {
+    ## Row names should be protein names, column names simplified comparison names
+    ord <- match(rownames(tstat), .getProteinNameFromSimplifiedComparison(colnames(tstat)))
+    ord <- ord[!is.na(ord)]
+    ord <- c(ord, setdiff(seq_len(ncol(tstat)), ord))
+    tstat[, ord]
+}
+
+makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
+    tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)
+    
+    tstats <- filterForHeatmap(tstatmat = tc$tstat, adjpmat = tc$adjp, 
+                               logfcmat = tc$logfc, logfcThreshold = log2fcthr,
+                               adjpThreshold = adjpthr, maxNbrTargets = Inf)
+    tstat <- tstats$tstats 
+    
+    ## tstats$tstatsfile: protein x experiment
+    ## Number of TFs that are pulled down by each bait
+    all_tfs <- setdiff(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
+                       c("Untagged", "untagged", NA))
+    nbrInt <- colSums(tstats$tstatsfilt[rownames(tstats$tstatsfilt) %in% all_tfs, ] > 0, 
+                      na.rm = TRUE)
+    names(nbrInt) <- .getSimplifiedComparison(names(nbrInt))
+
+    ## Split by family - return a matrix with several columns: 
+    ## #pulled down TFs (including itself), #pulled down TFs (excluding itself),
+    ## #pulled down TFs from the same family (excluding itself), 
+    ## #pulled down TFs from another family
+    tmptf <- tstats$tstatsfilt[match(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
+                                     rownames(tstats$tstatsfilt)), ]
+    rownames(tmptf) <- .getProteinNameFromComparison(colnames(tstats$tstatsfilt))
+    dbdtf <- data.frame(PomBaseID = .getPomBaseIdFromComparison(colnames(tstats$tstatsfilt), 
+                                                                idmap = idmap),
+                        bait = .getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
+                        DBD_class = NA)
+    for (i in seq_len(nrow(dbdtf))) {
+        lookfor <- dbdtf$PomBaseID[i]
+        if (!(lookfor %in% c("untagged", "Untagged"))) {
+            dbdtf$DBD_class[i] <- dbd$DBD_class[match(lookfor, dbd$PomBaseID)]
+        } else {
+            dbdtf$DBD_class[i] <- "no_class"
+        }
+    }
+    stopifnot(dbdtf$bait == .getProteinNameFromComparison(colnames(tmptf)))
+    nbrIntMat <- do.call(dplyr::bind_rows, lapply(seq_along(colnames(tmptf)), function(i) {
+        expr <- colnames(tmptf)[i]
+        fam <- dbdtf$DBD_class[i]
+        data.frame(experiment = expr, 
+                   bait = dbdtf$bait[i], 
+                   dbdfam = fam, 
+                   TFs = paste(rownames(tmptf)[-i][which(tmptf[-i, expr] > 0)],
+                               collapse = ","),
+                   nbrTFs = sum(tmptf[, expr] > 0, na.rm = TRUE),
+                   nbrTFs_wobait = sum(tmptf[-i, expr] > 0, na.rm = TRUE),
+                   nbrTFs_samefam = sum(tmptf[-i, expr] > 0 & 
+                                            dbdtf$DBD_class[-i] == fam, 
+                                        na.rm = TRUE),
+                   nbrTFs_difffam = sum(tmptf[-i, expr] > 0 & 
+                                            dbdtf$DBD_class[-i] != fam, 
+                                        na.rm = TRUE)
+        )
+    }))
+    
+    
+    ## Split experiments into three groups
+    if (conc == 150) {
+        stopifnot(all(colnames(tstat) == .getSimplifiedComparison(colnames(tstats$tstatsfilt))))
+        tstat_no_bait <- 
+            tstat[, colSums(tstats$tstatsfilt) == 0 | 
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "nobait"])]
+        tstat_150only <- 
+            tstat[, colSums(tstats$tstatsfilt) > 0 &
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "150only"])]
+        tstat_150and500 <- 
+            tstat[, colSums(tstats$tstatsfilt) > 0 &
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "150and500"])]
+        
+        proteins_150only <- .getProteinNameFromSimplifiedComparison(colnames(tstat_150only))
+        stopifnot(all(proteins_150only %in% rownames(tstat)))
+        tstat_150and500 <- tstat_150and500[!(rownames(tstat_150and500) %in% proteins_150only), ]
+        
+        ## Cluster proteins based on the correlation between their t-stat vectors
+        dst <- sqrt(2 * (1 - cor(t(tstat_150and500), use = "pairwise.complete")))
+        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
+        clst <- hclust(as.dist(dst))
+        
+        ## Reorder proteins by the clustering
+        protorder <- c(rownames(tstat_150and500)[clst$order], proteins_150only)
+        tstat <- tstat[protorder, ]
+        
+        ## Reorder experiments to keep a "diagonal" in the heatmap
+        tstat <- reorderColsByRows(tstat)
+        
+        tmpbaits <- .getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
+                                                             idmap = idmap)
+        colsplit <- ifelse(
+            tmpbaits %in% baitclass$Gene_name[baitclass$class == "nobait"], 
+            "No\nbait", 
+            ifelse(
+                tmpbaits %in% baitclass$Gene_name[baitclass$class == "150only"],
+                "150 mM NaCl",
+                ifelse(
+                    tmpbaits %in% baitclass$Gene_name[baitclass$class == "150and500"],
+                    "150 and\n500 mM NaCl", "NA"
+                )
+            )
+        )
+    } else if (conc == 500) {
+        tstat_onlybait <- 
+            tstat[, colSums(tstats$tstatsfilt > 0) == 1 |
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
+                                                      idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class500 == "Lost in 500 mM"])]
+        tstat_several <- 
+            tstat[, colSums(tstats$tstatsfilt > 0) > 1 & 
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
+                                                      idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class500 != "Lost in 500 mM"])]
+        tstat_onlybait <- tstat_onlybait[, colnames(tstat_onlybait) != "Untagged_plate"]
+        tstat_several <- tstat_several[, colnames(tstat_several) != "Untagged_plate"]
+        
+        proteins_onlybait <-
+            .getProteinNameFromSimplifiedComparison(colnames(tstat_onlybait))
+        stopifnot(all(proteins_onlybait %in% rownames(tstat)))
+        tstat_several <- tstat_several[!(rownames(tstat_several) %in% proteins_onlybait), ]
+        
+        ## Cluster proteins based on the correlation between their t-stat vectors
+        dst <- sqrt(2 * (1 - cor(t(tstat_several), use = "pairwise.complete")))
+        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
+        clst <- hclust(as.dist(dst))
+        
+        ## Reorder proteins by the clustering
+        protorder <- c(rownames(tstat_several)[clst$order], proteins_onlybait)
+        tstat <- tstat[protorder, ]
+        
+        ## Reorder conditions to keep a "diagonal" in the heatmap
+        tstat <- reorderColsByRows(tstat)
+        
+        colsplit <- factor(
+            structure(baitclass$class500[
+                match(.getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
+                                                               idmap = idmap), 
+                      baitclass$Gene_name)],
+                names = colnames(tstat)),
+            levels = c("Retained in 500 mM", "Lost in 500 mM", ""))
+        levels(colsplit) <- c("Interactions\nin 500 mM NaCl",
+                              "No interactions\nin 500 mM NaCl", "")
+    } else {
+        stop("Unknown concentration")
+    }
+    return(list(tstat = tstat, colsplit = colsplit, nbrIntMat = nbrIntMat))
+}
+
+makeBaitHeatmapData <- function(sce, adjpthr, log2fcthr, nbrIntMat) {
+    tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)$tstat
+    colnames(tc) <- .getSimplifiedComparison(colnames(tc))
+    shared_names <- intersect(rownames(tc), 
+                              .getProteinNameFromSimplifiedComparison(colnames(tc)))
+    shared_names <- setdiff(shared_names, .getProteinFromOrigBait(nobait_150, idmap = idmap))
+    stopifnot(all(shared_names %in% nbrIntMat$bait))
+    nbrIntMat$complex <- NA
+    for (cplx in c("MBF transcription complex", "CCAAT-binding factor complex", "Atf1-Pcr1")) {
+        nbrIntMat$complex[.getPomBaseIdFromProtein(nbrIntMat$bait,
+                                                   idmap = idmap) %in% 
+                              complexes[[cplx]]$pombase_ids] <- cplx
+    }
+    shared_names <- nbrIntMat[match(shared_names, nbrIntMat$bait), ] |>
+        arrange(dbdfam, complex) |>
+        pull(bait)
+    mat <- tc[shared_names, match(shared_names, .getProteinNameFromSimplifiedComparison(colnames(tc)))]
+    rownames(nbrIntMat) <- .getSimplifiedComparison(nbrIntMat$experiment)
+    list(mat = mat, nbrIntMat = nbrIntMat)
+}
+```
+
+# Extract data for heatmaps
+
+```{r extract-heatmap-data}
+hmdata_150 <- makeHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
+                              log2fcthr = log2fcThreshold, conc = 150)
+hmdata_150_loose <- makeHeatmapData(sce = sce150, adjpthr = adjpThresholdLoose, 
+                                    log2fcthr = log2fcThreshold, conc = 150)
+hmdata_500 <- makeHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
+                              log2fcthr = log2fcThreshold, conc = 500)
+hmdata_500_loose <- makeHeatmapData(sce = sce500, adjpthr = adjpThresholdLoose, 
+                                    log2fcthr = log2fcThreshold, conc = 500)
+
+
+baitdata_150 <- makeBaitHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
+                                    log2fcthr = log2fcThreshold, 
+                                    nbrIntMat = hmdata_150$nbrIntMat)
+baitdata_150_loose <- makeBaitHeatmapData(sce = sce150, adjpthr = adjpThresholdLoose, 
+                                          log2fcthr = log2fcThreshold, 
+                                          nbrIntMat = hmdata_150_loose$nbrIntMat)
+baitdata_500 <- makeBaitHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
+                                    log2fcthr = log2fcThreshold, 
+                                    nbrIntMat = hmdata_500$nbrIntMat)
+baitdata_500_loose <- makeBaitHeatmapData(sce = sce500, adjpthr = adjpThresholdLoose, 
+                                          log2fcthr = log2fcThreshold, 
+                                          nbrIntMat = hmdata_500_loose$nbrIntMat)
+```
+
+# Export data for TFexplorer
+
+Here, we export data for use with TFexplorer, for both the low- and high-salt 
+conditions. 
+
+```{r tfexplorer-export}
+## Heatmap data
+.prepDataForTFexplorer <- function(sce, outfileHeatmap, outfileVolcano, idmap) {
+    ## Heatmap
+    ## -------------------------------------------------------------------------
+    testres <- .getTestCols(sce = sce)
+    testres$tstat <- testres$tstat[, colnames(testres$tstat) !=
+                                       "Untagged_150_tube_vs_compl_Untagged_150_tube.t"]
+    tstat <- testres$tstat
+    colnames(tstat) <- .getProteinNameFromComparison(colnames(tstat))
+    TFs <- colnames(tstat)
+    
+    ## set NAs to minimum value
+    tstat[is.na(tstat)] <- min(na.omit(tstat))
+    ## set all values below 0 to 0
+    tstat[tstat < 0] = 0
+    
+    ## convert it back to a matrix
+    heatmap_data_mean <- as.matrix(tstat)
+    
+    ## cluster the rows (to avoid slow clustering in LinkedCharts)
+    dist_mat1 <- dist(heatmap_data_mean, method = "euclidian")
+    hclust_avg1 <- hclust(dist_mat1, method = "average")
+    heatmap_data_mean_clustered <- heatmap_data_mean[hclust_avg1$order, ]
+    
+    ## calculate row max 
+    heatmapRowMax <- apply(heatmap_data_mean_clustered, 1, max)
+    
+    ## add Pombase IDs and names and uniprot IDs 
+    PomIds2 <- left_join(data.frame(row.names(heatmap_data_mean_clustered)),
+                         idmap |> dplyr::mutate(unique_einprot_id = .capitalize(unique_einprot_id)),
+                         by = c("row.names.heatmap_data_mean_clustered." =
+                                    "unique_einprot_id"))
+    PomIds1 <- ifelse(is.na(PomIds2$gene_stable_id),
+                      PomIds2$row.names.heatmap_data_mean_clustered., 
+                      PomIds2$gene_stable_id)
+    UniprotIDs <- PomIds2$xref
+    
+    ## convert the gene names to protein names
+    colnames(heatmap_data_mean_clustered) <- 
+        .capitalize(colnames(heatmap_data_mean_clustered))
+    rownames(heatmap_data_mean_clustered) <- 
+        .capitalize(rownames(heatmap_data_mean_clustered))
+    
+    ## save heatmap and related data as JSON
+    heatmap_data_mean2 <- toJSON(list(
+        heatmapMatrix = heatmap_data_mean_clustered, 
+        TFs = colnames(heatmap_data_mean_clustered),
+        proteins = rownames(heatmap_data_mean_clustered),
+        MaxTSTAT = heatmapRowMax,
+        PomIds = PomIds1,
+        UniprotIDs = UniprotIDs),
+        pretty = TRUE)
+    write(heatmap_data_mean2, file = outfileHeatmap)
+    
+    ## Volcano plots
+    ## -------------------------------------------------------------------------
+    ## extract comparisons (include only plate format for Atf1 and untagged)
+    volcano_list <- metadata(sce)$testres$tests
+    volcano_list <- volcano_list[sub("\\.t", "", colnames(testres$tstat))]
+    TFIDs <- names(volcano_list)
+    TFnames <- .getProteinNameFromComparison(TFIDs)
+    # TFnames <- ifelse(grepl("^SP", TFnames), TFnames, stringr::str_to_title(TFnames))
+    
+    ## using sce object
+    vp_list <- lapply(
+        structure(colnames(heatmap_data_mean_clustered), 
+                  names = colnames(heatmap_data_mean_clustered)), 
+        function(selTF) {
+            VP <- volcano_list[[which(TFnames == selTF)]][, c("pid", "logFC", "adj.P.Val",
+                                                              "mlog10p", "showInVolcano")]
+            VP$DE <- ifelse(VP$showInVolcano, "significant", "not significant")
+            
+            ## replace NAs with 0
+            VP <- replace_na(data = VP, 
+                             replace = list(pid = "unknown",
+                                            logFC = 0,
+                                            adj.P.Val = 1,
+                                            mlog10p = 0,
+                                            DE = "not significant"))
+            
+            ## add to list
+            VP[, c("pid", "logFC", "adj.P.Val", "mlog10p", "DE")]
+        })
+    
+    ## convert the gene names to protein names
+    for (i in seq_along(vp_list)) {
+        rownames(vp_list[[i]]) <- .capitalize(rownames(vp_list[[i]]))
+        vp_list[[i]]$pid <- rownames(vp_list[[i]])
+    }
+    
+    ## save volcano plot data as JSON
+    vp_list2 <- toJSON(vp_list, dataframe = "columns", pretty = TRUE)
+    write(vp_list2, file = outfileVolcano)
+}
+
+.prepDataForTFexplorer(sce = sce150, 
+                       outfileHeatmap = "data/TSTAT_matrix4heatmap_150mM.json", 
+                       outfileVolcano = "data/volcanoData_150mM.json", 
+                       idmap = idmap)
+.prepDataForTFexplorer(sce = sce500, 
+                       outfileHeatmap = "data/TSTAT_matrix4heatmap_500mM.json", 
+                       outfileVolcano = "data/volcanoData_500mM.json", 
+                       idmap = idmap)
+```
+
+# Facts and figures
+
+## Identification of baits in IP-MS
+
+```{r, class.source="fold-show"}
+table(baitclass$class)
+```
+
+## High stringency
+
+Here we use an adjusted p-value cutoff of `r adjpThreshold` and a log2 
+fold change cutoff of `r log2fcThreshold`.
+
+```{r}
+makeInteractorSummary <- function(sce, baitdata, adjp_cutoff, logfc_cutoff, idmap, 
+                                  baits_to_keep, tbl_title) {
+    ni_tc <- .getTestCols(sce = sce, adjp_cutoff = adjp_cutoff, 
+                          logfc_cutoff = logfc_cutoff)
+    ni_idx <- .getOrigBaitNameFromComparison(colnames(ni_tc$tstat), idmap = idmap) %in%
+        baits_to_keep
+    ni_int <- ni_tc$interactor[, ni_idx]
+    ni_baits <- cbind(match(.getProteinNameFromComparison(colnames(ni_int)), 
+                            rownames(ni_int)), 
+                      seq_len(ncol(ni_int)))
+    ni_int[ni_baits] <- NA
+    
+    ## Total number of interactions
+    table(ni_int > 0)
+    
+    ## Number of TFs with interactions
+    table(colSums(ni_int, na.rm = TRUE) > 0)
+    
+    ## Total number of TFs
+    ncol(ni_int)
+    
+    ## Total number of TF-TF interactions (no self-interactions)
+    sum(baitdata$nbrIntMat$nbrTFs_wobait)
+    
+    ## Number of TFs involved in these TF-TF interactions
+    tmp <- baitdata$nbrIntMat |>
+        filter(nbrTFs_wobait > 0)
+    length(unique(c(tmp$bait, unlist(strsplit(tmp$TFs, ",")))))
+    
+    ## Bilateral interactions
+    nbr_bilateral <- tmp |>
+        select(bait, TFs) |>
+        separate_longer_delim(TFs, delim = ",") |>
+        mutate(o1 = paste(bait, TFs, sep = "-"),
+               o2 = paste(TFs, bait, sep = "-")) |>
+        filter(o1 %in% o2) |>
+        nrow()
+    
+    data.frame(`Total number of TFs for which bait was pulled down` = ncol(ni_int),
+               `Total number of interactions (excluding bait itself)` = length(which(ni_int > 0)),
+               `Number of TFs with interactions` = length(which(colSums(ni_int, na.rm = TRUE) > 0)),
+               `Number of TFs without observed interactions` = length(which(colSums(ni_int, na.rm = TRUE) == 0)),
+               `Total number of TF-TF interactions (excluding bait itself)` = sum(baitdata$nbrIntMat$nbrTFs_wobait),
+               `Number of TFs involved in these TF-TF interactions` = length(unique(c(tmp$bait, unlist(strsplit(tmp$TFs, ","))))),
+               `Number of bilateral TF-TF interaction` = nbr_bilateral,
+               check.names = FALSE) |>
+        pivot_longer(cols = everything(), names_to = "Aspect", values_to = "Value") |>
+        kbl(col.names = NULL, caption = tbl_title) |>
+        kable_styling()
+}
+
+## 150mM
+## --------------------------------------------------------------------------
+makeInteractorSummary(sce = sce150, baitdata = baitdata_150, adjp_cutoff = adjpThreshold,
+                      logfc_cutoff = log2fcThreshold, idmap = idmap, 
+                      baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
+                      tbl_title = "150 mM, high stringency")
+
+## 500mM
+## --------------------------------------------------------------------------
+makeInteractorSummary(sce = sce500, baitdata = baitdata_500, adjp_cutoff = adjpThreshold,
+                      logfc_cutoff = log2fcThreshold, idmap = idmap, 
+                      baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
+                      tbl_title = "500 mM, high stringency")
+```
+
+## Low stringency
+
+Here we use an adjusted p-value cutoff of `r adjpThresholdLoose` and a log2 
+fold change cutoff of `r log2fcThreshold`.
+
+```{r}
+## 150mM
+## --------------------------------------------------------------------------
+makeInteractorSummary(sce = sce150, baitdata = baitdata_150_loose, adjp_cutoff = adjpThresholdLoose,
+                      logfc_cutoff = log2fcThreshold, idmap = idmap, 
+                      baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
+                      tbl_title = "150 mM, low stringency")
+
+## 500mM
+## --------------------------------------------------------------------------
+makeInteractorSummary(sce = sce500, baitdata = baitdata_500_loose, adjp_cutoff = adjpThresholdLoose,
+                      logfc_cutoff = log2fcThreshold, idmap = idmap, 
+                      baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
+                      tbl_title = "500 mM, low stringency")
+```
+
+# Figure 4
+
+## Settings
+
+```{r plot-settings}
+colLabel_150 <- expand.grid(c("Untagged", "Ace2", "Rst2", "Pap1"),
+                            c("tube", "plate")) |>
+    tidyr::unite(col = "col", Var1, Var2) |>
+    dplyr::pull(col)
+colLabel_500 <- expand.grid(c("Untagged", "Atf1", "Moc3", "Ntu1",
+                              "Pcr1", "Ntu2"),
+                            c("tube", "plate")) |>
+    tidyr::unite(col = "col", Var1, Var2) |>
+    dplyr::pull(col)
+rowLabel <- NULL
+
+complexLabel <- c("NuA4", "SAGA")
+```
+
+## Summary heatmaps using results from the statistical tests (150 mM NaCl)
+
+### Overall heatmap
+
+```{r heatmap-tstat-150}
+#| fig.width: 6
+#| fig.height: 8
+
+hm1a <- Heatmap(hmdata_150$tstat, 
+                cluster_rows = FALSE, 
+                cluster_columns = FALSE, 
+                col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                border = TRUE, 
+                border_gp = gpar(lwd = 0.5),
+                column_split = hmdata_150$colsplit, 
+                name = "Mod.\nt-stat.", 
+                na_col = binary_heatmap_colors["FALSE"],
+                column_names_gp = gpar(fontsize = fs),
+                row_names_gp = gpar(fontsize = fs),
+                row_title = "Proteins significantly enriched in at least one experiment",
+                row_title_gp = gpar(fontsize = fl),
+                show_row_names = FALSE, show_column_names = FALSE,
+                use_raster = FALSE, show_heatmap_legend = TRUE,
+                right_annotation = makeComplexAnnotation(
+                    hmdata_150$tstat, complexes[complexLabel], 
+                    idmap = idmap),
+                bottom_annotation = makeColLabels(hmdata_150$tstat, colLabel_150, fl),
+                width = unit(w_ipmsHm, "mm"), # heatmap body width
+                heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height
+                column_title_gp = gpar(fontsize = ft),
+                heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+set.seed(42L)
+hm_150 <- grid.grabExpr(
+    hm1a <- draw(hm1a, merge_legend = TRUE,
+                heatmap_legend_side = "right",
+                annotation_legend_side = "right"),
+    width = w_ipmsHm, height = h_ipmsHm
+)
+
+plot_grid(hm_150)
+```
+
+### Bait-vs-bait heatmap
+
+```{r heatmap-tstat-150-baits}
+#| fig.width: 6
+#| fig.height: 5
+
+nbrInteractors <- HeatmapAnnotation(
+    which = "column",
+    `Number of\ninteractors` = 
+        anno_barplot(x = rowSums(as.matrix(baitdata_150$nbrIntMat[colnames(baitdata_150$mat), 
+                                                     c("nbrTFs_samefam", 
+                                                       "nbrTFs_difffam")])), 
+                     gp = gpar(fill = na_color,
+                               col = na_color),
+                     border = FALSE, bar_width = 1.0,
+                     axis_param = list(gp = gpar(fontsize = fs)),
+                     width = unit(10, "mm")),
+    annotation_name_side = "left",
+    annotation_name_rot = 0,
+    annotation_name_gp = gpar(fontsize = fl))
+
+hm1b <- Heatmap(baitdata_150$mat, 
+                cluster_rows = FALSE, 
+                cluster_columns = FALSE, 
+                col = makeHeatmapCol(baitdata_150$mat, stringency = "high"), 
+                border = TRUE, 
+                border_gp = gpar(lwd = 0.5),
+                name = "Mod.\nt-stat.", 
+                na_col = binary_heatmap_colors["FALSE"],
+                column_title = paste(c("150 mM NaCl", rep(" ", 45)), collapse = ""),
+                row_title = "Transcription factors",
+                column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
+                row_title_gp = gpar(fontsize = fl),
+                column_names_gp = gpar(fontsize = fs),
+                row_names_gp = gpar(fontsize = fs),
+                show_row_names = FALSE, show_column_names = FALSE,
+                use_raster = FALSE, show_heatmap_legend = TRUE, 
+                left_annotation = makeComplexAndDBDAnnotation(
+                    baitdata_150$mat, 
+                    complexes[c("MBF transcription complex", 
+                                "CCAAT-binding factor complex",
+                                "Atf1-Pcr1")],
+                    dbd = dbd, 
+                    idmap = idmap),
+                top_annotation = nbrInteractors, 
+                width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
+                heatmap_height = unit(h_ipmsHm / 2.2, "mm"),
+                heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                            border = "gray10",
+                                            border_gp = gpar(lwd = 0.5)))
+
+set.seed(42L)
+hm_150_bait <- grid.grabExpr(
+    hm1b <- draw(hm1b, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+)
+
+plot_grid(hm_150_bait)
+```
+
+```{r bait-bait-heatmap-legends}
+#| fig.height: 2
+
+## Separate legends
+use_complexes <- c("MBF transcription complex", 
+                   "CCAAT-binding factor complex",
+                   "Atf1-Pcr1")
+lgd_complex <- Legend(labels = use_complexes,
+                legend_gp = gpar(fill = vapply(complexes[use_complexes],
+                                               function(x) x$color, NA_character_)),
+                title = "Complex", nrow = 2)
+
+dbd_colors <- c(`KilA-N` = main_colors[5], 
+                `Zn(II)2Cys6` = main_colors[4],
+                bZIP = main_colors[3], 
+                `Other (combined)` = bg_color)
+lgd_dbd <- Legend(labels = names(dbd_colors), 
+                 legend_gp = gpar(fill = dbd_colors), 
+                 title = "DBD family", nrow = 2)
+
+legend_bait_1 <- grid.grabExpr(
+    hm1b <- ComplexHeatmap::draw(lgd_complex),
+    width = w_ipmsHm, height = h_ipmsHm / 8
+)
+legend_bait_2 <- grid.grabExpr(
+    hm1b <- ComplexHeatmap::draw(lgd_dbd),
+    width = w_ipmsHm, height = h_ipmsHm / 8
+)
+```
+
+
+### Bait-vs-bait, less stringent adjusted p-value threshold
+
+```{r heatmap-tstat-150-baits-0.05}
+#| fig.width: 6
+#| fig.height: 5
+
+nbrInteractors <- HeatmapAnnotation(
+    which = "column",
+    `Number of\ninteractors` = 
+        anno_barplot(x = rowSums(as.matrix(baitdata_150_loose$nbrIntMat[colnames(baitdata_150_loose$mat), 
+                                                     c("nbrTFs_samefam", 
+                                                       "nbrTFs_difffam")])), 
+                     gp = gpar(fill = na_color,
+                               col = na_color),
+                     border = FALSE, bar_width = 1.0,
+                     axis_param = list(gp = gpar(fontsize = fs)),
+                     width = unit(10, "mm")),
+    annotation_name_side = "left",
+    annotation_name_rot = 0,
+    annotation_name_gp = gpar(fontsize = fl))
+
+hm1b_loose <- Heatmap(baitdata_150_loose$mat, 
+                      cluster_rows = FALSE, 
+                      cluster_columns = FALSE, 
+                      col = makeHeatmapCol(baitdata_150_loose$mat, stringency = "low"), 
+                      border = TRUE, 
+                      border_gp = gpar(lwd = 0.5),
+                      name = "Mod.\nt-stat.", 
+                      na_col = binary_heatmap_colors["FALSE"],
+                      column_title = paste(c("150 mM NaCl", rep(" ", 45)), collapse = ""),
+                      row_title = "Transcription factors",
+                      column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
+                      row_title_gp = gpar(fontsize = fl),
+                      column_names_gp = gpar(fontsize = fs),
+                      row_names_gp = gpar(fontsize = fs),
+                      show_row_names = FALSE, show_column_names = FALSE,
+                      use_raster = FALSE, show_heatmap_legend = TRUE, 
+                      left_annotation = makeComplexAndDBDAnnotation(
+                          baitdata_150_loose$mat, 
+                          complexes[c("MBF transcription complex", 
+                                      "CCAAT-binding factor complex",
+                                      "Atf1-Pcr1")],
+                          dbd = dbd, 
+                          idmap = idmap),
+                      top_annotation = nbrInteractors, 
+                      width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
+                      heatmap_height = unit(h_ipmsHm / 2.2, "mm"), 
+                      heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                                  border = "gray10",
+                                                  border_gp = gpar(lwd = 0.5)))
+
+hm_150_0.05_bait <- grid.grabExpr(
+    hm1b <- draw(hm1b_loose, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+)
+
+plot_grid(hm_150_0.05_bait)
+```
+
+### SAGA/NuA4 heatmap
+
+```{r heatmap-tstat-saga-nua4}
+#| fig.width: 6
+#| fig.height: 8
+
+tc150 <- .getTestCols(sce150, adjp_cutoff = 0.05,
+                      logfc_cutoff = log2fcThreshold)
+keep_proteins <- .capitalize(c(complexes$SAGA$gene_names, complexes$NuA4$gene_names))
+keep_exp <- which(.getProteinNameFromComparison(colnames(tc150$adjp)) %in% 
+                      c("Ace2", "Pap1", "Rst2"))
+binary_mat <- tc150$adjp[keep_proteins, keep_exp] < 0.05 &
+    tc150$logfc[keep_proteins, keep_exp] > 1
+binary_mat[is.na(binary_mat)] <- FALSE
+colnames(binary_mat) <- .getProteinNameFromComparison(colnames(binary_mat))
+ordr <- order(rownames(binary_mat) %in% .capitalize(complexes$SAGA$gene_names), 
+              binary_mat[, "Ace2"], binary_mat[, "Pap1"], binary_mat[, "Rst2"], 
+              decreasing = TRUE)
+binary_mat <- binary_mat[ordr, ]
+
+binary_annot <- data.frame(NuA4 = rownames(binary_mat) %in% 
+                               .capitalize(complexes$NuA4$gene_names),
+                           SAGA = rownames(binary_mat) %in% 
+                               .capitalize(complexes$SAGA$gene_names), 
+                           row.names = rownames(binary_mat))
+
+mode(binary_mat) <- "character"
+ht_opt(HEATMAP_LEGEND_PADDING = unit(0, "mm"))
+hm1saga_nua4 <- Heatmap(
+    binary_mat, 
+    cluster_rows = FALSE, 
+    cluster_columns = FALSE, 
+    col = binary_heatmap_colors, 
+    border = TRUE, 
+    border_gp = gpar(lwd = 0.5),
+    name = " ", 
+    na_col = binary_heatmap_colors["FALSE"],
+    column_names_gp = gpar(fontsize = ft),
+    row_names_gp = gpar(fontsize = fl),
+    show_row_names = TRUE, show_column_names = TRUE, 
+    use_raster = FALSE, show_heatmap_legend = TRUE,
+    right_annotation = rowAnnotation(
+        df = binary_annot, 
+        col = list(SAGA = c(`TRUE` = complex_colors[["SAGA"]],
+                            `FALSE` = binary_heatmap_colors[["FALSE"]]),
+                   NuA4 = c(`TRUE` = complex_colors[["NuA4"]],
+                            `FALSE` = binary_heatmap_colors[["FALSE"]])),
+        show_legend = FALSE),
+    heatmap_height = unit(h_ipmsHm * 0.945, "mm"), # whole heatmap height
+    column_title_gp = gpar(fontsize = ft),
+    heatmap_legend_param = list(title_gp = gpar(fontsize = ft),
+                                at = c("FALSE", "TRUE"),
+                                labels = c("", "adj. p < 0.05 &\nlog2FC > 1"), 
+                                legend_gap = unit(0, "mm"))
+)
+
+hm_150_saga_nua4 <- grid.grabExpr(
+    hm1sn <- draw(hm1saga_nua4, merge_legend = TRUE,
+                  heatmap_legend_side = "bottom",
+                  annotation_legend_side = "right",
+                  align_heatmap_legend = "global_center",
+                  padding = unit(c(3, 1, 1, 1), "mm")),
+    width = w_ipmsHm, height = h_ipmsHm
+)
+
+plot_grid(hm_150_saga_nua4)
+ht_opt(RESET = TRUE)
+```
+
+### RNA / DNA binding proteins
+
+```{r heatmap-tstat-150-rnabinding}
+#| fig.width: 6
+#| fig.height: 5
+#| eval: true
+#| echo: true
+
+rnabinding <- read.delim(params$rnabinders)
+keep <- rownames(hmdata_150$tstat) %in% c(rnabinding$PomBaseID, .capitalize(rnabinding$Gene_name))
+sum(keep)
+hm1rna <- Heatmap(hmdata_150$tstat[keep, ], 
+                  cluster_rows = FALSE, 
+                  cluster_columns = TRUE, 
+                  col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                  border = TRUE, 
+                  border_gp = gpar(lwd = 0.5),
+                  name = "Mod.\nt-stat.", 
+                  na_col = binary_heatmap_colors["FALSE"],
+                  column_names_gp = gpar(fontsize = fs),
+                  row_names_gp = gpar(fontsize = fs),
+                  show_row_names = TRUE, show_column_names = FALSE,
+                  use_raster = FALSE, show_heatmap_legend = TRUE,
+                  # bottom_annotation = makeColLabels(tstat150[keep, ], colLabel_150, fl),
+                  #left_annotation = makeRowLabels(tstat150[keep, ], rowLabel, fl),
+                  width = unit(w_ipmsHm, "mm"), # heatmap body width
+                  heatmap_height = unit(h_ipmsHm/2, "mm"), # whole heatmap height
+                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+set.seed(42L)
+hm_150_rna <- grid.grabExpr(
+    hm1b <- draw(hm1rna, merge_legend = TRUE,
+                heatmap_legend_side = "right",
+                annotation_legend_side = "right"),
+    width = w_ipmsHm, height = h_ipmsHm/2
+)
+
+plot_grid(hm_150_rna)
+```
+
+```{r heatmap-tstat-150-dnabinding}
+#| fig.width: 6
+#| fig.height: 13
+#| eval: true
+#| echo: true
+
+dnabinding <- read.delim(params$dnabinders)
+keep <- rownames(hmdata_150$tstat) %in% c(dnabinding$PomBaseID, .capitalize(dnabinding$Gene_name))
+sum(keep)
+hm1dna <- Heatmap(hmdata_150$tstat[keep, ], 
+                  cluster_rows = FALSE, 
+                  cluster_columns = TRUE, 
+                  col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                  border = TRUE, 
+                  border_gp = gpar(lwd = 0.5),
+                  name = "Mod.\nt-stat.", 
+                  na_col = binary_heatmap_colors["FALSE"],
+                  column_names_gp = gpar(fontsize = fs),
+                  row_names_gp = gpar(fontsize = fs),
+                  show_row_names = TRUE, show_column_names = FALSE,
+                  use_raster = FALSE, show_heatmap_legend = TRUE,
+                  # bottom_annotation = makeColLabels(tstat150[keep, ], colLabel_150, fl),
+                  #left_annotation = makeRowLabels(tstat150[keep, ], rowLabel, fl),
+                  width = unit(w_ipmsHm, "mm"), # heatmap body width
+                  heatmap_height = unit(1.5 * h_ipmsHm, "mm"), # whole heatmap height
+                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+set.seed(42L)
+hm_150_dna <- grid.grabExpr(
+    hm1b2 <- draw(hm1dna, merge_legend = TRUE,
+                  heatmap_legend_side = "right",
+                  annotation_legend_side = "right"),
+    width = w_ipmsHm, height = 1.5 * h_ipmsHm
+)
+plot_grid(hm_150_dna)
+```
+
+## Summary heatmaps using results from the statistical tests (500 mM NaCl)
+
+### Overall heatmap
+
+```{r heatmap-tstat-500}
+#| fig.width: 6
+#| fig.height: 8
+
+hm2a <- Heatmap(hmdata_500$tstat, 
+                cluster_rows = FALSE, 
+                cluster_columns = FALSE, 
+                col = makeHeatmapCol(hmdata_500$tstat, stringency = "high"), 
+                border = TRUE, 
+                border_gp = gpar(lwd = 0.5),
+                column_split = hmdata_500$colsplit, 
+                name = "Mod.\nt-stat.", 
+                na_col = binary_heatmap_colors["FALSE"],
+                column_names_gp = gpar(fontsize = fs),
+                row_names_gp = gpar(fontsize = fs),
+                row_title = "Proteins significantly enriched in at least one experiment",
+                row_title_gp = gpar(fontsize = fl),
+                show_row_names = FALSE, show_column_names = FALSE,
+                use_raster = FALSE, show_heatmap_legend = TRUE,
+                right_annotation = makeComplexAnnotation(hmdata_500$tstat, complexes[complexLabel],
+                                                         idmap = idmap, show_legend = FALSE),
+                bottom_annotation = makeColLabels(hmdata_500$tstat, colLabel_500, fl),
+                width = unit(w_ipmsHm, "mm"), # heatmap body width
+                heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height
+                column_title_gp = gpar(fontsize = ft),
+                heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+hm_500 <- grid.grabExpr(
+    hm2a <- draw(hm2a, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_ipmsHm, height = h_ipmsHm
+)
+
+plot_grid(hm_500)
+```
+
+### Bait-vs-bait heatmap
+
+```{r heatmap-tstat-500-baits}
+#| fig.width: 6
+#| fig.height: 5
+
+nbrInteractors <- HeatmapAnnotation(
+    which = "column",
+    `Number of\ninteractors` = 
+        anno_barplot(x = rowSums(as.matrix(baitdata_500$nbrIntMat[colnames(baitdata_500$mat), 
+                                                     c("nbrTFs_samefam", 
+                                                       "nbrTFs_difffam")])), 
+                     gp = gpar(fill = na_color,
+                               col = na_color),
+                     border = FALSE, bar_width = 1.0,
+                     axis_param = list(gp = gpar(fontsize = fs)),
+                     width = unit(10, "mm")),
+    annotation_name_side = "left",
+    annotation_name_rot = 0,
+    annotation_name_gp = gpar(fontsize = fl))
+
+hm1b2 <- Heatmap(baitdata_500$mat, 
+                 cluster_rows = FALSE, 
+                 cluster_columns = FALSE, 
+                 col = makeHeatmapCol(baitdata_500$mat, stringency = "high"), 
+                 border = TRUE, 
+                 border_gp = gpar(lwd = 0.5),
+                 name = "Mod.\nt-stat.", 
+                 na_col = binary_heatmap_colors["FALSE"],
+                 column_title = paste(c("500 mM NaCl", rep(" ", 45)), collapse = ""),
+                 row_title = "Transcription factors",
+                 column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
+                 row_title_gp = gpar(fontsize = fl),
+                 column_names_gp = gpar(fontsize = fs),
+                 row_names_gp = gpar(fontsize = fs),
+                 show_row_names = FALSE, show_column_names = FALSE,
+                 use_raster = FALSE, show_heatmap_legend = TRUE,
+                 left_annotation = makeComplexAndDBDAnnotation(
+                     baitdata_500$mat, 
+                     complexes[c("MBF transcription complex", 
+                                 "CCAAT-binding factor complex", "Atf1-Pcr1")], 
+                     dbd = dbd, idmap = idmap),
+                 top_annotation = nbrInteractors, 
+                 width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
+                 heatmap_height = unit(h_ipmsHm / 2.2, "mm"), # whole heatmap height
+                 heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                            border = "gray10",
+                                            border_gp = gpar(lwd = 0.5)))
+
+hm_500_bait <- grid.grabExpr(
+    hm1b2 <- draw(hm1b2, merge_legend = TRUE,
+                  heatmap_legend_side = "right",
+                  annotation_legend_side = "right"),
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+)
+
+plot_grid(hm_500_bait)
+```
+
+## Compare t-statistics from low-salt and high-salt conditions
+
+The figures below show scatter plots of moderated t-statistics for selected 
+bait pull-downs compared to their complements, in the high-salt vs low-salt 
+conditions. 
+
+```{r tstat-150-vs-500}
+#| fig.width: 6
+#| fig.height: 7
+#| message: false
+
+## Extract results from statistical tests
+rdlow <- rowData(sce150)
+rdhigh <- rowData(sce500)
+
+## Get t-statistics
+contrasts_to_compare <- grep("\\.t$", colnames(rdhigh), value = TRUE)
+contrasts_low <- gsub("_compl", "_highsaltcompl", 
+                      gsub("_500_", "_150_", contrasts_to_compare))
+idx <- which(!contrasts_low %in% colnames(rdlow))
+contrasts_low[idx] <- gsub("_plate", "_tube", contrasts_low[idx])
+stopifnot(all(contrasts_low %in% colnames(rdlow)))
+
+## t-statistics, logFCs and adjusted p-values, low salt
+low <- as.data.frame(rdlow[, c("einprotId", contrasts_low)]) |>
+    tidyr::pivot_longer(names_to = "contrast_low", values_to = "tstat_low", -einprotId) |>
+    dplyr::mutate(contrast_low = sub("\\.t$", "", contrast_low)) |>
+    dplyr::left_join(
+        as.data.frame(rdlow[, c("einprotId", sub("\\.t$", ".adj.P.Val",
+                                                 contrasts_low))]) |>
+            tidyr::pivot_longer(names_to = "contrast_low", 
+                                values_to = "adjp_low", -einprotId) |>
+            dplyr::mutate(contrast_low = sub("\\.adj.P.Val$", "", contrast_low))) |>
+    dplyr::left_join(
+        as.data.frame(rdlow[, c("einprotId", sub("\\.t$", ".logFC",
+                                                 contrasts_low))]) |>
+            tidyr::pivot_longer(names_to = "contrast_low", 
+                                values_to = "logfc_low", -einprotId) |>
+            dplyr::mutate(contrast_low = sub("\\.logFC$", "", contrast_low)))
+
+## t-statistics, logFCs and adjusted p-values, high salt
+high <- as.data.frame(rdhigh[, c("einprotId", contrasts_to_compare)]) |>
+    tidyr::pivot_longer(names_to = "contrast_high", 
+                        values_to = "tstat_high", -einprotId) |>
+    dplyr::mutate(contrast_high = sub("\\.t$", "", contrast_high)) |>
+    dplyr::left_join(
+        as.data.frame(rdhigh[, c("einprotId", sub("\\.t$", ".adj.P.Val",
+                                                  contrasts_to_compare))]) |>
+            tidyr::pivot_longer(names_to = "contrast_high", 
+                                values_to = "adjp_high", -einprotId) |>
+            dplyr::mutate(contrast_high = sub("\\.adj.P.Val$", "", 
+                                              contrast_high))) |>
+    dplyr::left_join(
+        as.data.frame(rdhigh[, c("einprotId", sub("\\.t$", ".logFC",
+                                                  contrasts_to_compare))]) |>
+            tidyr::pivot_longer(names_to = "contrast_high", 
+                                values_to = "logfc_high", -einprotId) |>
+            dplyr::mutate(contrast_high = sub("\\.logFC$", "", 
+                                              contrast_high))) |>
+    dplyr::mutate(contrast_low = sub("\\.t$", "", 
+                                     contrasts_low[match(paste0(contrast_high, ".t"),
+                                                         contrasts_to_compare)]))
+
+## Merge data.frames
+lowhigh <- low |> dplyr::full_join(high) |>
+    dplyr::mutate(tstat_low = replace(tstat_low, is.na(tstat_low), 0),
+                  tstat_high = replace(tstat_high, is.na(tstat_high), 0),
+                  logfc_low = replace(logfc_low, is.na(logfc_low), 0),
+                  logfc_high = replace(logfc_high, is.na(logfc_high), 0),
+                  adjp_low = replace(adjp_low, is.na(adjp_low), 1),
+                  adjp_high = replace(adjp_high, is.na(adjp_high), 1)) |>
+    dplyr::mutate(bait = .getProteinNameFromComparison(contrast_low)) |>
+    dplyr::mutate(splitvar = .getProteinNameFromComparison(contrast_low))
+
+## Add dal2
+rddal2 <- rowData(scedal2)
+contrasts_low_dal2 <- c("Dal2_150_plate_vs_Untagged_150_plate.t")
+low_dal2 <- as.data.frame(rddal2[, c("einprotId", contrasts_low_dal2)]) |>
+    tidyr::pivot_longer(names_to = "contrast_low", 
+                        values_to = "tstat_low", -einprotId) |>
+    dplyr::mutate(contrast_low = sub("\\.t$", "", contrast_low)) |>
+    dplyr::left_join(
+        as.data.frame(rddal2[, c("einprotId", sub("\\.t$", ".adj.P.Val",
+                                                  contrasts_low_dal2))]) |>
+            tidyr::pivot_longer(names_to = "contrast_low", 
+                                values_to = "adjp_low", -einprotId) |>
+            dplyr::mutate(contrast_low = sub("\\.adj.P.Val$", "", contrast_low))) |>
+    dplyr::left_join(
+        as.data.frame(rddal2[, c("einprotId", sub("\\.t$", ".logFC",
+                                                  contrasts_low_dal2))]) |>
+            tidyr::pivot_longer(names_to = "contrast_low", 
+                                values_to = "logfc_low", -einprotId) |>
+            dplyr::mutate(contrast_low = sub("\\.logFC$", "", contrast_low)))
+
+contrasts_high_dal2 <- c("Dal2_500_plate_vs_Untagged_500_plate.t")
+high_dal2 <- as.data.frame(rddal2[, c("einprotId", contrasts_high_dal2)]) |>
+    tidyr::pivot_longer(names_to = "contrast_high", 
+                        values_to = "tstat_high", -einprotId) |>
+    dplyr::mutate(contrast_high = sub("\\.t$", "", contrast_high)) |>
+    dplyr::left_join(
+        as.data.frame(rddal2[, c("einprotId", sub("\\.t$", ".adj.P.Val",
+                                                  contrasts_high_dal2))]) |>
+            tidyr::pivot_longer(names_to = "contrast_high", 
+                                values_to = "adjp_high", -einprotId) |>
+            dplyr::mutate(contrast_high = sub("\\.adj.P.Val$", "", contrast_high))) |>
+    dplyr::left_join(
+        as.data.frame(rddal2[, c("einprotId", sub("\\.t$", ".logFC",
+                                                  contrasts_high_dal2))]) |>
+            tidyr::pivot_longer(names_to = "contrast_high", 
+                                values_to = "logfc_high", -einprotId) |>
+            dplyr::mutate(contrast_high = sub("\\.logFC$", "", contrast_high)))
+
+lowhigh_dal2 <- low_dal2 |> dplyr::full_join(high_dal2) |>
+    dplyr::mutate(tstat_low = replace(tstat_low, is.na(tstat_low), 0),
+                  tstat_high = replace(tstat_high, is.na(tstat_high), 0),
+                  logfc_low = replace(logfc_low, is.na(logfc_low), 0),
+                  logfc_high = replace(logfc_high, is.na(logfc_high), 0),
+                  adjp_low = replace(adjp_low, is.na(adjp_low), 1),
+                  adjp_high = replace(adjp_high, is.na(adjp_high), 1)) |>
+    dplyr::mutate(bait = .getProteinNameFromComparison(sub("SPB4775_", "", 
+                                                           contrast_low))) |>
+    dplyr::mutate(splitvar = .getProteinNameFromComparison(sub("SPB4775_", "",
+                                                               contrast_low)))
+
+lowhigh <- lowhigh |>
+    dplyr::bind_rows(lowhigh_dal2)
+
+## Subset 1
+adjp150vs500 <- 1e-3
+logfc150vs500 <- 1
+
+lowhighsub1 <- lowhigh |> 
+    dplyr::filter(splitvar %in% c("Ace2", "Rst2", "Pap1")) |>
+    dplyr::mutate(splitvar = factor(splitvar, levels = c("Ace2", "Rst2", "Pap1"))) |>
+    dplyr::mutate(significant = (adjp_high < adjp150vs500 & logfc_high > logfc150vs500)) |>
+    dplyr::mutate(complex = ifelse(einprotId %in% .capitalize(complexes$NuA4$gene_names), 
+                                   "NuA4", ifelse(einprotId %in% .capitalize(complexes$SAGA$gene_names),
+                                                  "SAGA", NA_character_)))
+
+## Subset 2
+lowhighsub2 <- lowhigh |> 
+    dplyr::filter(splitvar %in% c("Atf1", "Pcr1", "Moc3", 
+                                  "Dal2", "Ntu1", "Ntu2")) |>
+    dplyr::mutate(splitvar = factor(splitvar, levels = c("Atf1", "Pcr1", "Moc3", 
+                                                         "Dal2", "Ntu1", "Ntu2"))) |>
+    dplyr::mutate(significant = (adjp_high < adjp150vs500 & logfc_high > logfc150vs500))
+    
+(gg_retain1 <- ggplot(lowhighsub1, 
+                      aes(x = tstat_high, y = tstat_low)) +
+        geom_abline(data = lowhighsub1 |>
+                        dplyr::filter(einprotId == bait), 
+                    aes(slope = tstat_low / tstat_high, intercept = 0), 
+                    linetype = "dashed", color = "grey50") + 
+        geom_text_repel(data = lowhighsub1 |>
+                                dplyr::mutate(
+                                    einprotId = ifelse(significant, einprotId, "")),
+                        aes(label = einprotId), min.segment.length = 0,
+                        max.overlaps = Inf) + 
+        geom_point(aes(alpha = !is.na(complex), color = complex), 
+                   show.legend = c(alpha = FALSE, color = TRUE)) + 
+        scale_color_manual(values = complex_colors, na.value = "black",
+                           breaks = c("SAGA", "NuA4")) + 
+        scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25)) + 
+        geom_point(data = lowhighsub1 |> dplyr::filter(einprotId == bait) |>
+                       dplyr::mutate(type = "Bait"), 
+                   mapping = aes(fill = type), color = main_colors[3], 
+                   shape = 21, alpha = 1, size = 2) + 
+        scale_fill_manual(values = c(Bait = main_colors[3])) + 
+        facet_wrap(~ splitvar, scales = "free", ncol = 1, 
+                   labeller = labeller(splitvar = structure(
+                       paste0(unique(lowhighsub1$splitvar), " IP-MS"), 
+                       names = as.character(unique(lowhighsub1$splitvar))))) + 
+        labs(x = "500 mM NaCl\nmod. t-stat.", y = "150 mM NaCl mod. t-stat.") + 
+        theme_cowplot(ft) + 
+        theme(legend.position = "bottom", 
+              strip.background = element_rect(fill = NA, colour = NA), 
+              strip.text = element_text(hjust = 0, face = "bold")) + 
+        guides(color = guide_legend(nrow = 1, byrow = TRUE, title = ""),
+               fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+
+(gg_retain2 <- ggplot(lowhighsub2, 
+                      aes(x = tstat_high, y = tstat_low)) +
+        geom_abline(data = lowhighsub2 |> 
+                        dplyr::filter(einprotId == bait), 
+                    aes(slope = tstat_low / tstat_high, intercept = 0), 
+                    linetype = "dashed", color = "grey50") + 
+        geom_text_repel(data = lowhighsub2 |>
+                            dplyr::mutate(einprotId = ifelse(significant, einprotId, "")),
+                        aes(label = einprotId), min.segment.length = 0,
+                        max.overlaps = Inf) + 
+        geom_point(aes(alpha = significant, color = significant, size = significant), 
+                   show.legend = c(alpha = FALSE, color = TRUE, size = FALSE)) + 
+        scale_color_manual(
+            values = c(`TRUE` = lighten(main_colors[4], 0.2), `FALSE` = "black"), 
+            labels = c(`TRUE` = paste0("adj. p < ", adjp150vs500, 
+                                       " and logFC > ", logfc150vs500, " (500 mM NaCl)"),
+                       `FALSE` = paste0("adj. p >= ", adjp150vs500, 
+                                        " or logFC <= ", logfc150vs500, " (500 mM NaCl)"))) + 
+        scale_size_manual(values = c(`TRUE` = 2, `FALSE` = 1)) +
+        scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25)) + 
+        geom_point(data = lowhighsub2 |> 
+                       dplyr::filter(einprotId == bait) |>
+                       dplyr::mutate(type = "Bait"), 
+                   mapping = aes(fill = type), color = main_colors[3], 
+                   shape = 21, alpha = 1, size = 2) + 
+        scale_fill_manual(values = c(Bait = main_colors[3])) + 
+        facet_wrap(~ splitvar, scales = "free", ncol = 2, 
+                   labeller = labeller(splitvar = structure(
+                       paste0(unique(lowhighsub2$splitvar), " IP-MS"), 
+                       names = as.character(unique(lowhighsub2$splitvar))))) + 
+        labs(x = "500 mM NaCl mod. t-stat.", y = "150 mM NaCl mod. t-stat.") + 
+        theme_cowplot(ft) + 
+        theme(legend.position = "bottom", 
+              strip.background = element_rect(fill = NA, colour = NA), 
+              strip.text = element_text(hjust = 0, face = "bold")) + 
+        guides(color = guide_legend(nrow = 2, byrow = TRUE, title = ""),
+               fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+```
+
+## Supplementary plots - PCA
+
+```{r}
+## Low salt
+sce150_pca <- einprot::doPCA(
+    sce150[rowSums(!assay(sce150, 
+                          metadata(sce150)$aNames$assayImputIndic)) >= 2, ],
+    metadata(sce150)$aNames$assayImputed)$sce
+df <- scuttle::makePerCellDF(sce150_pca, features = NULL, use.coldata = TRUE, 
+                             use.dimred = TRUE) |>
+    dplyr::mutate(Protocol = .capitalize(sub("_digest|_freeze", "", sub("SOP_", "", Protocol))))
+pcvar150 <- attr(reducedDim(sce150_pca, "PCA_log2_LFQ.intensity"), "percentVar")
+(ggpca1 <- ggplot(
+    df, 
+    aes(x = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".1")]], 
+        y = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".2")]], 
+        color = Protocol)) + 
+    geom_point(size = 3, alpha = 0.5) +
+    scale_color_manual(values = c(Plate = main_colors[1], 
+                                  Tube = main_colors[5]), name = "") + 
+    coord_fixed() + 
+    labs(x = paste0("PC1 (", round(pcvar150[1], 1), "%)"), 
+         y = paste0("PC2 (", round(pcvar150[2], 1), "%)"), 
+         title = "150 mM NaCl") + 
+    theme_cowplot() + 
+    theme(legend.position = "bottom") + 
+    guides(color = guide_legend(nrow = 1, byrow = TRUE)))
+(ggpca2 <- ggplot(
+    df |>
+        dplyr::mutate(bait = ifelse(Gene_name == "atf1", "Atf1", "Other baits")) |>
+        dplyr::mutate(prot = .capitalize(prot)), 
+    aes(x = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".1")]], 
+        y = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".2")]], 
+        color = bait, shape = prot)) + 
+    geom_point(size = 3, alpha = 0.5) +
+    scale_color_manual(values = c(Atf1 = main_colors[3], 
+                                  `Other baits` = na_color), name = "") + 
+    scale_shape_manual(values = c(Plate = 16, Tube = 17), name = "") + 
+    coord_fixed() + 
+    labs(x = paste0("PC1 (", round(pcvar150[1], 1), "%)"), 
+         y = paste0("PC2 (", round(pcvar150[2], 1), "%)"), title = "150 mM NaCl") + 
+    theme_cowplot() + 
+    theme(legend.position = "bottom", legend.box = "horizontal", 
+          legend.margin = margin()))
+
+sce500_pca <- einprot::doPCA(
+    sce500[rowSums(!assay(sce500, metadata(sce500)$aNames$assayImputIndic)) >= 2, ],
+    metadata(sce500)$aNames$assayImputed)$sce
+df <- scuttle::makePerCellDF(sce500_pca, features = NULL, use.coldata = TRUE, 
+                             use.dimred = TRUE)
+pcvar500 <- attr(reducedDim(sce500_pca, "PCA_log2_LFQ.intensity"), "percentVar")
+(ggpca3 <- ggplot(
+    df |>
+        dplyr::mutate(bait = ifelse(Gene_name == "atf1", "Atf1", "Other baits")), 
+    aes(x = .data[[paste0("PCA_", metadata(sce500)$aNames$assayImputed, ".1")]], 
+        y = .data[[paste0("PCA_", metadata(sce500)$aNames$assayImputed, ".2")]], 
+        color = bait)) + 
+    geom_point(size = 3, alpha = 0.5) +
+    scale_color_manual(values = c(Atf1 = main_colors[3], 
+                                  `Other baits` = na_color), name = "") + 
+    coord_fixed() + 
+    labs(x = paste0("PC1 (", round(pcvar500[1], 1), "%)"), 
+         y = paste0("PC2 (", round(pcvar500[2], 1), "%)"), 
+         title = "500 mM NaCl") + 
+    theme_cowplot() + 
+    theme(legend.position = "bottom"))
+```
+
+## Supplementary plot - tube vs plate t-statistics for Atf1 pull-down
+
+The low-salt experiments were done using two different protocols (`tube` or 
+`plate`). The `Atf1` pull-down was performed with both protocols, and the 
+figure below compares the moderated t-statistics (each obtained by comparing 
+to the complement consisting of all non-`Atf1` pull-down samples obtained 
+with the same protocol). 
+
+```{r}
+df <- as.data.frame(rowData(sce150)) |>
+    dplyr::select(einprotId, Atf1_150_tube_vs_compl_Atf1_150_tube.t, 
+                  Atf1_150_plate_vs_compl_Atf1_150_plate.t) |>
+    dplyr::mutate(col = ifelse(einprotId == "Atf1", "bait", 
+                               ifelse(einprotId == "Pcr1", "Pcr1", "other")))
+(ggatf1 <- ggplot(df, aes(x = Atf1_150_tube_vs_compl_Atf1_150_tube.t, 
+                         y = Atf1_150_plate_vs_compl_Atf1_150_plate.t)) + 
+    geom_abline(slope = 1, intercept = 0) + 
+    geom_point(size = 3, aes(color = col, alpha = col)) + 
+    scale_color_manual(values = c(bait = main_colors[3], pcr1 = main_colors[4], 
+                                  other = "black")) + 
+    scale_alpha_manual(values = c(bait = 1, pcr1 = 1, other = 0.5)) + 
+    geom_text_repel(data = df |> filter(einprotId %in% c("Atf1", "Pcr1")), 
+                    aes(label = einprotId)) + 
+    labs(x = "Mod. t-stat. Atf1 vs complement\n(tube, 150 mM NaCl)", 
+         y = "Mod. t-stat. Atf1 vs complement\n(plate, 150 mM NaCl)") + 
+    coord_fixed() + 
+    theme_cowplot() + 
+    theme(legend.position = "none"))
+```
+
+
+## Put together
+
+```{r Fig4}
+#| fig.width: 9.8
+#| fig.height: 14.5
+
+cowplot::plot_grid(
+    hm_150,
+    plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
+    hm_500,
+    gg_retain2,
+    nrow = 2,
+    labels = c("A", "C", "B", "D"),
+    align = "v",
+    axis = "b"
+)
+```
+
+## Supplementary Figure
+
+```{r suppFig4}
+#| fig.width: 10.8
+#| fig.height: 14.8
+#| warning: false
+
+cowplot::plot_grid(
+    wrap_plots(ggpca1, ggpca2, ggatf1, ggpca3, hm_150_bait, hm_500_bait, ncol = 2) + 
+        plot_annotation(tag_levels = list(c("A", "", "", "", "B"))) & 
+        theme(plot.tag = element_text(size = 14, face = "bold")),
+    cowplot::plot_grid(
+        NULL,
+        legend_bait_1, 
+        legend_bait_2,
+        NULL,
+        nrow = 1,
+        rel_widths = c(1, 2, 2, 1)
+    ),
+    ncol = 1,
+    rel_heights = c(12, 1)
+)
+```
+
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
