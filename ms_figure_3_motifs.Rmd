@@ -1,0 +1,715 @@
+---
+title: "Figure 3 - Motifs"
+author: "Michael Stadler, Charlotte Soneson, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+params:
+    dbdtxt: "data/TF_DBD_annotation.txt"
+    motifrds: "data/motifs_annotated.rds"
+    peakcsv: "data/fused_peaks_filtered.csv.gz"
+    genomefasta: "reference/Schizosaccharomyces_pombe.ASM294v2.dna.toplevel.fa"
+    ncpu: 4
+editor_options: 
+    chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+```
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages
+
+```{r load-packages}
+suppressPackageStartupMessages({
+    library(circlize)
+    library(ComplexHeatmap)
+    library(grid)
+    library(ggplot2)
+    library(cowplot)
+    library(dplyr)
+    library(tidyr)
+    library(universalmotif)
+    library(TFBSTools)
+    library(GenomicRanges)
+    library(parallel)
+    library(colorspace)
+    library(forcats)
+    library(monaLisa)
+    library(ggrepel)
+    library(Biostrings)
+    library(ggupset)
+})
+
+source("params/plot_settings.R")
+
+# capitalize the first letter of a string
+.capitalize <- function(x) {
+    paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x)))
+}
+```
+
+# Read data
+
+We start by reading all tables and objects needed for this figure.
+Factor levels are defined in the order they should appear in the figure
+panels, and peak sequences are extracted from the genome.
+
+Remark: Motifs are read from the `r params$motifrds` file, which is in
+`.rds` format that can be used by `R`. The motifs are also available in the
+file [`data/motifs.meme`](data/motifs.meme), which is a plain text file with the
+motifs in the MEME format: https://meme-suite.org/meme/doc/meme-format.html.
+
+```{r load-data}
+# `dbd`: Transcription factor DNA binding domain information
+dbd <- read.delim(params$dbdtxt) |>
+    dplyr::mutate(cons = factor(ifelse(Conserved_human, "yes", "no"),
+                                levels = c("yes", "no")),
+                  DBD_class_simple = factor(
+                      ifelse(DBD_class == "Zn(II)2Cys6", "Zn(II)2Cys6", "other"),
+                      levels = c("other", "Zn(II)2Cys6")))
+
+# `motifs`: table with annotated motif
+motifs <- readRDS(params$motifrds)
+motifs$altname <- motifs$name
+
+# ... extract motifs as TFBSTools::PFMatrixList
+umL <- universalmotif::to_list(motifs)
+pfmL <- do.call(TFBSTools::PFMatrixList,
+                lapply(seq.int(nrow(motifs)), function(i) {
+                    universalmotif::convert_motifs(motifs = umL[[i]],
+                                                   class = "TFBSTools-PFMatrix")
+                }))
+
+# `gnm`: S. pombe reference genome sequence
+gnm <- readDNAStringSet(params$genomefasta)
+names(gnm) <- sub(" .*$", "", names(gnm))
+
+# `peakgr`: ChIP-seq peaks as GRanges object
+peakgr <- as(read.csv(params$peakcsv, row.names = 1), "GRanges")
+peakgr$peaktype <- factor(.capitalize(peakgr$peaktype),
+                          levels = c("Common peaks (ubiquitous)",
+                                     "Common peaks (frequent)",
+                                     "Specific peaks"))
+peakgr_specific <- peakgr[peakgr$peaktype == "Specific peaks"]
+
+# ... extract peak enrichment matrix
+is_enr <- as.matrix(mcols(peakgr)[, grep("^is_enr_in[.]", colnames(mcols(peakgr)))])
+colnames(is_enr) <- sub("^is_enr_in.", "", colnames(is_enr))
+is_enr_specific <- as.matrix(mcols(peakgr_specific)[, grep("^is_enr_in[.]", colnames(mcols(peakgr_specific)))])
+colnames(is_enr_specific) <- sub("^is_enr_in.", "", colnames(is_enr_specific))
+
+# ... extract peak sequences from genome
+peakseqs <- getSeq(gnm, peakgr)
+peakseqs_specific <- getSeq(gnm, peakgr_specific)
+```
+
+# Helper functions
+
+Here we define some helper functions that are used to generate this figure:
+
+- `calcKmerEnr`: Counts the frequencies of k-mer words of length `k` in
+  a set of sequences (`seqs`) that are grouped into foreground/background sets
+  by `fg`, and calculates enrichment values for each k-mer word comparing
+  the foreground frequencies to either the background sequences
+  (`bg_type = "other"`) or to a Markov model of order `Markov_order` that is
+  estimated from the foreground sequences.
+- `kmerEnrPlot`: Calls `calcKmerEnr` to obtain k-mer enrichments and visualizes
+  them in a scatter plot (each point corresponding to a k-mer), with x- and y-axis
+  coordinates corresponding to the log k-mer frequency in foreground sequences
+  and the log k-mer enrichment, respectively.
+- `create_cobound_peaks_plot`: Upset plot showing co-bound peaks for a set of TFs.
+
+```{r helpers}
+calcKmerEnr <- function(k = 5, # k-mer length
+                        seqs,  # DNAStringSet
+                        fg,    # logical vector of foreground in `seqs`
+                        bg_type = c("other", "Markov"),
+                        Markov_order = 1,
+                        include_revcomp = TRUE,
+                        ... # forwarded to monaLisa::getKmerFreq
+                        ) {
+    # digest arguments
+    bg_type <- match.arg(bg_type)
+    stopifnot(exprs = {
+        is.numeric(k) && length(k) == 1L
+        is(seqs, "DNAStringSet")
+        is.logical(fg) && length(fg) == length(seqs)
+        is.numeric(Markov_order) && length(Markov_order) == 1L
+    })
+    
+    # fg
+    fg_kmers <- monaLisa::getKmerFreq(seqs[fg], kmerLen = k,
+                                      MMorder = Markov_order,
+                                      includeRevComp = include_revcomp,
+                                      ...)
+    fg_freq <- fg_kmers$freq.obs
+    kmers <- names(fg_freq)
+
+    # bg
+    if (identical(bg_type, "other")) {
+        bg_kmers <- monaLisa::getKmerFreq(seqs[!fg], kmerLen = k,
+                                          MMorder = Markov_order,
+                                          includeRevComp = include_revcomp,
+                                          ...)
+        bg_freq <- bg_kmers$freq.obs
+    } else if (bg_type == "Markov") {
+        bg_freq <- fg_kmers$freq.exp
+    }
+    
+    # norm
+    N <- min(sum(fg_freq), sum(bg_freq))
+    fg_freq_norm <- fg_freq / sum(fg_freq) * N
+    bg_freq_norm <- bg_freq / sum(bg_freq) * N
+
+    # return results
+    return(list(kmers = names(fg_freq),
+                fg_kmers = fg_kmers,
+                fg_freq = fg_freq,
+                fg_freq_norm = fg_freq_norm,
+                bg_kmers = bg_kmers,
+                bg_freq = bg_freq,
+                bg_freq_norm = bg_freq_norm,
+                pearsonresid = (fg_freq_norm - bg_freq_norm) /
+                         sqrt(bg_freq_norm),
+                nCG = vcountPattern("C", kmers) + vcountPattern("G", kmers)))
+}
+    
+    
+    
+kmerEnrPlot <- function(k = 5, # k-mer length
+                        seqs,  # DNAStringSet
+                        fg,    # logical vector of foreground in `seqs`
+                        bg_type = c("other", "Markov"),
+                        Markov_order = 1,
+                        colorByMotif = NULL,
+                        nlabel = 0,
+                        title = NULL,
+                        auto_subtitle = FALSE,
+                        jitter_x = FALSE,
+                        include_revcomp = TRUE,
+                        font_size = 14,
+                        ... # forwarded to monaLisa::getKmerFreq
+                        ) {
+    # digest arguments
+    stopifnot(exprs = {
+        is.null(colorByMotif) || is(colorByMotif, "PFMatrixList")
+        is.numeric(nlabel) && length(nlabel) == 1L
+        is.null(title) || (is.character(title) && length(title) == 1L)
+    })
+    
+    # calculate k-mer enrichments
+    enr <- calcKmerEnr(k = k,
+                       seqs = seqs,
+                       fg = fg,
+                       bg_type = bg_type,
+                       Markov_order = Markov_order,
+                       include_revcomp = include_revcomp)
+    
+    # enrichment plot
+    jitter_amount <- if (jitter_x) 0.5 else 0
+    pd <- data.frame(kmer = enr$kmers,
+                     fg_freq = enr$fg_freq,
+                     bg_freq = enr$bg_freq,
+                     fg_freq_norm = enr$fg_freq_norm,
+                     bg_freq_norm = enr$bg_freq_norm,
+                     pearsonresid = enr$pearsonresid,
+                     nCG = enr$nCG,
+                     jitter_x = runif(length(enr$kmers),
+                                      min = -jitter_amount, max = jitter_amount))
+    if (!is.null(colorByMotif)) {
+        pd$score <- monaLisa::motifKmerSimilarity(x = colorByMotif, kmerLen = k,
+                                                  includeRevComp = include_revcomp)[1, ]
+    }
+
+    # ... base plot
+    p <- ggplot(pd, aes(fg_freq + 1 + jitter_x, pearsonresid)) +
+        scale_x_log10() +
+        labs(title = if (is.null(title)) element_blank() else title,
+             x = paste0(k, "-mer frequency in peaks + 1"),
+             y = paste0(k, "-mer enrichment")) +
+        theme_cowplot(font_size) +
+        theme(legend.position = "none")
+    # ... subtitle
+    if (auto_subtitle) {
+        if (identical(bg_type, "Markov")) {
+            p <- p + labs(subtitle = paste0(k, "-mer enrichments (background: ",
+                                            Markov_order,
+                                            "th-order Markov model)"))
+        } else if (identical(bg_type, "other")) {
+            p <- p + labs(subtitle = paste0(k, "-mer enrichments (background: other peaks)"))
+        }
+    }
+    # ... points
+    if (is.null(colorByMotif)) {
+        p <- p + geom_point(color = "gray62", alpha = 0.5, size = 1.5 * font_size / 14) +
+            geom_hline(yintercept = 0, linetype = "dashed")
+    } else {
+        p <- p +
+            geom_point(mapping = aes(color = score^0.4), alpha = 0.5) +
+            scale_colour_gradientn(colors = hcl.colors(11, "Oslo")[-1]) +
+            geom_hline(yintercept = 0, linetype = "dashed")
+    }
+    # ... point labels
+    if (nlabel > 0) {
+        p <- p + geom_text_repel(
+            # data = pd[order(pd$pearsonresid,
+            #                 decreasing = TRUE)[seq.int(nlabel)], ],
+            data = pd |>
+                arrange(desc(pearsonresid)) |>
+                mutate(label_i = seq_along(pearsonresid),
+                       kmerrc = as.character(reverseComplement(DNAStringSet(kmer))),
+                       labelrc_i = match(kmer, kmerrc),
+                       label_str = ifelse(label_i <= nlabel & label_i <= labelrc_i, kmer, "")),
+            mapping = aes(label = label_str), min.segment.length = 0,
+            size = font_size / ggplot2::.pt, color = "black",
+            max.overlaps = Inf)
+    }
+    
+    # return plot
+    return(p)
+}
+
+create_cobound_peaks_plot <- function(sel_tfs) {
+    stopifnot(all(sel_tfs %in% colnames(is_enr)))
+    
+    ovL <- as.list(as.data.frame(is_enr[, sel_tfs]))
+    ovL <- lapply(ovL, function(i) rownames(is_enr)[i])
+
+    pd <- stack(ovL) |>
+        group_by(values) |>
+        summarise(ind = list(ind)) |>
+        mutate(peaktype = peakgr[values]$peaktype)
+
+    ggplot(pd, aes(x = ind)) +
+        geom_bar(aes(fill = peaktype)) +
+        scale_fill_manual(values = peakset_colors) +
+        scale_x_upset() +
+        labs(x = element_blank(), y = "Number of peaks", fill = "Peak type:  ") +
+        theme_cowplot(12) +
+        theme(axis.ticks.x = element_blank(),
+              legend.position = "bottom") +
+        theme_combmatrix(combmatrix.label.extra_spacing = 5,
+                         combmatrix.label.make_space = TRUE,
+                         combmatrix.label.width = unit(18, "mm")) +
+        guides(fill = guide_legend(nrow = 3))
+}
+```
+
+# Figure 3
+
+## Zn(II)2Cys6 family motifs
+
+### Zn(II)2Cys6 TF motifs k-mer enrichment plots
+
+Frequency and enrichments of 6-mer sequence words in ChIP-seq peaks from
+transcription factors of the Zn(II)2Cys6 (GAL4) family:
+
+```{r plot-ZnII2Cys6-kmer}
+#| fig-width: 6
+#| fig-height: 6
+# select motifs of TFs from the Zn(II)2Cys6 family
+sel_motifs <- motifs[motifs$family == "Zn(II)2Cys6", "name"]
+tf_names <- sub("[.]m[0-9]+$", "", sel_motifs)
+
+# select a single TF and motif of interest ("Toe3.m1")
+sel_motif_idx_1 <- 7
+motif_name1 <- sel_motifs[sel_motif_idx_1]
+
+# plot 6-mer enrichments in enriched peaks from which the motif was identified
+ZnII2Cys6_kmer_1 <- kmerEnrPlot(k = 6,
+                                seqs = peakseqs_specific,
+                                fg = is_enr_specific[, tf_names[sel_motif_idx_1]],
+                                bg_type = "other",
+                                title = sel_motifs[sel_motif_idx_1],
+                                nlabel = 9,
+                                colorByMotif = pfmL[match(sel_motifs[sel_motif_idx_1], name(pfmL))],
+                                font_size = 10)
+
+plot_grid(ZnII2Cys6_kmer_1)
+```
+
+### Zn(II)2Cys6 TF `CCG`, `CGG` enrichments (TF peaks from `r length(sel_motifs)` selected motifs)
+
+```{r hm-ZnII2Cys6-selected-3mer-enr}
+#| fig-width: 8
+#| fig-height: 4
+
+# select Zn(II)2Cys6 TFs
+tf_names <- c("Cha4", "Mca1", "Moc3", "Pho7", "Prt1", 
+              "Grt1", "Gsf1", "Thi1", "Thi5", "Toe1", 
+              "Toe2", "Toe3", "Toe4", "SPAC11D3.11c", "SPAC1327.01c", 
+              "SPAC1F7.11c", "SPAC25B8.11", "SPAC2H10.01", "SPAC3C7.04", 
+              "SPAC3H8.08c", "SPBC1348.12", "Ntu1", "SPBC16G5.17", 
+              "SPBC1773.12", "SPBC1773.16c", "Ntu2", "SPBC56F2.05c", 
+              "SPCC320.03", "SPCC417.09c", "SPCC757.04", "SPCC777.02", 
+              "SPCC965.10") 
+length(tf_names)
+
+# filter out not ChIP'ed TFs or TFs with less than `min_peaks_specific` specific peaks
+min_peaks_specific <- 3
+n_peaks_specific <- colSums(
+    is_enr_specific[, intersect(colnames(is_enr_specific), tf_names)]
+    )[tf_names]
+tf_names <- tf_names[!is.na(n_peaks_specific) & n_peaks_specific >= min_peaks_specific]
+length(tf_names)
+
+# calculate 3-mer enrichments
+enr_list_3mers <- list()
+for (i in seq_along(tf_names)) {
+    enr_list_3mers[[i]] <- calcKmerEnr(k = 3,
+                                       seqs = peakseqs_specific,
+                                       fg = is_enr_specific[, tf_names[i]],
+                                       bg_type = "other")
+}
+
+enr_3mers <- do.call(rbind, lapply(enr_list_3mers, "[[", "pearsonresid"))
+rownames(enr_3mers) <- tf_names
+
+# plot heatmap
+# ... define heatmap font sizes
+fs <- 5.5
+fl <- 8
+
+# ... calculate data range for mapping to colors
+mx <- max(abs(enr_3mers))
+qs <- quantile(abs(enr_3mers), .99)
+
+# ... prepare heatmap annotations:
+#      nCG: number of G+C bases in the 3-mer word
+#      highlight: emphasize CCG, CGG, GGC and GCC
+kmer_annot <- columnAnnotation(
+    nCG = vcountPattern("S", DNAStringSet(colnames(enr_3mers)), fixed = FALSE),
+    highlight = ifelse(colnames(enr_3mers) %in% c("CCG", "CGG", "GGC", "GCC"), "1", "0"),
+    col = list(highlight = c("0" = bg_color, "1" = "black"),
+               nCG = structure(hcl.colors(5, "Greens")[-5], names = 3:0)),
+    show_legend = c(TRUE, FALSE), show_annotation_name = c(FALSE, FALSE),
+    annotation_name_gp = gpar(fontsize = fl),
+    annotation_legend_param = list(labels_gp = gpar(fontsize = fl),
+                                   ncol = 4,
+                                   title = "Number of G+C   ",
+                                   title_position = "lefttop",
+                                   title_gp = gpar(fontsize = fl)),
+    simple_anno_size = unit(3, "mm"))
+
+# ... generate main heatmap with annotations
+hm_3mers <- Heatmap(enr_3mers, name = "Pearson's resid.",
+                    col = circlize::colorRamp2(
+                        breaks = c(-mx, seq(-qs, qs, length.out = 62), mx),
+                        colors = colorRampPalette(enrichment_heatmap_colors)(64)),
+                    cluster_rows = TRUE, show_row_dend = FALSE,
+                    column_dend_reorder = match(colnames(enr_3mers),
+                                                c("GCG", "CCG", "GGC", "GGG"),
+                                                nomatch = 100),
+                    cluster_columns = TRUE, column_dend_height = unit(10, "mm"),
+                    row_names_gp = gpar(fontsize = fl, fontfamily = "sans"),
+                    column_names_gp = gpar(fontsize = fs, fontfamily = "mono"),
+                    border = TRUE, border_gp = gpar(lwd = 0.5),
+                    show_row_names = TRUE, show_column_names = TRUE,
+                    use_raster = FALSE, show_heatmap_legend = TRUE,
+                    bottom_annotation = kmer_annot,
+                    heatmap_legend_param = list(at = round(c(-mx, 0, mx), 1),
+                                                labels_gp = gpar(fontsize = fl),
+                                                border = "gray10",
+                                                legend_direction = "horizontal",
+                                                legend_width = unit(25, "mm"),
+                                                title = "3-mer enrichment   ",
+                                                title_position = "lefttop",
+                                                title_gp = gpar(fontsize = fl)),
+                    width = unit(130, "mm"), # heatmap body width
+                    height = unit(3 * nrow(enr_3mers), "mm"))
+
+# draw the heatmap and grab as a grid graphics `grob`
+# (needed for combining figure panels)
+# use defined random number seed to make clustering deterministic
+set.seed(42L)
+hm_ZnII2Cys6_sel_3mers <- grid.grabExpr(
+    hm_3mers <- draw(hm_3mers, merge_legend = TRUE,
+                     heatmap_legend_side = "bottom",
+                     annotation_legend_side = "right"),
+    width = 40, height = 140
+)
+
+plot_grid(hm_ZnII2Cys6_sel_3mers)
+```
+
+
+## Known and new motif characterization
+
+Display information for selected motifs (`sel_motifs`, containing examples for 
+both previously known and novel motifs):
+
+```{r plot-known-new-details}
+#| fig-width: 12
+#| fig-height: 2.75
+#| warning: false
+
+# select motifs for detailed visualization
+sel_motifs <- c(
+    # known
+    "Cdc10.m1",
+    # novel
+    "Toe2.m1", "Ams2.m1", "Esc1.m1",
+    "SPAC3F10.12c.m1", "Zip1.m1", "Adn2.m4")
+tf_names <- sub("[.]m[0-9]+$", "", sel_motifs)
+
+# create motif visualizations
+# ... setup plotting parameters
+fgbg_col <- c(main_colors[1], main_colors[5]) # colors for foreground and background
+gnm_col <- na_color # color for NA or "other"
+w <- 2500  # width in bases around peak-center for meta-profiles
+fs <- 9 # font size
+nlabel <- 1 # number of k-mer words to label in enrichment plot
+
+# ... iterate over motifs
+motif_characterization_plots <- list()
+for (i in seq_along(sel_motifs)) {
+    # get motif info
+    m1 <- motifs$motif[match(sel_motifs[i], motifs$name)]
+    is_fg_specific <- is_enr_specific[, tf_names[i]]
+    fg_peak_names <- names(peakgr)[is_enr[, tf_names[i]]]
+    bg_peak_names <- setdiff(names(peakgr), fg_peak_names)
+    fgbg_num <- c(length(fg_peak_names), length(bg_peak_names))
+    fgbg_names <- sprintf("%s (%d)", c("foreground", "background"), fgbg_num)
+    fgbg_names_short <- sprintf("%d", fgbg_num)
+
+    
+    # scan genome sequence with motif
+    hits_genome <- universalmotif::scan_sequences(motifs = m1,
+                                                  sequences = gnm,
+                                                  threshold = 1e-4,
+                                                  threshold.type = "pvalue", 
+                                                  RC = TRUE,
+                                                  verbose = if (interactive()) 3 else 0,
+                                                  nthreads = params$ncpu,
+                                                  return.granges = TRUE)
+
+    # seqlogo
+    gg1_seqlogo <- universalmotif::view_motifs(
+        motifs = m1,
+        show.positions = FALSE) +
+        labs(title = sel_motifs[i],
+             subtitle = paste0(sum(is_fg_specific), " specific peaks")) +
+        theme_cowplot(fs) +
+        theme(axis.text.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              axis.line.x = element_blank(),
+              legend.position = "none")
+    
+    # k-mer enrichments
+    gg1_kmers <- kmerEnrPlot(k = 6,
+                             seqs = peakseqs_specific,
+                             fg = is_enr_specific[, tf_names[i]],
+                             bg_type = "other",
+                             nlabel = nlabel,
+                             colorByMotif = pfmL[match(sel_motifs[i], name(pfmL))],
+                             font_size = fs) +
+        labs(x = "6-mer freq. + 1",
+             y = "6-mer enr.") +
+        theme(legend.position = "none")
+    
+    # motif location relative to peak mid
+    nrst <- distanceToNearest(x = resize(hits_genome, width = 1L, fix = "center"),
+                              subject = resize(peakgr, width = 1L, fix = "center"))
+    nrst_fg <- nrst[subjectHits(nrst) %in% match(fg_peak_names, names(peakgr))]
+    nrst_bg <- nrst[subjectHits(nrst) %in% match(bg_peak_names, names(peakgr))]
+    relpos_fg <- mid(ranges(hits_genome))[queryHits(nrst_fg)] - mid(ranges(peakgr))[subjectHits(nrst_fg)]
+    relpos_bg <- mid(ranges(hits_genome))[queryHits(nrst_bg)] - mid(ranges(peakgr))[subjectHits(nrst_bg)]
+    pd_loc <- data.frame(motif = rep(sel_motifs[i], length(nrst_fg) + length(nrst_bg)),
+                         relpos = c(relpos_fg, relpos_bg),
+                         type = factor(rep(c(fgbg_names[1], fgbg_names[2]),
+                                           c(length(nrst_fg), length(nrst_bg))),
+                                       levels = fgbg_names))
+    gg1_loc <- ggplot(pd_loc |> filter(abs(relpos) < w + 500),
+                 aes(relpos / 1000, color = type)) +
+        geom_density(linewidth = 1) +
+        geom_vline(xintercept = 0, linetype = "dotted") +
+        scale_y_continuous(n.breaks = 3) +
+        scale_x_continuous(limits = c(-w, w) / 1000, expand = expansion(mult = 0)) +
+        scale_color_manual(values = structure(fgbg_col, names = fgbg_names)) +
+        annotate("text", x = w / 1000, y = Inf, hjust = 1, vjust = 1,
+                 label = paste0(c("", "\n"), fgbg_names_short),
+                 colour = fgbg_col, fontface = "bold", size = fs / ggplot2::.pt) +
+        labs(x = "Position relative to peak center (kb)",
+             y = "Density of motifs") +
+        theme_cowplot(fs) +
+        theme(legend.position = "none",
+              legend.justification = c(1, 1))
+
+    # motif hit enrichment in genomic regions
+    ov <- findOverlaps(query = hits_genome, subject = peakgr)
+    ov_type <- rep("non-peak", length(hits_genome))
+    ov_type[queryHits(ov)] <- 
+        ifelse(subjectHits(ov) %in% match(fg_peak_names, names(peakgr)),
+               fgbg_names[1], fgbg_names[2])
+    ov_type <- factor(ov_type,
+                      levels = c("non-peak", fgbg_names[2], fgbg_names[1]))
+    n_ov_obs <- unclass(table(hits_genome$motif, ov_type))
+    n_ov_exp <- unclass(table(hits_genome$motif)) %*%
+        t(structure(c(sum(seqlengths(hits_genome)) - sum(width(peakgr)),
+                      sum(width(peakgr[bg_peak_names])),
+                      sum(width(peakgr[fg_peak_names]))),
+                    names = colnames(n_ov_obs)) / sum(seqlengths(hits_genome)))
+
+    pd_counts <- full_join(as.data.frame(n_ov_obs) |>
+                               mutate(motif = "motif") |>
+                               pivot_longer(cols = all_of(levels(ov_type)),
+                                            names_to = "type",
+                                            values_to = "observed"),
+                           as.data.frame(n_ov_exp) |>
+                               mutate(motif = "motif") |>
+                               pivot_longer(cols = all_of(levels(ov_type)),
+                                            names_to = "type",
+                                            values_to = "expected"),
+                           by = join_by(motif, type)) |>
+        dplyr::mutate(enr = observed / expected) |>
+        pivot_longer(cols = all_of(c("observed", "expected")),
+                     names_to = "obsexp", values_to = "val") |>
+        dplyr::mutate(type = factor(type, levels = c("non-peak", fgbg_names[2:1]))) |>
+        group_by(motif, obsexp) |>
+        mutate(tot = sum(val),
+               percentage = val / tot) |>
+        ungroup()
+    pd_counts <- rbind(pd_counts |>
+                           filter(obsexp == "observed") |>
+                           dplyr::select(motif, type, enr, percentage),
+                       pd_counts |>
+                           filter(obsexp == "expected" & motif == pd_counts[[1,"motif"]]) |>
+                           mutate(motif = "expected") |>
+                           dplyr::select(motif, type, enr, percentage)
+    ) |> mutate(motif = relevel(factor(motif), "expected"))
+
+    gg_ov_counts <- ggplot(pd_counts, aes(percentage, motif, fill = type)) +
+        geom_col(position = position_stack()) +
+        scale_x_continuous(labels = scales::label_percent(),
+                           expand = expansion(mult = c(0, 0.15))) +
+        scale_fill_manual(values = structure(c(gnm_col, fgbg_col[2:1]),
+                                             names = levels(pd_counts$type))) +
+        geom_text(data = pd_counts |> filter(grepl("foreground", type)),
+                  aes(x = 1, label = sprintf("%.1f%%", percentage * 100)),
+                  colour = fgbg_col[1], hjust = -0.1, vjust = 0.5,
+                  size = fs / ggplot2::.pt,
+                  fontface = "bold") +
+        labs(x = "Fraction of motif sites",
+             y = element_blank(),
+             fill = "Genomic region: ") +
+        theme_cowplot(fs) +
+        theme(legend.position = "none") +
+        guides(fill = guide_legend(nrow = 3))
+
+    pd_enr <- pd_counts |> filter(motif != "expected") |>
+        dplyr::select(c("motif","type","enr")) |> unique()
+    levels(pd_enr$type) <- c("non-peak", "backgr.", "foregr.")
+    gg_ov_enr <- ggplot(pd_enr, aes(enr, type, fill = type)) +
+        geom_col(position = position_dodge2()) +
+        scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+        geom_vline(xintercept = 1, linetype = "dotted") +
+        scale_fill_manual(values = structure(c(gnm_col, fgbg_col[2:1]),
+                                             names = levels(pd_enr$type))) +
+        # facet_wrap(~ motif, nrow = 1) +
+        labs(x = "Motif site enrichment (obs/exp)",
+             y = element_blank(),
+             fill = "Genomic region: ") +
+        theme_cowplot(fs) +
+        theme(legend.position = "bottom") +
+        guides(fill = guide_legend(nrow = 3))
+    
+    gg_ov_enr_legend <- cowplot::get_legend(gg_ov_enr)
+    gg_ov_enr <- gg_ov_enr + theme(legend.position = "none")
+    
+    # put panels together
+    motif_characterization_plots[[i]] <- cowplot::plot_grid(
+        cowplot::plot_grid(gg1_seqlogo, NULL, ncol = 1, rel_heights = c(0.87, 0.13)),
+        gg1_kmers,
+        gg1_loc,
+        cowplot::plot_grid(gg_ov_counts,
+                           gg_ov_enr,
+                           align = "v", axis = "l",
+                           nrow = 2,
+                           rel_heights = c(1, 1.2)),
+        # align = "h", axis = "tb",
+        nrow = 1,
+        rel_widths = c(1, 1, 1, 1.4)
+    )
+    
+    print(motif_characterization_plots[[i]])
+}
+
+# add legend
+motif_characterization_plots[[length(motif_characterization_plots) + 1]] <-
+    cowplot::plot_grid(NULL, NULL, NULL, gg_ov_enr_legend,
+                       nrow = 1, rel_widths = c(1, 1, 1, 1.4))
+```
+
+## Co-bound peaks for selected transcription factors
+
+```{r co-bound-peaks}
+(p_cobound_1 <- create_cobound_peaks_plot(sel_tfs = c("Ams2", "Zas1", "Teb1")))
+(p_cobound_2 <- create_cobound_peaks_plot(sel_tfs = c("Esc1", "SPAC3F10.12c")))
+```
+
+## Put together
+
+Assemble the panels into Figure 3:
+
+```{r Fig3}
+#| fig.width: 11
+#| fig.height: 15.5
+
+cowplot::plot_grid(
+    cowplot::plot_grid(
+        cowplot::plot_grid(ZnII2Cys6_kmer_1, scale = 0.85),
+        hm_ZnII2Cys6_sel_3mers,
+        labels = c("A", "B"),
+        rel_widths = c(2, 3.2),
+        nrow = 1
+    ),
+    cowplot::plot_grid(
+        plotlist = motif_characterization_plots,
+        ncol = 1,
+        rel_heights = c(rep(1, length(motif_characterization_plots) - 1), 0.4)),
+    nrow = 2,
+    labels = c("", "C"),
+    align = "vh",
+    axis = "b",
+    rel_heights = c(1.4, 3.7)
+)
+```
+
+## Supplementary figure
+
+Assemble the panels into Supplementary Figure 3:
+
+```{r suppFig3}
+#| fig.width: 4.5
+#| fig.height: 6
+
+cowplot::plot_grid(
+    p_cobound_2,
+    nrow = 1,
+    labels = c("A")
+)
+```
+
+
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
