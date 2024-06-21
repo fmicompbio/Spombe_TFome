@@ -1,0 +1,90 @@
+Systematic ID	Gene name	UniProt ID	Physical interactors
+SPAC6G10.12c	ace2	O14258	"ace2,med8,cut14"
+SPBC1289.10c	adn2	O94619	"imp1,atg24,fft3,SPBC354.04"
+SPCC1494.10	adn3	O74522	fft3
+SPCC290.04	ams2	Q9URT4	"atg8,dfp1,zfs1,teb1,mub1,cut14,ams2,atg11,srw1,hsk1,tfs1,pof3,raf1"
+SPBC29B5.01	atf1	P52890	"pcr1,rhp23,rnc1,cbf11,atf1,sty1,pmk1,swi6,clr6,fft3,cid12,fbh1,dsk2,clr3,rpn10,pka1"
+SPBC2F12.09c	atf21	P78962	"spo2,eif21,SPBC16H5.12c,atf31"
+SPAC22F3.02	atf31	Q09771	atf21
+SPCC736.08	cbf11	O74954	"vps1,sol1,rps5,gcn1,hht1,gly1,spt7,sfc4,pan1,hrp3,rim1,abp2,dsk2,cct8,kap95,cnp1,rpb1,nda3,fep1,arp9,hip4,SPCC1620.06c,tea3,pho7,rps1101,SPAC1F7.11c,dal2,fol2,rmn1,rpn6,top1,SPAC3H8.08c,mkt1,snf21,SPAC1327.01c,SPAC29A4.02c,ngg1,rps1102,pap1,brf1,rpc17,ssc1,rpa34,hhf1,cbh2,mot1,orc4,rad25,spo15,pob1,ade4,cut14,mgm101,dea2,toe2,SPAC25B8.11,ppi1,cct2,msc1,rpn11,ntu1,sec27,nda2,SPAC2F3.16,ies6,sgo1,glm2,tbp1,sre2,pku70,mga2,sfh1,nup45,mtl1,frs2,bdp1,cdc22,srs1,ies2,mas2,snf22,ptr8,sec5,atp1,clr6,hip3,rps502,iec1,moc3,prs1,qcr1,dbp3,rsc7,spp42,rpc37,prr1,dbp5,tcg1,atd1,tkt1,hip1,rps1801,arp42,met26,arp5,erg10,sds23,ssb3,toe1,tif1,tuf1,rrp2,byr3,ubr11,rad52,cao1,dnm1,reb1,arp8,lsc2,atd2,spe1,mca1,taf12,pdb1,ker1,pma1,yta12,cpy1,not1,ssr3,ubi1,sir1,SPCC965.10,tup11,cid16,atp2,thi5,rsc1,gar2,sdh1,sts5,sfc1,cut7,thp1,cdc48,fml1,rpn2,red1,shd1,SPAC4H3.09,taf5,aip1,dbl8,hhf3,rpb2,tfg3,ssr1,hht2,shm1,pcn1,eki1,sec72,ppe1,rpl2102,msa1,iec3,uch2,pop100,top2,rpt5,sec26,pre10,prt1,cmb1,adi1,cct4,ssr4,swr1,abo1,pcr1,bur6,pst1,mge1,pob3,thi1,ani1,cnd2,toa1,SPCC330.03c,tra1,pss1,msh2,rpb10,pbi2,taf9,end3,ssa1,car2,dld2,ret2,mcp60,taf4,pfh1,cop1,ubi5,rps1201,msh6,vma2,rpc2,pst3,tpx1,nsp1,tup12,gpd3,cct6,cdc6,cnd3,cdc2,cbh1,ppa2,rpc53,pog1,sak1,tif512,ubc8,coq11,tfb1,sap1,kap123,nmd5,iss10,ilv3,pil1,cut3,phf2,sfc3,rpc1,trp2,hhf2,gti1,rpn8,SPCC320.03,zas1,lcf2,skb1,mts4,rhp7,ntu2,gcn5,spt20,ncb2,thi20,rpc34,gnd1,rpc19,rsc9,rna15,hrp1,hht3,arg5,irs1,sfc9,hem1,ssr2,iec5,SPAC977.14c,ssn6,rpo41,mae2,nfs1,hpz1,pdi2,toe3,nrs1,toa2,cbf11,ubi4,rsc4,rsc58,arf1,vps1302,fft3,SPAPB17E12.14c,pro1,pku80,cms1,rps601,cbp1,cct5,cct3,atf1,ssb1,rpc25,atb2,arc2,uro1,nht1,ypp1"
+SPCC1223.13	cbf12	O74412	zfs1
+SPBC336.12c	cdc10	P01129	"toe1,rvb1,iec5,res1,clp1,pol5,gad8,res2,rep1,ino80,ies4,mtl1,puc1,cdc10,yox1,chk1,pir2,alp5,tea3,nrm1,sec6"
+SPBC1683.13c	cha4	Q9P6I9	
+SPAC31A2.11c	cuf1	Q09728	"sfc7,cuf1,crm1"
+SPCC584.02	cuf2	O94588	mei4
+SPAC105.03c	dal81	Q9P7H9	"spa2,ypp1,rcl1,spo7,tif223,dal81,cdc23,swd3,dma1,tfs1"
+SPAC1B1.01	deb1	O13862	"ago1,chp1,fft3,hrr1,cid12"
+SPAC56F8.16	esc1	Q04635	"SPAC30D11.14c,esc1"
+SPAC23E2.01	fep1	Q10134	"tup11,fep1,fra2,cbf11,grx4"
+SPAC1142.08	fhl1	O14270	"ifh1,fft3"
+SPCC1393.08	fil1	O94720	
+SPBC16G5.15c	fkh2	O60129	"png3,cdc2,clr6,mid1,sds3,gad8,nts1,mug165,srb10,rmt3,sep1,epe1"
+SPCC1902.01	gaf1	Q10280	"clp1,fft3"
+SPBPB8B6.04c	grt1	Q9C469	
+SPBC15D4.02	gsf1	O74308	
+SPAC2E12.02	hsf1	Q02953	"ssa2,fft3,inv2"
+SPAC3H1.11	hsr1	Q10076	"fft3,zfs1"
+SPAC1039.05c	klf1	Q9US36	"prf1,zas1"
+SPAC25B8.19c	loz1	Q9UTA1	
+SPAC11E3.06	map1	P78926	mat2-Pc
+SPBC19G7.06	mbx1	O42954	"pir2,red1,plo1,clp1,zfs1,cdc2"
+SPBC317.01	mbx2	Q9HGP0	"mbx2,dcp1,prp40,tfs1,rad51,rng3,wwm3,spo7,duo1,fkh1,dma1,swd3,spa2,sap49,hua1,php5,pat1,pcf11,spo5"
+SPAPB1A11.04c	mca1	Q9HDX1	cbf11
+SPBC32H8.11	mei4	O13606	"cuf2,red1,prp11,cdc5,zfs1"
+SPAC821.07c	moc3	Q9UT46	"sod1,mse1,rps102,rpl2001,alg9,rps20,ebp2,cbf11,rpl8,cmr2,rps2601,any1,rpl1801,imp1,cbh1,rps13,spk1,fba1,prp40,rcl1,dri1,cnd1,tdh1,obr1,any2,rpl29,rpl3202,tfs1,SPAC30D11.14c,rmn1,ppa2,rpc11,gus1,spg1,jmj2,gfh1,rpl3801,ufd2,cdc13,pdc101,spo7,mss51,atg11,srp54,sfh1,byr1,crb3,moc3,SPAC25B8.09,tef101,rpl2702,cid13,rik1,zfs1,psu1,rpb3,eno101,spa2,tpx1,pre9,lys3,kgd1,dal2,wwm2,pup2,tif222,SPBC1E8.02,pat1,rpl1201,wat1,cpc2,hua1,rps1401,sec2,SPBC1685.04,dcp1,ppn1,rps1602"
+SPBC16G5.16	ntu1	O60130	"rpb4,emi5,SPBC577.11,sog2,rpb9,caf1,prp40,cwf24,SPBC1685.04,nup85,spo2,prp45,pcf11,zfs1,spa2,mmt1,isu1,spg1,rsv1,ntu2,apm1,dri1,saf4,cid12,gef1,pat1,atg11,cul4,ste13,mss51,nup211,cwf4,cog4,xrc4,sgf29,mcp1,rrn11,gyp1,spo7,gfh1,rcl1,rmi1,slt1,any1,php5,csl4,sfc4,rmn1,orc1,wwm2,num1,mrpl4,SPAC30D11.14c,sec2,pds5,sir2,pef1,ntu1,ppr5,laf1,cdc23,tif222,ypp1,imp1,SPAC17A5.05c,mmi1,cbf11,SPCC622.15c,ppr10,dcp1,vts1,tea3,ssl1,mpf2,tbc1,tfs1,cnd1,rkr1,mug98,enp1,scd1,sap49,rng3,SPAC12B10.01c,atp11,eap1,atg24,swd3,wwm3"
+SPBC530.08	ntu2	O59744	"cbf11,ntu1"
+SPAC1783.07c	pap1	Q01663	"pap1,mtl1,skp1,oxs1,cut15,ubi4,txl1,cbf11,prr1,imp1,rmt3"
+SPAC21E11.03c	pcr1	Q09926	"mtl1,spo5,red1,swi6,hos2,atf1,cbf11,fft3,SPAC3F10.12c"
+SPBC27B12.11c	pho7	O13658	"tgp1,cbf11"
+SPBC725.11c	php2	P24488	"php5,SPBC16G5.17,mcm6,fft3"
+SPAC23C11.08	php3	P36611	"php5,rpl2701,ncb2"
+SPBC3B8.02	php5	P79007	"rna15,sap49,php5,spa2,fft3,SPBC1685.04,SPBC16G5.17,skp1,php2,dri1,wwm2,apm1,pat1,mga2,gfh1,dcp1,ntu1,rpb9,mbx2,php3"
+SPAC32A11.03c	phx1	Q10328	mrp17
+SPAC8C9.14	prr1	O14283	"mpr1,cbf11,eap1,pap1,pcf11"
+SPBC530.05	prt1	O59741	"prt1,slt1,cbf11,zfs1,tfs1,wat1,SPAC14C4.04,wwm3"
+SPAC4G8.13c	prz1	Q09838	"cmk1,rad25,mtl1,rad24"
+SPBC1198.11c	reb1	Q9P6H9	"rpa12,bis1,cbf11"
+SPBC725.16	res1	P33520	"clp1,gad8,res2,cdc10,rep2"
+SPAC22F3.09c	res2	P41412	"yox1,ctf1,res1,gad8,epe1,clp1,cdc10,cig2,pef1,rep2,mst1,res2,nrm1"
+SPAC6F12.02	rst2	P78871	fft3
+SPBP4H10.09	rsv1	Q9P7D9	"ntu1,pat1,lkh1"
+SPBC1105.14	rsv2	Q9Y815	
+SPAC3G9.14	sak1	P48383	"SPBC15D4.08c,cbf11,sak1"
+SPBC1D7.02c	scr1	O14335	"dsk1,fft3"
+SPBC4C3.12	sep1	O43058	"fkh2,mid1,clp1,fft3"
+SPAC16.05c	sfp1	Q9UTH8	
+SPBC19C2.09	sre1	Q9UUD1	"dis3,sre1,emc4,gmh6,ofd1,hhp2,ubc6,scp1,pep12"
+SPBC354.05c	sre2	O43019	"fft3,dsc2,clp1,dsc3,cbf11,rbd2,dsc4"
+SPBC1652.01	stb3	Q9P7B0	
+SPBC32C12.02	ste11	P36631	"spk1,mip1,zfs1,red1,mat1-Mi,csx1,mtl1,sty1,pir2,pat1,rad24"
+SPAC13G7.10	teb1	Q10274	ams2
+SPAC1486.10	thi1	P36598	"spa2,sfp47,cbf11,tfs1"
+SPBP8B7.30c	thi5	O94278	cbf11
+SPAC1399.05c	toe1	Q9HE16	"grh1,atg11,cdc10,mss51,crm1,ats1,toe1,cdc23,dpe2,sec24,spo7,sly1,mex67,spa2,fft3,cbf11"
+SPAC139.03	toe2	Q9UTN0	"cbf11,rpn12,rio2,trm402,SPBC17A3.05c,ats1,lsh1,fmt1,cbh2"
+SPAPB24D3.01	toe3	Q9C0Z1	cbf11
+SPAC11D3.07c	toe4	Q10086	
+SPBC1198.04c	zas1	Q9UTS5	"dss1,klf1,cbf11,zas1"
+SPAC25G10.03	zip1	Q10424	"ubi4,pof1"
+SPAC11D3.11c		G2TRN9	
+SPAC11D3.17		Q10096	zfs1
+SPAC1327.01c		Q1MTM9	"cbf11,cap1"
+SPAC1F7.11c		Q09922	"SPAC1F7.11c,cbf11"
+SPAC25B8.11		Q9UTA7	cbf11
+SPAC2H10.01		O94392	"apm1,zfs1"
+SPAC3C7.04		O14130	"utp21,tfs1,mrpl4,sec67"
+SPAC3F10.12c		Q10186	"pre9,gfh1,SPAC24H6.08,rng3,saf4,sec67,sld5,SPBC1685.04,atg11,enp1,ncb2,ypp1,SPBC354.04,pcr1,pef1,sec2,num1,apm1,rik1,rcl1,tfs1,noc1,atp11,mug123,rps2601,grh1,dma1,rmn1,spa2,sir2,nuc2,zfs1,dcp1,byr1,SPBC530.11c,knk1,rmi1,mss51,spo7,gyp1,rrn11,cdc23,isu1,cbh1"
+SPAC3H8.08c		Q10144	"fft3,cbf11"
+SPBC1348.12		G2TRT1	
+SPBC16G5.17		O60131	"rps502,tfs1,php5,atp11,SPBC16G5.17,rps5,php2,ckb1,noc201,rrn11"
+SPBC1773.12		O94569	"SPBC1773.16c,hos2"
+SPBC1773.16c		O94573	"tfs1,wwm3,SPBC1773.16c,apm1,gyp1,SPBC1773.12,rga3,sap14,isu1,ppr5,utp4,tim10,SPBC660.17c,pcf11,met10,SPCC550.08,sec67,swd3,ppr10,num1"
+SPBC530.11c		O59746	"SPAC3F10.12c,drp1,zfs1,dss1"
+SPBC56F2.05c		O60056	zfs1
+SPCC18.03		O74853	
+SPCC320.03		O59780	cbf11
+SPCC417.09c		O94490	
+SPCC757.04		O74915	
+SPCC777.02		O74541	lkh1
+SPCC965.10		O59830	"pir2,cbf11"

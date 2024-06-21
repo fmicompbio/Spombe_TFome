@@ -1,0 +1,25 @@
+Gene_name	R-x-x-[ST]-x-P			
+ams2	RIQSSP [488-493]			
+dal81	RHESMP [104-109]			
+gaf1				
+map1				
+ntu1	RNSTVP [155-160]			
+ntu2				
+pap1				
+pho7	RVCSAP [227-232]; RSFTNP [460-465]			
+phx1	RSYSNP [2-7]; RTSSEP [424-429]; RSTSTP [647-652]			
+prr1				
+prt1				
+prz1				
+res1				
+res2				
+rst2				
+scr1				
+stb3	RDSTIP [182-187]			
+ste11	RSHTIP [170-175]			
+toe3				
+SPAC11D3.17	RKLTEP [17-22]			
+SPAC1327.01c	RQYSQP [145-150]			
+SPAC2H10.01	RKKSAP [57-62]			
+SPCC757.04				
+SPCC965.10				
