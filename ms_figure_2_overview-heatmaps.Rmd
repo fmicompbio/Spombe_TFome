@@ -1,0 +1,979 @@
+---
+title: "Figure 2 - Overview heatmaps for IP-MS and ChIP"
+author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+params:
+    rds150: "data/ipms_150_sce.rds"
+    rds500: "data/ipms_500_sce.rds"
+    complexes: "data/complexes.json"
+    idmap: "data/id_mapping_table.txt"
+    baitclass: "data/ipms_bait_class.txt"
+    dbdtxt: "data/TF_DBD_annotation.txt"
+    peakcsv: "data/fused_peaks_filtered.csv.gz"
+    peakenr: "data/fused_peaks_filtered_enrichments.csv.gz"
+    peakatacfile: "data/fused_peaks_filtered_counts-external_atac.csv.gz"
+    peakchipfile: "data/fused_peaks_filtered_counts-external_chip.csv.gz"
+    gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+options(scipen = 6)
+```
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages and helper functions
+
+```{r load-packages, class.source="fold-show"}
+suppressPackageStartupMessages({
+    library(SingleCellExperiment)
+    library(ggplot2)
+    library(cowplot)
+    library(dplyr)
+    library(forcats)
+    library(jsonlite)
+    library(ComplexHeatmap)
+    library(colorspace)
+    library(circlize)
+    library(scattermore)
+    # library(ggrepel)
+    # library(DT)
+    # library(stringr)
+    library(tidyr)
+    # library(kableExtra)
+    # library(patchwork)
+})
+
+## Source scripts with required helper functions and settings
+source("params/plot_settings.R")
+source("params/get_testres_function.R")
+source("params/ipms_params.R")
+source("params/mapping_functions.R")
+
+## Heatmap sizes
+w_ipmsHm <-  84 # heatmap body width (mm)
+h_ipmsHm <- 178 # total heatmap height (mm)
+w_peaksHm <-  84 # heatmap body width (mm)
+h_peaksHm <- 178 # total heatmap height (mm)
+
+fs <- 8  # small font size
+fm <- 9  # medium font size
+fl <- 10 # large font size
+ft <- 12 # title font size
+```
+
+# Read data
+
+## IP-MS
+
+We load two `SingleCellExperiment` objects, containing data and results from the 
+low- and high-salt experiments, respectively.
+
+```{r load-data-ipms, class.source="fold-show"}
+sce150 <- readRDS(params$rds150)
+sce500 <- readRDS(params$rds500)
+```
+
+We then extract the full list of baits, as well as a classification according 
+to the experiment(s) where a certain bait was pulled down.
+
+```{r, class.source="fold-show"}
+idmap <- read.delim(params$idmap)
+baitclass <- read.delim(params$baitclass)
+```
+
+In the following set of IPs, we identified the bait as not pulled down.
+
+```{r define-nobait}
+(nobait_150 <- baitclass$Gene_name[baitclass$class == "nobait"])
+```
+
+We also read a list of known complexes, which will be used for annotation 
+purposes. 
+
+```{r load-complexes, class.source="fold-show"}
+complexes <- jsonlite::read_json(params$complexes, simplifyVector = TRUE)
+complexes$`MBF transcription complex`$color <- main_colors[5]
+complexes$`CCAAT-binding factor complex`$color <- main_colors[1]
+complexes$`Atf1-Pcr1`$color <- main_colors[3]
+names(complexes)
+```
+
+Finally we load a table classifying each TF to its DNA-binding domain family.
+
+```{r, class.source="fold-show"}
+dbd <- read.delim(params$dbdtxt) |>
+    dplyr::mutate(Gene_name = .capitalize(Gene_name))
+```
+
+## ChIP
+
+We start by reading all tables and objects needed for the ChIP part of the figure.
+Count tables are in addition normalized, and we also calculate
+averages over replicates or all samples where needed:
+
+```{r load-data-chip}
+# `peakgr`: ChIP-seq peaks (as a GRanges object)
+peakgr <- as(read.csv(params$peakcsv, row.names = 1), "GRanges")
+peakgr$peaktype <- factor(peakgr$peaktype,
+                          levels = c("common peaks (ubiquitous)",
+                                     "common peaks (frequent)",
+                                     "specific peaks"))
+
+# `peakenr`: peak IP-enrichments log2(IP/input)
+peakenr <- as.matrix(read.csv(params$peakenr, row.names = 1))
+
+
+# ... average replicates (`peakenrAvg`)
+grp <- sub("_rep[12]$", "", colnames(peakenr))
+peakenrAvg <- do.call(cbind, lapply(split(colnames(peakenr), grp)[unique(grp)],
+                                    function(j) {
+                                        rowMeans(peakenr[, j, drop = FALSE])
+                                    }))
+
+# `atac_raw`: public ATAC-seq read counts in ChIP-seq peaks from this study
+atac_raw <- as.matrix(read.csv(params$peakatacfile, row.names = 1))
+
+# ... calculate reads per million (`atac_cpm`) and
+#     per kilobase and million (`atac_rpkm`)
+#     and average experiments (`atac_cpm_avg`, `atac_rpkm_avg`)
+atac_cpm <- sweep(x = atac_raw[, -1], MARGIN = 2,
+                  STATS = colSums(atac_raw[, -1]), FUN = "/") * 1e6
+atac_rpkm <- atac_cpm / atac_raw[, "width"] * 1e3
+atac_cpm_avg <- rowMeans(atac_cpm)
+atac_rpkm_avg <- rowMeans(atac_rpkm)
+
+# `chip_raw`: public ChIP-seq read counts in ChIP-seq peaks from this study
+chip_raw <- as.matrix(read.csv(params$peakchipfile, row.names = 1))
+
+# ... calculate reads per million (`chip_cpm`) and
+#     per kilobase and million (`chip_rpkm`)
+#     and calculate enrichments (`chip_enr`, log2 IP/input) averaged over replicates
+chip_cpm <- sweep(x = chip_raw[, -1], MARGIN = 2,
+                  STATS = colSums(chip_raw[, -1]), FUN = "/") * 1e6
+chip_rpkm <- chip_cpm / chip_raw[, "width"] * 1e3
+chip_series <- sub("^ChIP_([^_]+)_.+$", "\\1", colnames(chip_cpm))
+chip_enr <- do.call(
+    cbind,
+    lapply(split(colnames(chip_cpm), chip_series),
+           function(nms) {
+               grp <- sub("ChIP_(GSE[0-9]+)_GSM[0-9]+_(.+)_rep[0-9]$",
+                          "\\1_\\2", nms)
+               stopifnot(any(is_input <- grep("_Input", grp)))
+               enr <- do.call(
+                   cbind,
+                   lapply(unique(grp[-is_input]), function(grp1) {
+                       rowMeans(log2(chip_cpm[, nms[grp == grp1], drop = FALSE] + 1)) -
+                           rowMeans(log2(chip_cpm[, nms[is_input], drop = FALSE] + 1))
+                   }))
+               colnames(enr) <- unique(grp[-is_input])
+               enr
+           }))
+
+
+# `genegr`: chromosomal ranges of genes (as GRanges object)
+genegr <- rtracklayer::import(params$gtf, feature.type = "gene")
+```
+
+
+# Helper functions
+
+We define a number of additional helper functions for data extraction and 
+summarization, which will be used below. 
+
+```{r heatmap-helper}
+filterForHeatmap <- function(tstatmat, adjpmat, logfcmat, adjpThreshold, 
+                             logfcThreshold, maxNbrTargets) {
+    ## Filter - require significant in at least one comparison
+    tstatfilt <- tstatmat
+    tstatfilt[adjpmat >= adjpThreshold] <- NA
+    tstatfilt[logfcmat <= logfcThreshold] <- NA
+    # tstatfilt[tstatfilt <= 0] <- NA
+    
+    ## Some experiments pull down a large number of proteins
+    # print(table(colSums(!is.na(tstatfilt))))
+    ## -> remove proteins that are only being pulled down in these experiments
+    keep <- which(colSums(!is.na(tstatfilt)) <= maxNbrTargets)
+    tstatfilt <- tstatfilt[rowSums(!is.na(tstatfilt[, keep])) > 0, ]
+    tstatfilt[is.na(tstatfilt)] <- 0
+    tstatfilt <- tstatfilt[rowSums(tstatfilt) > 0, ]
+    
+    ## Subset the t-statistic matrix to only the retained proteins
+    stopifnot(colnames(tstatfilt) == colnames(tstatmat))
+    tstatmat <- tstatmat[rownames(tstatfilt), colnames(tstatfilt)]
+    colnames(tstatmat) <- .getSimplifiedComparison(colnames(tstatmat))
+    
+    list(tstats = tstatmat, tstatsfilt = tstatfilt)
+}
+
+makeComplexAnnotation <- function(tstatmat, complexes, idmap,
+                                  show_legend = TRUE) {
+    rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
+                           row.names = rownames(tstatmat))
+    rowcols <- list(Complex = c())
+    for (cmplx in names(complexes)) {
+        rowannot$Complex[.getPomBaseIdFromProtein(rownames(rowannot), 
+                                                  idmap = idmap) %in% 
+                             complexes[[cmplx]]$pombase_ids] <- cmplx
+        rowcols$Complex[cmplx] <- complexes[[cmplx]]$color
+    }
+    rowAnnotation(df = rowannot, 
+                  col = rowcols, 
+                  annotation_name_gp = gpar(fontsize = fl),
+                  simple_anno_size_adjust = TRUE,
+                  na_col = bg_color,
+                  show_annotation_name = FALSE,
+                  show_legend = show_legend,
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
+}
+
+makeColLabels <- function(tstatmat, colLabel, fontsize) {
+    columnAnnotation(
+        TFnames = anno_mark(which = "column", side = "bottom",
+                            at = match(colLabel, colnames(tstatmat)), 
+                            labels = .getProteinNameFromSimplifiedComparison(colLabel),
+                            labels_gp = gpar(fontsize = fontsize)))
+}
+
+makeHeatmapCol <- function(tstatmat, stringency = "high") {
+    if (stringency == "high") {
+        circlize::colorRamp2(
+            breaks = seq(3.0, 13.0, length.out = 64),
+            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
+    } else {
+        circlize::colorRamp2(
+            breaks = seq(1.5, 13.0, length.out = 64),
+            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
+    }
+}
+
+reorderColsByRows <- function(tstat) {
+    ## Row names should be protein names, column names simplified comparison names
+    ord <- match(rownames(tstat), .getProteinNameFromSimplifiedComparison(colnames(tstat)))
+    ord <- ord[!is.na(ord)]
+    ord <- c(ord, setdiff(seq_len(ncol(tstat)), ord))
+    tstat[, ord]
+}
+
+makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
+    tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)
+    
+    tstats <- filterForHeatmap(tstatmat = tc$tstat, adjpmat = tc$adjp, 
+                               logfcmat = tc$logfc, logfcThreshold = log2fcthr,
+                               adjpThreshold = adjpthr, maxNbrTargets = Inf)
+    tstat <- tstats$tstats 
+    
+    ## tstats$tstatsfile: protein x experiment
+    ## Number of TFs that are pulled down by each bait
+    all_tfs <- setdiff(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
+                       c("Untagged", "untagged", NA))
+    nbrInt <- colSums(tstats$tstatsfilt[rownames(tstats$tstatsfilt) %in% all_tfs, ] > 0, 
+                      na.rm = TRUE)
+    names(nbrInt) <- .getSimplifiedComparison(names(nbrInt))
+
+    ## Split by family - return a matrix with several columns: 
+    ## #pulled down TFs (including itself), #pulled down TFs (excluding itself),
+    ## #pulled down TFs from the same family (excluding itself), 
+    ## #pulled down TFs from another family
+    tmptf <- tstats$tstatsfilt[match(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
+                                     rownames(tstats$tstatsfilt)), ]
+    rownames(tmptf) <- .getProteinNameFromComparison(colnames(tstats$tstatsfilt))
+    dbdtf <- data.frame(PomBaseID = .getPomBaseIdFromComparison(colnames(tstats$tstatsfilt), 
+                                                                idmap = idmap),
+                        bait = .getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
+                        DBD_class = NA)
+    for (i in seq_len(nrow(dbdtf))) {
+        lookfor <- dbdtf$PomBaseID[i]
+        if (!(lookfor %in% c("untagged", "Untagged"))) {
+            dbdtf$DBD_class[i] <- dbd$DBD_class[match(lookfor, dbd$PomBaseID)]
+        } else {
+            dbdtf$DBD_class[i] <- "no_class"
+        }
+    }
+    stopifnot(dbdtf$bait == .getProteinNameFromComparison(colnames(tmptf)))
+    nbrIntMat <- do.call(dplyr::bind_rows, lapply(seq_along(colnames(tmptf)), function(i) {
+        expr <- colnames(tmptf)[i]
+        fam <- dbdtf$DBD_class[i]
+        data.frame(experiment = expr, 
+                   bait = dbdtf$bait[i], 
+                   dbdfam = fam, 
+                   TFs = paste(rownames(tmptf)[-i][which(tmptf[-i, expr] > 0)],
+                               collapse = ","),
+                   nbrTFs = sum(tmptf[, expr] > 0, na.rm = TRUE),
+                   nbrTFs_wobait = sum(tmptf[-i, expr] > 0, na.rm = TRUE),
+                   nbrTFs_samefam = sum(tmptf[-i, expr] > 0 & 
+                                            dbdtf$DBD_class[-i] == fam, 
+                                        na.rm = TRUE),
+                   nbrTFs_difffam = sum(tmptf[-i, expr] > 0 & 
+                                            dbdtf$DBD_class[-i] != fam, 
+                                        na.rm = TRUE)
+        )
+    }))
+    
+    
+    ## Split experiments into three groups
+    if (conc == 150) {
+        stopifnot(all(colnames(tstat) == .getSimplifiedComparison(colnames(tstats$tstatsfilt))))
+        tstat_no_bait <- 
+            tstat[, colSums(tstats$tstatsfilt) == 0 | 
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "nobait"])]
+        tstat_150only <- 
+            tstat[, colSums(tstats$tstatsfilt) > 0 &
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "150only"])]
+        tstat_150and500 <- 
+            tstat[, colSums(tstats$tstatsfilt) > 0 &
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class == "150and500"])]
+        
+        proteins_150only <- .getProteinNameFromSimplifiedComparison(colnames(tstat_150only))
+        stopifnot(all(proteins_150only %in% rownames(tstat)))
+        tstat_150and500 <- tstat_150and500[!(rownames(tstat_150and500) %in% proteins_150only), ]
+        
+        ## Cluster proteins based on the correlation between their t-stat vectors
+        dst <- sqrt(2 * (1 - cor(t(tstat_150and500), use = "pairwise.complete")))
+        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
+        clst <- hclust(as.dist(dst))
+        
+        ## Reorder proteins by the clustering
+        protorder <- c(rownames(tstat_150and500)[clst$order], proteins_150only)
+        tstat <- tstat[protorder, ]
+        
+        ## Reorder experiments to keep a "diagonal" in the heatmap
+        tstat <- reorderColsByRows(tstat)
+        
+        tmpbaits <- .getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
+                                                             idmap = idmap)
+        colsplit <- ifelse(
+            tmpbaits %in% baitclass$Gene_name[baitclass$class == "nobait"], 
+            "No\nbait", 
+            ifelse(
+                tmpbaits %in% baitclass$Gene_name[baitclass$class == "150only"],
+                "150 mM NaCl",
+                ifelse(
+                    tmpbaits %in% baitclass$Gene_name[baitclass$class == "150and500"],
+                    "150 and\n500 mM NaCl", "NA"
+                )
+            )
+        )
+    } else if (conc == 500) {
+        tstat_onlybait <- 
+            tstat[, colSums(tstats$tstatsfilt > 0) == 1 |
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
+                                                      idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class500 == "Lost in 500 mM"])]
+        tstat_several <- 
+            tstat[, colSums(tstats$tstatsfilt > 0) > 1 & 
+                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
+                                                      idmap = idmap) %in% 
+                      baitclass$Gene_name[baitclass$class500 != "Lost in 500 mM"])]
+        tstat_onlybait <- tstat_onlybait[, colnames(tstat_onlybait) != "Untagged_plate"]
+        tstat_several <- tstat_several[, colnames(tstat_several) != "Untagged_plate"]
+        
+        proteins_onlybait <-
+            .getProteinNameFromSimplifiedComparison(colnames(tstat_onlybait))
+        stopifnot(all(proteins_onlybait %in% rownames(tstat)))
+        tstat_several <- tstat_several[!(rownames(tstat_several) %in% proteins_onlybait), ]
+        
+        ## Cluster proteins based on the correlation between their t-stat vectors
+        dst <- sqrt(2 * (1 - cor(t(tstat_several), use = "pairwise.complete")))
+        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
+        clst <- hclust(as.dist(dst))
+        
+        ## Reorder proteins by the clustering
+        protorder <- c(rownames(tstat_several)[clst$order], proteins_onlybait)
+        tstat <- tstat[protorder, ]
+        
+        ## Reorder conditions to keep a "diagonal" in the heatmap
+        tstat <- reorderColsByRows(tstat)
+        
+        colsplit <- factor(
+            structure(baitclass$class500[
+                match(.getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
+                                                               idmap = idmap), 
+                      baitclass$Gene_name)],
+                names = colnames(tstat)),
+            levels = c("Retained in 500 mM", "Lost in 500 mM", ""))
+        levels(colsplit) <- c("Interactions\nin 500 mM NaCl",
+                              "No interactions\nin 500 mM NaCl", "")
+    } else {
+        stop("Unknown concentration")
+    }
+    return(list(tstat = tstat, colsplit = colsplit, nbrIntMat = nbrIntMat))
+}
+
+# for each region in `from`, calculate the distance to its nearest element in `to`
+# if there are no element in `to` on the sequence of `from`, set distance to NA
+calcDistanceToNearest <- function(from, to) {
+    stopifnot(exprs = {
+        is(from, "GRanges")
+        is(to, "GRanges")
+    })
+    tmp <- distanceToNearest(x = from, subject = to)
+    d <- rep(NA, length(from))
+    d[queryHits(tmp)] <- mcols(tmp)$distance
+    return(d)
+}
+```
+
+# Extract data for IP-MS heatmaps
+
+```{r extract-heatmap-data-ipms}
+hmdata_150 <- makeHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
+                              log2fcthr = log2fcThreshold, conc = 150)
+hmdata_500 <- makeHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
+                              log2fcthr = log2fcThreshold, conc = 500)
+```
+
+# Calculate peak distances to tRNA or rRNA genes
+
+We want to identify ChIP-seq peaks that are near a tRNA or rRNA gene. We can
+obtain the coordinates of these genes from `genegr` and the coordinates of
+peaks from `peakgr`, and calculate the distance between nearest peak-gene pairs
+using `distanceToNearest()`. Any pair with a distance below `maxdist` will be
+classified as "near" in the plots below.
+
+Remark: Nearest distances can be `NA` in cases where for example a peak
+resides on a sequence (chromosome) that does not contain any tRNA or rRNA gene,
+or vice versa, such as the sequence `AB325691` (which contains gap-filling
+sequence between SPBPB21E7.09 and SPBPB10D8.01 in chromosome 2) or the
+mitochondrial sequence `MT`.
+
+```{r calc-peak-dists}
+# distance less than `maxdist` are defined as "near"
+maxdist <- 100
+
+# tRNA
+# ... PomBase and Ensembl_Fungi annotate 196 and 183 tRNAs, respectively
+#     we combine the two and obtain 198 annotated tRNAs
+table(genegr$gene_biotype == "tRNA", genegr$source)
+is_tRNA_pombase <- genegr$source == "PomBase" & genegr$gene_biotype == "tRNA"
+is_tRNA_ensembl <- genegr$source == "Ensembl_Fungi" & genegr$gene_biotype == "tRNA"
+is_tRNA <- is_tRNA_pombase | (is_tRNA_ensembl & !genegr %in% genegr[is_tRNA_pombase])
+sum(is_tRNA)
+# ... now we measure distances between nearest pairs
+#     either from peak to nearest tRNA
+dist.peak2tRNA <- calcDistanceToNearest(from = peakgr, to = genegr[is_tRNA])
+#     or from tRNA to nearest peak
+dist.tRNA2peak <- calcDistanceToNearest(from = genegr[is_tRNA], to = peakgr)
+
+# rRNA
+# ... all 36 5S_rRNA genes in our annotation stem from Ensembl_Fungi
+table(genegr$gene_name == "5S_rRNA", genegr$source)
+is_rRNA <- !is.na(genegr$gene_name) & genegr$gene_name == "5S_rRNA"
+sum(is_rRNA)
+# ... now we measure distances between nearest pairs
+#     either from peak to nearest rRNA
+dist.peak2rRNA <- calcDistanceToNearest(from = peakgr, to = genegr[is_rRNA])
+#     or from rRNA to nearest peak
+dist.rRNA2peak <- calcDistanceToNearest(from = genegr[is_rRNA], to = peakgr)
+```
+
+# Figure 2
+
+## Settings
+
+```{r plot-settings}
+colLabel_150 <- expand.grid(c("Untagged", "Ace2", "Rst2", "Pap1"),
+                            c("tube", "plate")) |>
+    tidyr::unite(col = "col", Var1, Var2) |>
+    dplyr::pull(col)
+colLabel_500 <- expand.grid(c("Untagged", "Atf1", "Moc3", "Ntu1",
+                              "Pcr1", "Ntu2"),
+                            c("tube", "plate")) |>
+    tidyr::unite(col = "col", Var1, Var2) |>
+    dplyr::pull(col)
+rowLabel <- NULL
+
+complexLabel <- c("NuA4", "SAGA")
+```
+
+## Summary heatmaps using results from the statistical tests (150 mM NaCl)
+
+### Overall heatmap
+
+```{r heatmap-tstat-150}
+#| fig.width: 6
+#| fig.height: 8
+
+hm1a <- Heatmap(hmdata_150$tstat, 
+                cluster_rows = FALSE, 
+                cluster_columns = FALSE, 
+                col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                border = TRUE, 
+                border_gp = gpar(lwd = 0.5),
+                column_split = hmdata_150$colsplit, 
+                name = "Mod.\nt-stat.", 
+                na_col = binary_heatmap_colors["FALSE"],
+                column_names_gp = gpar(fontsize = fs),
+                row_names_gp = gpar(fontsize = fs),
+                row_title = "Proteins significantly enriched in at least one experiment",
+                row_title_gp = gpar(fontsize = fl),
+                show_row_names = FALSE, show_column_names = FALSE,
+                use_raster = FALSE, show_heatmap_legend = TRUE,
+                right_annotation = makeComplexAnnotation(
+                    hmdata_150$tstat, complexes[complexLabel], 
+                    idmap = idmap),
+                bottom_annotation = makeColLabels(hmdata_150$tstat, colLabel_150, fl),
+                width = unit(w_ipmsHm, "mm"), # heatmap body width
+                heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height
+                column_title_gp = gpar(fontsize = ft),
+                heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+set.seed(42L)
+hm_150 <- grid.grabExpr(
+    hm1a <- draw(hm1a, merge_legend = TRUE,
+                heatmap_legend_side = "right",
+                annotation_legend_side = "right"),
+    width = w_ipmsHm, height = h_ipmsHm
+)
+
+plot_grid(hm_150)
+```
+
+## Summary heatmaps using results from the statistical tests (500 mM NaCl)
+
+### Overall heatmap
+
+```{r heatmap-tstat-500}
+#| fig.width: 6
+#| fig.height: 8
+
+hm2a <- Heatmap(hmdata_500$tstat, 
+                cluster_rows = FALSE, 
+                cluster_columns = FALSE, 
+                col = makeHeatmapCol(hmdata_500$tstat, stringency = "high"), 
+                border = TRUE, 
+                border_gp = gpar(lwd = 0.5),
+                column_split = hmdata_500$colsplit, 
+                name = "Mod.\nt-stat.", 
+                na_col = binary_heatmap_colors["FALSE"],
+                column_names_gp = gpar(fontsize = fs),
+                row_names_gp = gpar(fontsize = fs),
+                row_title = "Proteins significantly enriched in at least one experiment",
+                row_title_gp = gpar(fontsize = fl),
+                show_row_names = FALSE, show_column_names = FALSE,
+                use_raster = FALSE, show_heatmap_legend = TRUE,
+                right_annotation = makeComplexAnnotation(hmdata_500$tstat, complexes[complexLabel],
+                                                         idmap = idmap, show_legend = FALSE),
+                bottom_annotation = makeColLabels(hmdata_500$tstat, colLabel_500, fl),
+                width = unit(w_ipmsHm, "mm"), # heatmap body width
+                heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height
+                column_title_gp = gpar(fontsize = ft),
+                heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
+                                border = "gray10",
+                                border_gp = gpar(lwd = 0.5)))
+
+hm_500 <- grid.grabExpr(
+    hm2a <- draw(hm2a, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_ipmsHm, height = h_ipmsHm
+)
+
+plot_grid(hm_500)
+```
+
+## Peak vs. sample heatmap (binary)
+
+The following creates heatmap of peaks (rows) versus ChIP-seq experiments
+(columns). The values are binary (`TRUE` or `FALSE`) and indicate if a peak
+was enriched in ChIP-seq experiment (had an average log2 IP/input enrichment
+values greater than 1.0).
+
+```{r plot-peaksBin}
+#| fig.width: 6
+#| fig.height: 8
+
+# extract binary enrichment matrix from `peakgr`
+m <- as.matrix(mcols(peakgr)[, grep("^is_enr_in[.]", colnames(mcols(peakgr)))])
+mode(m) <- "numeric"
+colnames(m) <- sub("is_enr_in.", "", colnames(m))
+
+# specify ChIP-seq experiments for which to show labels
+selLabels <- c("Untagged")
+stopifnot(all(selLabels %in% colnames(m)))
+
+# only show peaks that are enriched in at least one ChIP-seq experiment
+sel_peaksBin <- rowSums(m) > 0
+
+# prepare annotation data
+#   `fractTFs`: fraction of ChIP-seq experiments that a peak is enriched in
+#   `numpeaks`: the number of enriched peaks for each ChIP-seq experiment
+#   `peaktype`: the type of each peak (specific, frequent or ubiquitous)
+#   `near_ncRNA`: specifies if the peak is nearer than `maxdist` from
+#                 a %S rRNA or tRNA gene
+fracTFs <- rowMeans(m > 0)
+numpeaks <- colSums(m > 0)
+levels(peakgr$peaktype) <- c("Common (ubiquitous)", # use shorter names
+                             "Common (frequent)",
+                             "Specific peaks")
+peaktype <- factor(gsub("[()]", "", sub(" ", "\n", peakgr$peaktype)),
+                   levels = c("Common\nubiquitous",
+                              "Common\nfrequent",
+                              "Specific\npeaks"))
+near_ncRNA <- factor(ifelse(!is.na(dist.peak2tRNA) & dist.peak2tRNA < maxdist,
+                            "tRNA",
+                            ifelse(!is.na(dist.peak2rRNA) & dist.peak2rRNA < maxdist,
+                                   "5S rRNA", "none")),
+                         levels = c("tRNA", "5S rRNA", "none"))
+
+# most tRNA and 5S rRNA genes are near "common (ubiquitous)" peaks:
+table(peaktype[sel_peaksBin], near_ncRNA[sel_peaksBin])
+
+# parameters for annotation legends and colors
+annotLegendParams <- list(`%GC` = list(at = c(20, 40, 60),
+                                       labels_gp = gpar(fontsize = fs),
+                                       border = "gray10",
+                                       legend_direction = "horizontal",
+                                       legend_width = unit(18, "mm"),
+                                       title_position = "topcenter",
+                                       title_gp = gpar(fontsize = fl)),
+                          `TSS dist.` = list(at = c(0, 4000, 8000),
+                                             labels_gp = gpar(fontsize = fs),
+                                             border = "gray10",
+                                             legend_direction = "horizontal",
+                                             legend_width = unit(18, "mm"),
+                                             title_position = "topcenter",
+                                             title_gp = gpar(fontsize = fl)),
+                          `ncRNA` = list(labels_gp = gpar(fontsize = fs),
+                                         title_position = "topcenter",
+                                         title_gp = gpar(fontsize = fl)))
+cols_ncRNA <- c("tRNA" = main_colors[5], "5S rRNA" = main_colors[3],
+                "none" = bg_color)
+annotCols <- list(
+    `%GC` = colorRamp2(breaks = seq(min(peakgr$fracGC[sel_peaksBin]),
+                                    max(peakgr$fracGC[sel_peaksBin]),
+                                    length.out = 64) * 100,
+                       colors = rev(hcl.colors(64, "Greens"))),
+    ` width` = colorRamp2(breaks = seq(min(width(peakgr)[sel_peaksBin]),
+                                       max(width(peakgr)[sel_peaksBin]),
+                                       length.out = 64),
+                          colors = rev(hcl.colors(64, "YlOrBr"))),
+    `TSS dist.` = colorRamp2(breaks = c(0, 10^seq(2, log10(max(peakgr$nrst_TSS_dist)),
+                                                  length.out = 63)),
+                             colors = hcl.colors(64)),
+    `ncRNA` = cols_ncRNA)
+
+# prepare heatmap annotations
+#   `peakAnnot` for peaks (rows), left side
+#   `fracTFsAnnot` for peaks (rows), right side
+#   `sampleAnnot` for ChIP-seq experiments (columns), top
+#   `sampleLabels` for ChIP-seq experiments (columns), bottom
+peakAnnot <- HeatmapAnnotation(
+                  which = "row",
+                  `%GC` = peakgr$fracGC[sel_peaksBin] * 100,
+                  `TSS dist.` = peakgr$nrst_TSS_dist[sel_peaksBin],
+                  `ncRNA` = near_ncRNA[sel_peaksBin],
+                  col = annotCols,
+                  width = unit(21, "mm"), show_legend = TRUE,
+                  annotation_name_gp = gpar(fontsize = fl),
+                  annotation_legend_param = annotLegendParams)
+
+fracTFsAnnot <- HeatmapAnnotation(
+    which = "row",
+    `Fraction\nof TFs` = anno_barplot(
+        x = fracTFs[sel_peaksBin], gp = gpar(col = na_color),
+        border = FALSE, bar_width = 1.0,
+        axis_param = list(at = c(0, 0.4, 0.8),
+                          gp = gpar(fontsize = fs)),
+        width = unit(10, "mm")),
+    annotation_name_gp = gpar(fontsize = fl))
+sampleAnnot <- HeatmapAnnotation(
+    which = "column",
+    `Number of\nenriched\npeaks` = anno_barplot(
+        x = numpeaks,
+        gp = gpar(col = 0, fill = na_color),
+        border = FALSE, bar_width = 1.0,
+        axis_param = list(at = c(0, 150, 300),
+                          gp = gpar(fontsize = fs),
+                          facing = "outside",
+                          direction = "normal"),
+        width = unit(10, "mm")),
+    annotation_name_gp = gpar(fontsize = fl),
+    annotation_name_side = "left", annotation_name_rot = 0,
+    show_legend = TRUE)
+sampleLabels <- columnAnnotation(
+    TFnames = anno_mark(which = "column", side = "bottom",
+                        at = match(selLabels, colnames(m)), 
+                        labels = sub("^[^_]+_", "", selLabels),
+                        labels_gp = gpar(fontsize = fl)))
+
+# create main heatmap with annotations
+hm3 <- Heatmap(m[sel_peaksBin, ],
+               col = circlize::colorRamp2(
+                   breaks = seq(0, max(m), length.out = 64),
+                   colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+               border = TRUE, border_gp = gpar(lwd = 0.5),
+               cluster_rows = TRUE, row_dend_width = unit(25, "mm"), show_row_dend = FALSE,
+               cluster_columns = TRUE, column_dend_height = unit(10, "mm"),
+               row_title_gp = gpar(fontsize = fl),
+               row_split = peaktype[sel_peaksBin], cluster_row_slices = FALSE,
+               left_annotation = peakAnnot,
+               right_annotation = fracTFsAnnot,
+               top_annotation = sampleAnnot,
+               bottom_annotation = sampleLabels,
+               show_row_names = FALSE, show_column_names = FALSE,
+               use_raster = TRUE, show_heatmap_legend = FALSE,
+               width = unit(w_peaksHm, "mm"), # heatmap body width
+               heatmap_height = unit(h_peaksHm, "mm")) # whole heatmap height
+
+# draw the heatmap and grab as a grid graphics `grob`
+# (needed for combining figure panels)
+# use defined random number seed to make clustering deterministic
+set.seed(42L)
+hm_peaksBin <- grid.grabExpr(
+    hm3 <- draw(hm3, merge_legend = TRUE,
+                heatmap_legend_side = "bottom",
+                annotation_legend_side = "bottom"),
+    width = w_peaksHm, height = h_peaksHm
+)
+
+plot_grid(hm_peaksBin)
+```
+
+## Peak vs. sample heatmap (enrichments)
+
+The following creates a heatmap similar to the peak-versus-experiment
+heatmap above, but using the ChIP-seq enrichment values (log2 IP/input)
+directly instead of binarized (`TRUE`, `FALSE`) values.
+
+```{r plot-peaksEnr}
+#| fig.width: 6
+#| fig.height: 8
+
+# use ChIP-seq enrichment matrix from this study (replicates averaged)
+m <- peakenrAvg
+stopifnot(all(selLabels %in% colnames(m)))
+
+# to keep the same row order as in the binary heatmap `hm3`,
+# we have to re-calculate the annotations and switch off the row clustering
+sel_peaksEnr <- which(sel_peaksBin)[unlist(row_order(hm3), use.names = FALSE)]
+
+# prepare annotation data
+#   `chip_enr_sel`: selected public ChIP-seq experiments
+#                   (log2 IP/input enrichments)
+#   `chip_enr_sel_range`: value range for color scale (1% to 99%)
+#   `chip_enr_sel_range_full`: value range for color scale (0% to 100%)
+chip_enr_sel <- chip_enr[sel_peaksEnr, ]
+chip_enr_sel_range <- quantile(abs(chip_enr_sel), probs = c(0.95)) * c(-1, 1)
+chip_enr_sel_range_full <- range(chip_enr_sel)
+
+# parameters for annotation legends and colors
+annotCols2 <- list(
+    `ncRNA` = cols_ncRNA,
+    H3 = colorRamp2(breaks = c(chip_enr_sel_range_full[1],
+                               seq(chip_enr_sel_range[1],
+                                   chip_enr_sel_range[2],
+                                   length.out = 62),
+                               chip_enr_sel_range_full[2]),
+                    colors = viridisLite::magma(64)),
+    H3K14ac = colorRamp2(breaks = c(chip_enr_sel_range_full[1],
+                                    seq(chip_enr_sel_range[1],
+                                        chip_enr_sel_range[2],
+                                        length.out = 62),
+                                    chip_enr_sel_range_full[2]),
+                         colors = viridisLite::magma(64)),
+    H3K9me2 = colorRamp2(breaks = c(chip_enr_sel_range_full[1],
+                                    seq(chip_enr_sel_range[1],
+                                        chip_enr_sel_range[2],
+                                        length.out = 62),
+                                    chip_enr_sel_range_full[2]),
+                         colors = viridisLite::magma(64)),
+    H3K9me3 = colorRamp2(breaks = c(chip_enr_sel_range_full[1],
+                                    seq(chip_enr_sel_range[1],
+                                        chip_enr_sel_range[2],
+                                        length.out = 62),
+                                    chip_enr_sel_range_full[2]),
+                         colors = viridisLite::magma(64)))
+annotLegendParams2 <- list(
+    `ncRNA` = list(labels_gp = gpar(fontsize = fs),
+                   title_position = "topcenter",
+                   title_gp = gpar(fontsize = fl)),
+    H3 = list(at = c(-6, 0, 6),
+              title = "Histone log2 IP/input",
+              labels_gp = gpar(fontsize = fs),
+              border = "gray10",
+              legend_direction = "horizontal",
+              legend_width = unit(30, "mm"),
+              title_position = "topcenter",
+              title_gp = gpar(fontsize = fl)))
+
+# prepare heatmap annotations
+#   `peakAnnot` for peaks (rows), left side
+#   `peakAnnot2` for peaks (rows), right side
+peakAnnot <- HeatmapAnnotation(
+                  which = "row",
+                  `ncRNA` = near_ncRNA[sel_peaksEnr],
+                  H3 = chip_enr_sel[, "GSE108668_H3"],
+                  H3K14ac = chip_enr_sel[, "GSE108668_H3K14ac"],
+                  H3K9me2 = chip_enr_sel[, "GSE182250_H3K9me2"],
+                  H3K9me3 = chip_enr_sel[, "GSE182250_H3K9me3"],
+                  col = annotCols2,
+                  width = unit(28, "mm"),
+                  annotation_name_gp = gpar(fontsize = fl),
+                  annotation_legend_param = annotLegendParams2,
+                  show_legend = c(TRUE, TRUE, FALSE, FALSE, FALSE))
+atac_trunc <- pmin(atac_rpkm_avg[sel_peaksEnr], 2000) # cap ATAC signal at 2000
+peakAnnot2 <- HeatmapAnnotation(
+    which = "row",
+    `Accessibility\n1e3 RPKM` =
+        anno_barplot(x = atac_trunc / 1e3,
+                     gp = gpar(col = na_color),
+                     border = FALSE, bar_width = 1.0,
+                     baseline = 0,
+                     axis_param = list(at = c(0, 1, 2),
+                                       gp = gpar(fontsize = fs)),
+                     width = unit(10, "mm")),
+    annotation_name_gp = gpar(fontsize = fl))
+
+# main heatmap value range for color scale
+mx <- max(abs(m[sel_peaksEnr, ]))
+qs <- quantile(abs(m[sel_peaksEnr, ]), .99)
+
+# create main heatmap with annotations
+hm4 <- Heatmap(m[sel_peaksEnr, ], name = "log2 IP/input",
+               col = circlize::colorRamp2(
+                   breaks = c(-mx, seq(-qs, qs, length.out = 62), mx),
+                   colors = colorRampPalette(enrichment_heatmap_colors)(64)),
+               cluster_rows = FALSE,
+               cluster_columns = column_dend(hm3), column_dend_height = unit(10, "mm"),
+               row_title_gp = gpar(fontsize = fl),
+               row_split = peaktype[sel_peaksEnr], cluster_row_slices = FALSE,
+               border = TRUE, border_gp = gpar(lwd = 0.5),
+               left_annotation = peakAnnot,
+               right_annotation = peakAnnot2,
+               top_annotation = sampleAnnot,
+               bottom_annotation = sampleLabels,
+               show_row_names = FALSE, show_column_names = FALSE,
+               use_raster = TRUE, show_heatmap_legend = TRUE,
+               heatmap_legend_param = list(at = round(c(-mx, 0, mx), 1),
+                                           labels_gp = gpar(fontsize = fs),
+                                           border = "gray10",
+                                           legend_direction = "horizontal",
+                                           legend_width = unit(30, "mm"),
+                                           title = "TF log2 IP/input",
+                                           title_position = "topcenter",
+                                           title_gp = gpar(fontsize = fl)),
+               width = unit(w_peaksHm, "mm"), # heatmap body width
+               heatmap_height = unit(h_peaksHm, "mm"))
+
+# draw the heatmap and grab as a grid graphics `grob`
+# (needed for combining figure panels)
+# use defined random number seed to make clustering deterministic
+set.seed(42L)
+hm_peaksEnr <- grid.grabExpr(
+    hm4 <- draw(hm4, merge_legend = TRUE,
+                heatmap_legend_side = "bottom",
+                annotation_legend_side = "bottom"),
+    width = w_peaksHm, height = h_peaksHm
+)
+
+plot_grid(hm_peaksEnr)
+```
+
+## ChIP enrichment replicate-pair correlations
+
+```{r plot-chipReplPairs}
+#| fig.width: 9
+#| fig.height: 9
+
+pd <- peakenr |> as.data.frame() |>
+    tibble::rownames_to_column("peakid") |>
+    pivot_longer(col = !matches("peakid")) |>
+    mutate(group = sub("_rep[12]$", "", name),
+           name = factor(name, levels = unique(name)))
+
+ylims <- c(-2.0, 4.0)
+yticks <- c(-2, 0, 2, 4)
+
+pL <- lapply(levels(fct_relevel(sort(unique(pd$group)), "Untagged", after = Inf)),
+             function(grp1) {
+    pd1 <- pd[pd$group == grp1, ] |> pivot_wider()
+    pd1$cols <- densCols(x = pd1[[paste0(grp1, "_rep1")]],
+                         y = pd1[[paste0(grp1, "_rep2")]],
+                         nbin = 64, colramp = colorRampPalette(hcl.colors(32)))
+    ggplot(pd1, aes(.data[[paste0(grp1, "_rep1")]],
+                    .data[[paste0(grp1, "_rep2")]])) +
+        geom_abline(intercept = 0, slope = 1, linetype = 1, color = "gray") +
+        geom_hline(yintercept = 0, linetype = 2, color = "gray") +
+        geom_vline(xintercept = 0, linetype = 2, color = "gray") +
+        geom_scattermost(xy = as.data.frame(pd1[, paste0(grp1, c("_rep1", "_rep2"))]),
+                         pointsize = 2, color = pd1$cols, pixels = c(256, 256)) +
+        coord_fixed(xlim = ylims, ylim = ylims, expand = FALSE, clip = "off") +
+        scale_x_continuous(breaks = yticks) +
+        scale_y_continuous(breaks = yticks) +
+        theme_cowplot(7) +
+        labs(x = element_blank(), y = element_blank()) +
+        annotate("text", x = -Inf, y = Inf, hjust = -0.05, vjust = 1.05,
+                 label = grp1, color = "black", size = 3) +
+        theme(legend.position = "none")
+})
+
+(gg_enrpairs <- plot_grid(plotlist = pL, nrow = 9, ncol = 9))
+```
+
+
+
+## Put together
+
+```{r Fig2}
+#| fig.width: 11.5
+#| fig.height: 15.5
+
+cowplot::plot_grid(
+    hm_peaksEnr,
+    hm_peaksBin,
+    hm_150,
+    hm_500,
+    nrow = 2,
+    labels = c("A", "C", "B", "D"),
+    align = "v",
+    axis = "b"
+)
+```
+
+## Supplementary figure
+
+Assemble the panels into Supplementary Figure 2:
+
+```{r suppFig2}
+#| fig.width: 11
+#| fig.height: 11
+#| warning: false
+
+cowplot::plot_grid(
+    gg_enrpairs,
+    scale = 0.9,
+    labels = "A"
+)
+```
+
+
+
+
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
