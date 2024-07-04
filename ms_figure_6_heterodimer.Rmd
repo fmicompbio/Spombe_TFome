@@ -204,14 +204,21 @@ p_ntu2 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu2\U141
 ```{r}
 #| warning: false
 
+get_xlabs_bar <- function(x) {
+    vapply(x, function(xx) sub("\n", "<br>", paste0("*", xx, "*", "<br>(n = ", 
+                                                    length(which(dist_ne$Condition == xx)), ")"), fixed = TRUE), "")
+}
+
 (p_zone <- ggplot(zone_avg, aes(fill = Zone, y = 100 * avg_fraction_by_zone, 
                                 x = Condition)) + 
      geom_bar(position = "stack", stat = "identity") +
-     labs(title = "Relative zone distribution\nincl. both replicates", 
+     geom_text(aes(label = paste0(round(100 * avg_fraction_by_zone, 2), "%")), 
+                   position = position_stack(vjust = 0.5), size = 4) +
+     labs(title = "Relative zone distribution incl. both replicates", 
           x = "", y = "Relative distribution [%]") +
      scale_fill_manual(values = c(main_colors[1], main_colors[3], main_colors[5]),
                        name = "") + 
-     scale_x_discrete(labels = get_xlabs) + 
+     scale_x_discrete(labels = get_xlabs_bar) + 
      theme_cowplot() + 
      theme(axis.text.x = element_markdown()))
 ```
@@ -570,7 +577,7 @@ cowplot::plot_grid(
         NULL,
         fig6f,
         NULL,
-        p_rel_dis,
+        p_zone + theme(legend.position = "top"), 
         labels = c("E", "", "F", "", "G"),
         # rel_widths = c(7.65, 0.5, 1.45, 0.5, 9)
         rel_widths = c(6, 0.75, 1.2, 0.75, 10.4), nrow = 1
@@ -627,7 +634,7 @@ gcovdel <- cowplot::plot_grid(
 
 ```{r suppFig6}
 #| fig.width: 13
-#| fig.height: 10
+#| fig.height: 9
 #| warning: false
 
 figs6a <- ggdraw() + 
@@ -637,9 +644,9 @@ cowplot::plot_grid(
     cowplot::plot_grid(
         figs6a, 
         NULL,
-        p_zone + theme(legend.position = "top"), 
+        p_rel_dis,
         nrow = 1, 
-        rel_widths = c(1.75, 0.25, 1.25), 
+        rel_widths = c(1.55, 0.25, 1.45), 
         labels = c("A", "", "B")
     ),
     cowplot::plot_grid(
@@ -650,7 +657,7 @@ cowplot::plot_grid(
         rel_widths = c(1.2, 1),
         labels = c("C", "D")
     ),
-    ncol = 1, rel_heights = c(1, 0.7)
+    ncol = 1, rel_heights = c(1, 1)
 )
 ```
 
