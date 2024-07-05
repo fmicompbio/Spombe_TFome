@@ -1,5 +1,5 @@
 ---
-title: "Figure 4 - IP-MS"
+title: "Figure 5 - IP-MS"
 author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
 date: "`r Sys.Date()`"
 output: 
@@ -910,7 +910,7 @@ hm1saga_nua4 <- Heatmap(
                    NuA4 = c(`TRUE` = complex_colors[["NuA4"]],
                             `FALSE` = binary_heatmap_colors[["FALSE"]])),
         show_legend = FALSE),
-    heatmap_height = unit(h_ipmsHm * 0.945, "mm"), # whole heatmap height
+    heatmap_height = unit(1.125 * h_ipmsHm, "mm"), # whole heatmap height
     column_title_gp = gpar(fontsize = ft),
     heatmap_legend_param = list(title_gp = gpar(fontsize = ft),
                                 at = c("FALSE", "TRUE"),
@@ -924,7 +924,7 @@ hm_150_saga_nua4 <- grid.grabExpr(
                   annotation_legend_side = "right",
                   align_heatmap_legend = "global_center",
                   padding = unit(c(3, 1, 1, 1), "mm")),
-    width = w_ipmsHm, height = h_ipmsHm
+    width = w_ipmsHm, height = 1.125 * h_ipmsHm
 )
 
 plot_grid(hm_150_saga_nua4)
@@ -1434,33 +1434,18 @@ df <- as.data.frame(rowData(sce150)) |>
 
 ## Put together
 
-```{r Fig4}
+```{r Fig5}
 #| fig.width: 9.8
 #| fig.height: 14.5
 
 cowplot::plot_grid(
-    hm_150,
-    plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
-    hm_500,
-    gg_retain2,
-    nrow = 2,
-    labels = c("A", "C", "B", "D"),
-    align = "v",
-    axis = "b"
-)
-```
-
-## Supplementary Figure
-
-```{r suppFig4}
-#| fig.width: 10.8
-#| fig.height: 14.8
-#| warning: false
-
-cowplot::plot_grid(
-    wrap_plots(ggpca1, ggpca2, ggatf1, ggpca3, hm_150_bait, hm_500_bait, ncol = 2) + 
-        plot_annotation(tag_levels = list(c("A", "", "", "", "B"))) & 
-        theme(plot.tag = element_text(size = 14, face = "bold")),
+    cowplot::plot_grid(
+        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
+        gg_retain2,
+        hm_150_bait, hm_500_bait,
+        rel_heights = c(7, 4),
+        labels = c("A", "B", "C", "D")
+    ),
     cowplot::plot_grid(
         NULL,
         legend_bait_1, 
@@ -1469,9 +1454,21 @@ cowplot::plot_grid(
         nrow = 1,
         rel_widths = c(1, 2, 2, 1)
     ),
-    ncol = 1,
+    nrow = 2,
     rel_heights = c(12, 1)
 )
+```
+
+## Supplementary Figure
+
+```{r suppFig5}
+#| fig.width: 10.8
+#| fig.height: 10.8
+#| warning: false
+
+wrap_plots(ggpca1, ggpca2, ggatf1, ggpca3, ncol = 2) + 
+    # plot_annotation(tag_levels = list(c("A", "", "", "", "B"))) & 
+    theme(plot.tag = element_text(size = 14, face = "bold"))
 ```
 
 
