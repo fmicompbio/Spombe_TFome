@@ -1,5 +1,5 @@
 ---
-title: "Figure 5 - networks"
+title: "Figure 6 - networks"
 author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
 date: "`r Sys.Date()`"
 output: 
@@ -50,6 +50,7 @@ suppressPackageStartupMessages({
     library(ComplexHeatmap)
     library(flextable)
     library(kableExtra)
+    library(ggupset)
     library(tidyr)
 })
 
@@ -377,7 +378,113 @@ gr500 <- createNetwork(similList = simil500, threshold = 6,
                        known_interactors = interactors, settings = "igraph")
 ```
 
-# Figure 5
+# 14-3-3 protein interactions
+
+We extract all IPs where either `Rad24` or `Rad25` are pulled down, 
+using a relatively lenient adjusted p-value cutoff.
+
+```{r rad24-rad25}
+#| fig.width: 9
+#| fig.height: 15
+
+## Get all t-statistics and visualize
+res150untag <- .getTestCols(sce150untag, adjp_cutoff = 0.01, logfc_cutoff = 1)
+rad <- res150untag$tstat[c("Rad24", "Rad25"), ]
+colnames(rad) <- .getProteinNameFromComparison(colnames(rad))
+rad <- t(rad)
+hmrad <- Heatmap(rad, 
+                 cluster_rows = TRUE, 
+                 cluster_columns = FALSE, 
+                 col = circlize::colorRamp2(
+                     breaks = seq(1.5, 13.0, length.out = 64),
+                     colors = colorRampPalette(
+                         binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+                 border = TRUE, 
+                 border_gp = gpar(lwd = 0.5),
+                 name = "Mod.\nt-stat.",
+                 na_col = binary_heatmap_colors["FALSE"],
+                 column_names_gp = gpar(fontsize = fl),
+                 row_names_gp = gpar(fontsize = fs),
+                 show_row_names = TRUE, 
+                 show_column_names = TRUE, 
+                 use_raster = FALSE,
+                 show_heatmap_legend = TRUE, 
+                 width = unit(w_trad / 1.5, "mm"), 
+                 heatmap_height = unit(1.4 * h_trad, "mm"),
+                 column_title_gp = gpar(fontsize = ft),
+                 heatmap_legend_param = list(
+                     title_gp = gpar(fontsize = fl),
+                     border = "gray10",
+                     border_gp = gpar(lwd = 0.5)
+                 ))
+set.seed(42L)
+hm_rad <- grid.grabExpr(
+    hmrad <- draw(hmrad, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_trad / 1.5, height = 1.4 * h_trad
+)
+
+## List of experiments where rad24 and/or rad25 were pulled down
+comps <- colnames(res150untag$interactor)[colSums(
+    res150untag$interactor[c("Rad24", "Rad25"), ], na.rm = TRUE) > 0]
+explist <- .getUniProtIdFromComparison(comps, idmap = idmap)
+cat(explist)
+gnames <- .getProteinNameFromComparison(comps)
+cat(gnames)
+
+## Read table
+set_flextable_defaults(font.size = 8)
+rad24_rad25_tbl <- read.delim(params$rad24_rad25_tbl)[, 1:2] |>
+    setNames(c("TF", "R-x-x-[S/T]-x-P")) |>
+    dplyr::mutate(TF = .capitalize(TF))
+stopifnot(all(gnames %in% rad24_rad25_tbl$TF))
+ft <- flextable(rad24_rad25_tbl) |>
+  width(width =  c(0.5, 1.25)) |>
+  set_table_properties(layout = "fixed")
+ggtbl <- ggplot() +
+    theme_void() +
+    annotation_custom(grid::rasterGrob(as_raster(ft)),
+                      xmin = -Inf, xmax = Inf, ymin = 0, ymax = 1)
+
+data.frame(`Number of TFs interacting with at least one 14-3-3 protein` = 
+               nrow(rad24_rad25_tbl),
+           `Number of such TFs with at least one optimal 14-3-3 binding motif` = 
+               sum(rad24_rad25_tbl$`R-x-x-[S/T]-x-P` != ""),
+           check.names = FALSE) |>
+    pivot_longer(cols = everything()) |>
+    kbl(col.names = NULL) |>
+    kable_styling()
+
+# UpSet plot
+dfupset <- as.data.frame(t(res150untag$interactor[c("Rad24", "Rad25"), ])) |>
+    tibble::rownames_to_column("TF") |>
+    dplyr::mutate(TF = .getProteinNameFromComparison(TF))
+
+ovL <- as.list(as.data.frame(dfupset[, c("Rad24", "Rad25")]))
+ovL <- lapply(ovL, function(i) dfupset$TF[which(i)])
+
+pd <- stack(ovL) |>
+    group_by(values) |>
+    summarise(ind = list(ind)) |>
+    dplyr::left_join(rad24_rad25_tbl, by = join_by("values" == "TF")) |>
+    dplyr::mutate(has_motif = !is.na(`R-x-x-[S/T]-x-P`) & `R-x-x-[S/T]-x-P` != "")
+
+ggrad_upset <- ggplot(pd, aes(x = ind)) +
+    geom_bar(aes(fill = has_motif)) +
+    scale_fill_manual(values = c(`TRUE` = main_colors[3], `FALSE` = main_colors[5])) +
+    scale_x_upset() +
+    labs(x = element_blank(), y = "Number of IPs", fill = "Has motif: ") +
+    theme_cowplot(12) +
+    theme(axis.ticks.x = element_blank(),
+          legend.position = "bottom") +
+    theme_combmatrix(combmatrix.label.extra_spacing = 5,
+                     combmatrix.label.make_space = TRUE,
+                     combmatrix.label.width = unit(18, "mm")) +
+    guides(fill = guide_legend(nrow = 1))
+```
+
+# Figure 6
 
 ```{r}
 #| fig.width: 12
@@ -530,9 +637,12 @@ fig5a <- cowplot::plot_grid(
 
 ## Put together
 
-```{r Fig5}
+```{r Fig6}
 #| fig.width: 10
 #| fig.height: 10
+
+fig6c <- ggdraw() + 
+    draw_image("schematics/Fig6C_Pho7_protein_domains_cartoon_Arial_RGB.png")
 
 coords150 <- read.csv(params$coords150)
 coords500 <- read.csv(params$coords500)
@@ -565,16 +675,19 @@ ggr500 <- .plotGraph(grph = gr500, coords = as.matrix(coords500[, c("x", "y")]),
                      nudge_y = -35)
 
 cowplot::plot_grid(
-    fig5a, 
     cowplot::plot_grid(
         cowplot::plot_grid(
             ggr150 + theme(legend.position = "none"), 
             ggr500 + theme(legend.position = "none"), 
-            nrow = 1, labels = c("B", "C")
+            nrow = 1, labels = c("A", "B")
         ),
         get_legend(ggr150 + theme(legend.position = "bottom"), "bottom"),
         nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
-    ), ncol = 1, rel_heights = c(1, 2)
+    ),
+    cowplot::plot_grid(fig6c, ggrad_upset,
+                       nrow = 1, labels = c("C", "D")), 
+    rel_heights = c(5, 2), 
+    ncol = 1
 )
 ```
 
@@ -583,81 +696,17 @@ cowplot::plot_grid(
 We extract all IPs where either `Rad24` or `Rad25` are pulled down, 
 using a relatively lenient adjusted p-value cutoff.
 
-```{r suppFig5}
+```{r suppFig6}
 #| fig.width: 9
-#| fig.height: 10
+#| fig.height: 15
 
-## Get all t-statistics and visualize
-res150untag <- .getTestCols(sce150untag, adjp_cutoff = 0.01, logfc_cutoff = 1)
-rad <- res150untag$tstat[c("Rad24", "Rad25"), ]
-colnames(rad) <- .getProteinNameFromComparison(colnames(rad))
-rad <- t(rad)
-hmrad <- Heatmap(rad, 
-                 cluster_rows = TRUE, 
-                 cluster_columns = FALSE, 
-                 col = circlize::colorRamp2(
-                     breaks = seq(1.5, 13.0, length.out = 64),
-                     colors = colorRampPalette(
-                         binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
-                 border = TRUE, 
-                 border_gp = gpar(lwd = 0.5),
-                 name = "Mod.\nt-stat.",
-                 na_col = binary_heatmap_colors["FALSE"],
-                 column_names_gp = gpar(fontsize = fl),
-                 row_names_gp = gpar(fontsize = fs),
-                 show_row_names = TRUE, 
-                 show_column_names = TRUE, 
-                 use_raster = FALSE,
-                 show_heatmap_legend = TRUE, 
-                 width = unit(w_trad / 1.5, "mm"), 
-                 heatmap_height = unit(1.3 * h_trad, "mm"),
-                 column_title_gp = gpar(fontsize = ft),
-                 heatmap_legend_param = list(
-                     title_gp = gpar(fontsize = fl),
-                     border = "gray10",
-                     border_gp = gpar(lwd = 0.5)
-                 ))
-set.seed(42L)
-hm_rad <- grid.grabExpr(
-    hmrad <- draw(hmrad, merge_legend = TRUE,
-                 heatmap_legend_side = "right",
-                 annotation_legend_side = "right"),
-    width = w_trad / 1.5, height = 1.3 * h_trad
+plot_grid(
+    fig5a, 
+    plot_grid(hm_rad, ggtbl, nrow = 1, align = "h", axis = "b", 
+              rel_widths = c(2, 2.5), labels = c("B", "C")),
+    rel_heights = c(1, 3), ncol = 1,
+    labels = c("A", "")
 )
-
-## List of experiments where rad24 and/or rad25 were pulled down
-comps <- colnames(res150untag$interactor)[colSums(
-    res150untag$interactor[c("Rad24", "Rad25"), ], na.rm = TRUE) > 0]
-explist <- .getUniProtIdFromComparison(comps,idmap = idmap)
-cat(explist)
-gnames <- .getProteinNameFromComparison(comps)
-cat(gnames)
-
-## Read table
-set_flextable_defaults(font.size = 8)
-rad24_rad25_tbl <- read.delim(params$rad24_rad25_tbl)[, 1:2] |>
-    setNames(c("TF", "R-x-x-[S/T]-x-P")) |>
-    dplyr::mutate(TF = .capitalize(TF))
-stopifnot(all(gnames %in% rad24_rad25_tbl$TF))
-ft <- flextable(rad24_rad25_tbl) |>
-  width(width =  c(0.5, 1.25)) |>
-  set_table_properties(layout = "fixed")
-ggtbl <- ggplot() +
-    theme_void() +
-    annotation_custom(grid::rasterGrob(as_raster(ft)),
-                      xmin = -Inf, xmax = Inf, ymin = 0, ymax = 1)
-
-data.frame(`Number of TFs interacting with at least one 14-3-3 protein` = 
-               nrow(rad24_rad25_tbl),
-           `Number of such TFs with at least one optimal 14-3-3 binding motif` = 
-               sum(rad24_rad25_tbl$`R-x-x-[S/T]-x-P` != ""),
-           check.names = FALSE) |>
-    pivot_longer(cols = everything()) |>
-    kbl(col.names = NULL) |>
-    kable_styling()
-
-plot_grid(hm_rad, ggtbl, nrow = 1, align = "h", axis = "b", 
-          rel_widths = c(2, 2.5), labels = c("A", "B"))
 ```
 
 # Session info
