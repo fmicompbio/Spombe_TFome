@@ -302,11 +302,14 @@ gg_tpm <- ggplot(ave_tpm, aes(x = fct_reorder(bait, tpm, .desc = TRUE), y = tpm,
     scale_color_manual(values = c("Bait pulled down (150 mM NaCl IP-MS)" = pt_color,
                                   "Bait not pulled down (150 mM NaCl IP-MS)" = na_color),
                        name = "") + 
+    scale_x_discrete(breaks = c("mei4", "atf31", "atf21", "cuf2", "rsv1")) + 
     guides(color = guide_legend(nrow = 2, byrow = TRUE)) + 
     labs(x = "Transcription factors",
          y = "Transcription factor\ngene expression (TPM)")
-(gg_tpm + theme(axis.text.x = element_blank(), 
-                axis.ticks.x = element_blank()))
+(gg_tpm + theme(axis.text.x = element_blank(),
+                axis.ticks.length.x = unit(2, "mm"),
+                axis.ticks.x = element_line(color = main_colors[1],
+                                            linewidth = 1.25)))
 ```
 
 ## Number of interactors in IP-MS for each TF
@@ -530,16 +533,18 @@ fig1c <- ggdraw() +
     draw_image("schematics/Fig1C_placeholder_screen_overview_Arial.png")
 
 cowplot::plot_grid(
+    fig1c,
     cowplot::plot_grid(
         gg_dbd, 
-        gg_tpm + theme(axis.text.x = element_blank(), 
-                       axis.ticks.x = element_blank()),
+        gg_tpm + theme(axis.text.x = element_blank(),
+                       axis.ticks.length.x = unit(2, "mm"),
+                       axis.ticks.x = element_line(color = main_colors[1],
+                                                   linewidth = 1.25)),
         nrow = 1,
-        labels = c("A", "B"),
+        labels = c("B", "C"),
         align = "vh",
         axis = "b"
     ),
-    fig1c,
     cowplot::plot_grid(
         gg_nbrint,
         gg_nbrpeaks_all_narrow_by_npeaks,
@@ -549,10 +554,10 @@ cowplot::plot_grid(
         axis = "b"
     ),
     nrow = 3,
-    labels = c(NA, "C", NA),
+    labels = c("A", NA, NA),
     align = "v",
     axis = "b",
-    rel_heights = c(50, 73, 50)
+    rel_heights = c(73, 50, 50)
 )
 ```
 
