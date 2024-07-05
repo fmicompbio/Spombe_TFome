@@ -644,7 +644,7 @@ makeInteractorSummary(sce = sce500, baitdata = baitdata_500_loose, adjp_cutoff =
                       tbl_title = "500 mM, low stringency")
 ```
 
-# Figure 4
+# Figure 5
 
 ## Settings
 
