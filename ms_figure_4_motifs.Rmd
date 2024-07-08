@@ -378,8 +378,9 @@ rownames(enr_3mers) <- tf_names
 
 # plot heatmap
 # ... define heatmap font sizes
-fs <- 5.5
-fl <- 8
+fs <- 5.5 # small
+fl <- 8   # large
+ft <- 10  # title
 
 # ... calculate data range for mapping to colors
 mx <- max(abs(enr_3mers))
@@ -414,6 +415,8 @@ hm_3mers <- Heatmap(enr_3mers, name = "Pearson's resid.",
                     cluster_columns = TRUE, column_dend_height = unit(10, "mm"),
                     row_names_gp = gpar(fontsize = fl, fontfamily = "sans"),
                     column_names_gp = gpar(fontsize = fs, fontfamily = "mono"),
+                    column_title = "Binuclear zinc cluster TFs",
+                    column_title_side = "top", column_title_gp = gpar(fontsize = ft),
                     border = TRUE, border_gp = gpar(lwd = 0.5),
                     show_row_names = TRUE, show_column_names = TRUE,
                     use_raster = FALSE, show_heatmap_legend = TRUE,
@@ -443,6 +446,31 @@ hm_ZnII2Cys6_sel_3mers <- grid.grabExpr(
 plot_grid(hm_ZnII2Cys6_sel_3mers)
 ```
 
+```{r peak-overlaps-within-tf-family}
+#| fig.width: 10
+#| fig.height: 8
+
+# get enrichment calls for specific peaks that are
+# bound by at least one of the binuclear zinc cluster TFs used above
+pd <- as.data.frame(is_enr_specific[, tf_names]) |>
+    tibble::rownames_to_column("peak_name") |>
+    pivot_longer(cols = all_of(tf_names),
+                 values_to = "enriched",
+                 names_to = "tf_name") |>
+    filter(enriched) |>
+    group_by(peak_name) |>
+    summarise(tfs_enr = list(tf_name))
+
+# create upset plot
+upset_ZnII2Cys6_sel <- ggplot(pd, aes(x = tfs_enr)) +
+        geom_bar() +
+        scale_x_upset() +
+        labs(x = element_blank(),
+             y = "Number of enriched peaks") +
+        theme_cowplot()
+upset_ZnII2Cys6_sel
+```
+
 
 ## Known and new motif characterization
 
@@ -455,18 +483,14 @@ both previously known and novel motifs):
 #| warning: false
 
 # select motifs for detailed visualization
-sel_motifs <- c(
-    # known
-    "Cdc10.m1",
-    # novel
-    "Toe2.m1", "Ams2.m1", "Esc1.m1",
-    "SPAC3F10.12c.m1", "Zip1.m1", "Adn2.m4")
+sel_motifs <- c( "Toe2.m1", "Esc1.m1", "SPAC3F10.12c.m1",
+                 "Ams2.m1", "Zip1.m1", "Adn2.m4")
 tf_names <- sub("[.]m[0-9]+$", "", sel_motifs)
 
 # create motif visualizations
 # ... setup plotting parameters
 fgbg_col <- c(main_colors[1], main_colors[5]) # colors for foreground and background
-gnm_col <- na_color # color for NA or "other"
+gnm_col <- bg_color # color for NA or "other"
 w <- 2500  # width in bases around peak-center for meta-profiles
 fs <- 9 # font size
 nlabel <- 1 # number of k-mer words to label in enrichment plot
@@ -600,7 +624,7 @@ for (i in seq_along(sel_motifs)) {
                   colour = fgbg_col[1], hjust = -0.1, vjust = 0.5,
                   size = fs / ggplot2::.pt,
                   fontface = "bold") +
-        labs(x = "Fraction of motif sites",
+        labs(x = "Percent of motif sites",
              y = element_blank(),
              fill = "Genomic region: ") +
         theme_cowplot(fs) +
@@ -664,7 +688,7 @@ Assemble the panels into Figure 3:
 
 ```{r Fig3}
 #| fig.width: 11
-#| fig.height: 15.5
+#| fig.height: 14
 
 cowplot::plot_grid(
     cowplot::plot_grid(
@@ -682,7 +706,7 @@ cowplot::plot_grid(
     labels = c("", "C"),
     align = "vh",
     axis = "b",
-    rel_heights = c(1.4, 3.7)
+    rel_heights = c(1.4, 3.2)
 )
 ```
 
