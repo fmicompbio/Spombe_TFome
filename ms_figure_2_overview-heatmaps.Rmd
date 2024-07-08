@@ -629,8 +629,8 @@ peaktype <- factor(gsub("[()]", "", sub(" ", "\n", peakgr$peaktype)),
 near_ncRNA <- factor(ifelse(!is.na(dist.peak2tRNA) & dist.peak2tRNA < maxdist,
                             "tRNA",
                             ifelse(!is.na(dist.peak2rRNA) & dist.peak2rRNA < maxdist,
-                                   "5S rRNA", "none")),
-                         levels = c("tRNA", "5S rRNA", "none"))
+                                   "5S rRNA", NA)),
+                         levels = c("tRNA", "5S rRNA"))
 
 # most tRNA and 5S rRNA genes are near "common (ubiquitous)" peaks:
 table(peaktype[sel_peaksBin], near_ncRNA[sel_peaksBin])
@@ -650,9 +650,8 @@ annotLegendParams <- list(`%GC` = list(at = c(20, 40, 60),
                                              legend_width = unit(18, "mm"),
                                              title_position = "topcenter",
                                              title_gp = gpar(fontsize = fl)),
-                          `ncRNA` = list(labels_gp = gpar(fontsize = fs),
-                                         title_position = "topcenter",
-                                         title_gp = gpar(fontsize = fl)))
+                          `tRNA or 5S rRNA` = list(labels_gp = gpar(fontsize = fs),
+                                                   title = ""))
 cols_ncRNA <- c("tRNA" = main_colors[5], "5S rRNA" = main_colors[3],
                 "none" = bg_color)
 annotCols <- list(
@@ -667,7 +666,7 @@ annotCols <- list(
     `TSS dist.` = colorRamp2(breaks = c(0, 10^seq(2, log10(max(peakgr$nrst_TSS_dist)),
                                                   length.out = 63)),
                              colors = hcl.colors(64)),
-    `ncRNA` = cols_ncRNA)
+    `tRNA or 5S rRNA` = cols_ncRNA)
 
 # prepare heatmap annotations
 #   `peakAnnot` for peaks (rows), left side
@@ -678,8 +677,8 @@ peakAnnot <- HeatmapAnnotation(
                   which = "row",
                   `%GC` = peakgr$fracGC[sel_peaksBin] * 100,
                   `TSS dist.` = peakgr$nrst_TSS_dist[sel_peaksBin],
-                  `ncRNA` = near_ncRNA[sel_peaksBin],
-                  col = annotCols,
+                  `tRNA or 5S rRNA` = near_ncRNA[sel_peaksBin],
+                  col = annotCols, na_col = bg_color,
                   width = unit(21, "mm"), show_legend = TRUE,
                   annotation_name_gp = gpar(fontsize = fl),
                   annotation_legend_param = annotLegendParams)
@@ -775,7 +774,7 @@ chip_enr_sel_range_full <- range(chip_enr_sel)
 
 # parameters for annotation legends and colors
 annotCols2 <- list(
-    `ncRNA` = cols_ncRNA,
+    `tRNA or 5S rRNA` = cols_ncRNA,
     H3 = colorRamp2(breaks = c(chip_enr_sel_range_full[1],
                                seq(chip_enr_sel_range[1],
                                    chip_enr_sel_range[2],
@@ -801,9 +800,8 @@ annotCols2 <- list(
                                     chip_enr_sel_range_full[2]),
                          colors = viridisLite::magma(64)))
 annotLegendParams2 <- list(
-    `ncRNA` = list(labels_gp = gpar(fontsize = fs),
-                   title_position = "topcenter",
-                   title_gp = gpar(fontsize = fl)),
+    `tRNA or 5S rRNA` = list(labels_gp = gpar(fontsize = fs),
+                             title = ""),
     H3 = list(at = c(-6, 0, 6),
               title = "Histone log2 IP/input",
               labels_gp = gpar(fontsize = fs),
@@ -818,12 +816,12 @@ annotLegendParams2 <- list(
 #   `peakAnnot2` for peaks (rows), right side
 peakAnnot <- HeatmapAnnotation(
                   which = "row",
-                  `ncRNA` = near_ncRNA[sel_peaksEnr],
+                  `tRNA or 5S rRNA` = near_ncRNA[sel_peaksEnr],
                   H3 = chip_enr_sel[, "GSE108668_H3"],
                   H3K14ac = chip_enr_sel[, "GSE108668_H3K14ac"],
                   H3K9me2 = chip_enr_sel[, "GSE182250_H3K9me2"],
                   H3K9me3 = chip_enr_sel[, "GSE182250_H3K9me3"],
-                  col = annotCols2,
+                  col = annotCols2, na_col = bg_color,
                   width = unit(28, "mm"),
                   annotation_name_gp = gpar(fontsize = fl),
                   annotation_legend_param = annotLegendParams2,
@@ -831,7 +829,7 @@ peakAnnot <- HeatmapAnnotation(
 atac_trunc <- pmin(atac_rpkm_avg[sel_peaksEnr], 2000) # cap ATAC signal at 2000
 peakAnnot2 <- HeatmapAnnotation(
     which = "row",
-    `Accessibility\n1e3 RPKM` =
+    `Accessibility\n1e3 RPKM\nATAC-seq` =
         anno_barplot(x = atac_trunc / 1e3,
                      gp = gpar(col = na_color),
                      border = FALSE, bar_width = 1.0,
