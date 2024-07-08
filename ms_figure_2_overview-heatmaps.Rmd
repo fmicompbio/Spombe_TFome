@@ -941,7 +941,7 @@ cowplot::plot_grid(
     hm_150,
     hm_500,
     nrow = 2,
-    labels = c("A", "C", "B", "D"),
+    labels = c("A  ChIP", "B  ChIP", "C  IP-MS", "D  IP-MS"),
     align = "v",
     axis = "b"
 )
