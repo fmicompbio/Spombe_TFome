@@ -47,12 +47,7 @@ suppressPackageStartupMessages({
     library(colorspace)
     library(circlize)
     library(scattermore)
-    # library(ggrepel)
-    # library(DT)
-    # library(stringr)
     library(tidyr)
-    # library(kableExtra)
-    # library(patchwork)
 })
 
 ## Source scripts with required helper functions and settings
