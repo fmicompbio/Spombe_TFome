@@ -739,8 +739,7 @@ hm5 <- Heatmap(mprom[o, oc], name = "hm5",
                width = unit(w_peaksHm, "mm"), # heatmap body width
                height = unit(w_peaksHm, "mm"))
 
-hm_prom <- grid.grabExpr(
-    {
+hm_prom <- grid.grabExpr({
         hm5 <- draw(hm5, merge_legend = TRUE,
                     heatmap_legend_side = "bottom",
                     annotation_legend_side = "bottom")
