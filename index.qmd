@@ -29,9 +29,11 @@ author:
     affiliations:
       - ref: giessen
   - name: Vytautas Iesmantavicius
+    orcid: 0000-0002-2512-9957
     affiliations:
       - ref: fmi
   - name: Daniel Hess
+    orcid: 0000-0002-1642-5404
     affiliations:
       - ref: fmi
   - name: Eliza Pandini Figueiredo Moreno
@@ -41,6 +43,7 @@ author:
     affiliations:
       - ref: giessen
   - name: Jan Seebacher
+    orcid: 0000-0002-7858-2720
     affiliations:
       - ref: fmi
   - name: Sebastien Smallwood
@@ -82,6 +85,16 @@ format:
         fig-cap-location: top
 ---
 
+<style>
+.author {
+  font-size: 0.7em;
+}
+
+.affiliation {
+  font-size: 0.7em;
+}
+</style>
+
 ## Interactive data exploration with `TFexplorer`
 
 ## Links to raw data
@@ -96,8 +109,9 @@ Click on a specific figure below to jump directly to the corresponding sources.
 |          |                                                                                                  |     |
 |----------|----------------------------|----------------------------|
 | Figure 1 | [![](ms_figure_1_overview_files/figure-html/Fig1-1.png){width="4cm"}](ms_figure_1_overview.html) |  [![](ms_figure_1_overview_files/figure-html/suppFig1-1.png){width="4cm"}](ms_figure_1_overview.html#Supplementary_figure)   |
-| Figure 2 | [![](ms_figure_2_chip_files/figure-html/Fig2-1.png){width="4cm"}](ms_figure_2_chip.html) | [![](ms_figure_2_chip_files/figure-html/suppFig2-1.png){width="4cm"}](ms_figure_2_chip.html#Supplementary_figure)    |
-| Figure 3 | [![](ms_figure_3_motifs_files/figure-html/Fig3-1.png){width="4cm"}](ms_figure_3_motifs.html) | [![](ms_figure_3_motifs_files/figure-html/suppFig3-1.png){width="4cm"}](ms_figure_3_motifs.html#Supplementary_figure)    |
-| Figure 4 | [![](ms_figure_4_ipms_files/figure-html/Fig4-1.png){width="4cm"}](ms_figure_4_ipms.html) | [![](ms_figure_4_ipms_files/figure-html/suppFig4-1.png){width="4cm"}](ms_figure_4_ipms.html#Supplementary_figure)    |
-| Figure 5 | [![](ms_figure_5_networks_files/figure-html/Fig5-1.png){width="4cm"}](ms_figure_5_networks.html) | [![](ms_figure_5_networks_files/figure-html/suppFig5-1.png){width="4cm"}](ms_figure_5_networks.html#Supplementary_figure)    |
-| Figure 6 | [![](ms_figure_6_heterodimer_files/figure-html/Fig6-1.png){width="4cm"}](ms_figure_6_heterodimer.html) | [![](ms_figure_6_heterodimer_files/figure-html/suppFig6-1.png){width="4cm"}](ms_figure_6_heterodimer.html#Supplementary_figure)    |
+| Figure 2 | [![](ms_figure_2_overview-heatmaps_files/figure-html/Fig2-1.png){width="4cm"}](ms_figure_2_overview-heatmaps.html) | [![](ms_figure_2_overview-heatmaps_files/figure-html/suppFig2-1.png){width="4cm"}](ms_figure_2_overview-heatmaps.html#Supplementary_figure)    |
+| Figure 3 | [![](ms_figure_3_chip_files/figure-html/Fig3-1.png){width="4cm"}](ms_figure_3_chip.html) | [![](ms_figure_3_chip_files/figure-html/suppFig3-1.png){width="4cm"}](ms_figure_3_chip.html#Supplementary_figure)    |
+| Figure 4 | [![](ms_figure_4_motifs_files/figure-html/Fig4-1.png){width="4cm"}](ms_figure_4_motifs.html) | [![](ms_figure_4_motifs_files/figure-html/suppFig4-1.png){width="4cm"}](ms_figure_4_motifs.html#Supplementary_figure)    |
+| Figure 5 | [![](ms_figure_5_ipms_files/figure-html/Fig5-1.png){width="4cm"}](ms_figure_5_ipms.html) | [![](ms_figure_5_ipms_files/figure-html/suppFig5-1.png){width="4cm"}](ms_figure_5_ipms.html#Supplementary_figure)    |
+| Figure 6 | [![](ms_figure_6_networks_files/figure-html/Fig6-1.png){width="4cm"}](ms_figure_6_networks.html) | [![](ms_figure_6_networks_files/figure-html/suppFig6-1.png){width="4cm"}](ms_figure_6_networks.html#Supplementary_figure)    |
+| Figure 7 | [![](ms_figure_7_heterodimer_files/figure-html/Fig7-1.png){width="4cm"}](ms_figure_7_heterodimer.html) | [![](ms_figure_7_heterodimer_files/figure-html/suppFig7-1.png){width="4cm"}](ms_figure_7_heterodimer.html#Supplementary_figure)    |
