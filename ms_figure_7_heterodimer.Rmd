@@ -1,5 +1,5 @@
 ---
-title: "Figure 6 - heterodimer"
+title: "Figure 7 - heterodimer"
 author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
 date: "`r Sys.Date()`"
 output: 
@@ -12,7 +12,7 @@ params:
     rds500: "data/ipms_500_sce.rds"
     rdsrnaseq_del: "data/rnaseq_del.rds"
     rdsrnaseq_ko: "data/rnaseq_ko.rds"
-    dist_from_ne: "data/Fig6_lacR_quantification_distance_radius.txt"
+    dist_from_ne: "data/Fig7_lacR_quantification_distance_radius.txt"
     gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
     idmap: "data/id_mapping_table.txt"
     rnatracks_ko: "data/genome_browser_tracks_rnaseq_ko.csv.gz"
@@ -72,7 +72,7 @@ rnaseq_ko <- readRDS(params$rdsrnaseq_ko)
 idmap <- read.delim(params$idmap)
 ```
 
-# Figure 6
+# Figure 7
 
 ## Zone quantification
 
@@ -380,6 +380,54 @@ cowplot::plot_grid(
 )
 ```
 
+```{r rnaseq-genomeplot}
+
+## Add information about gene location to result lists
+genepos <- rowRanges(dds)
+mcols(genepos) <- NULL
+genepos <- as.data.frame(genepos)
+resList <- lapply(resList, function(rl) {
+    stopifnot(rownames(rl) == rownames(genepos))
+    cbind(rl, genepos) |>
+        as.data.frame() |>
+        tibble::rownames_to_column("gene")
+})
+
+## Subset to region of interest
+chrom <- genepos["tna1", "seqnames"]
+startpos <- genepos["tna1", "start"]
+endpos <- genepos["tna1", "end"]
+windowsize <- 30000
+
+resListToPlot <- lapply(resList, function(rl) {
+    rl |> dplyr::filter(seqnames == chrom & 
+                            start > startpos - windowsize & 
+                            end < endpos + windowsize)
+})
+plotList <- lapply(names(resListToPlot), function(nm) {
+    ggplot(resListToPlot[[nm]], 
+           aes(x = start, y = log2FoldChange, 
+               color = abs(log2FoldChange) > 3 & padj < 0.001)) + 
+        geom_rect(aes(xmin = endpos, xmax = startpos, ymin = -Inf, ymax = Inf),
+                  color = lighten(main_colors[4], amount = 0.6), fill = NA,
+                  alpha = 0.1, show.legend = FALSE) + 
+        geom_point(alpha = 0.6, size = 2) + 
+        scale_color_manual(values = c(`FALSE` = "grey50", 
+                                      `TRUE` = main_colors[4])) + 
+        geom_text_repel(aes(label = ifelse(abs(log2FoldChange) > 3 & padj < 0.001,
+                                           as.character(gene), "")),
+                        size = 2.5, max.overlaps = 30, force = 10) + 
+        scale_x_continuous(labels = scales::label_number(scale = 1e-6)) + 
+        scale_y_continuous(limits = c(-7, 7)) + 
+        labs(x = "Genome position (Mb)", y = "log2(fold-change)",
+             title = paste0(nm, "\U141E")) + 
+        theme_cowplot() + 
+        theme(legend.position = "none",
+              plot.title = element_text(face = "italic"))
+})
+genomeplot <- cowplot::plot_grid(plotlist = plotList, ncol = 1)
+```
+
 ## Coverage tracks
 
 ```{r}
@@ -492,8 +540,9 @@ g1a <- ggplot(plotdf_chip1 |>
 g1b <- ggplot(plotdf_rna, 
               aes(x = pos, y = cpmnorm)) + 
     geom_area(aes(group = strand, fill = gene)) + 
-    scale_fill_manual(values = c(wt = "black", "ntu1\U141E" = main_colors[5], 
-                                 "ntu2\U141E" = main_colors[1])) + 
+    scale_fill_manual(values = c(wt = lighten("black", amount = 0.4), 
+                                 "ntu1\U141E" = lighten(main_colors[5], amount = 0.4), 
+                                 "ntu2\U141E" = lighten(main_colors[1], amount = 0.4))) + 
     facet_grid(sample ~ seqnames, scale = "free_x", space = "free_x",
                switch = "y") + 
     scale_y_continuous(limits = c(-0.9, 0.3), expand = c(0, 0))
@@ -543,39 +592,39 @@ gcov <- cowplot::plot_grid(
 
 ## Put together
 
-```{r Fig6}
+```{r Fig7}
 #| fig.width: 13
 #| fig.height: 14
 #| warning: false
 
-fig6b <- ggdraw() + 
-    draw_image("schematics/Fig6B_Nattou_protein_domains_cartoon_Arial.png")
-fig6e <- ggdraw() + 
-    draw_image("schematics/Fig6E_Nattou_lacR_cartoon_images_Arial.png")
-fig6f <- ggdraw() + 
-    draw_image("schematics/Fig6F_Nattou_lacR_microscopy_images_Arial.png")
+fig7b <- ggdraw() + 
+    draw_image("schematics/Fig7B_Nattou_protein_domains_cartoon_Arial.png")
+fig7e <- ggdraw() + 
+    draw_image("schematics/Fig7E_Nattou_lacR_cartoon_images_Arial.png")
+fig7f <- ggdraw() + 
+    draw_image("schematics/Fig7F_Nattou_lacR_microscopy_images_Arial.png")
 
-fig6c <- wrap_plots(maplots, ncol = 1) | corrplot[[1]]
+fig7c <- wrap_plots(maplots, ncol = 1) | corrplot[[1]]
 
 cowplot::plot_grid(
     cowplot::plot_grid(
         gg_ipdimer, 
-        fig6c,
+        fig7c,
         nrow = 1, 
         rel_widths = c(1, 2), 
         labels = c("A", "C"),
         align = "h", axis = "bt"
     ),
     cowplot::plot_grid(
-        fig6b, 
+        fig7b, 
         gcov,
         rel_widths = c(1, 1),
         labels = c("B", "D")
     ),
     cowplot::plot_grid(
-        fig6e,
+        fig7e,
         NULL,
-        fig6f,
+        fig7f,
         NULL,
         p_zone + theme(legend.position = "top"), 
         labels = c("E", "", "F", "", "G"),
@@ -589,7 +638,7 @@ cowplot::plot_grid(
 
 ## Supplementary Figure
 
-```{r suppFig6-chip}
+```{r suppFig7-chip}
 #| warning: false
 #| message: false
 
@@ -632,32 +681,32 @@ gcovdel <- cowplot::plot_grid(
     align = "v", axis = "lr")
 ```
 
-```{r suppFig6}
+```{r suppFig7}
 #| fig.width: 13
-#| fig.height: 9
+#| fig.height: 15
 #| warning: false
 
 figs6a <- ggdraw() + 
-    draw_image("schematics/FigS6A_Nattou_AF2_fl_Arial.png")
+    draw_image("schematics/FigS7A_Nattou_AF2_fl_Arial.png")
 
 cowplot::plot_grid(
+    figs6a,
     cowplot::plot_grid(
-        figs6a, 
-        NULL,
         p_rel_dis,
+        genomeplot_tpm,
         nrow = 1, 
-        rel_widths = c(1.55, 0.25, 1.45), 
-        labels = c("A", "", "B")
+        rel_widths = c(1, 1), 
+        labels = c("B", "C")
     ),
     cowplot::plot_grid(
-        genomeplot_tpm,
+        genomeplot,
         gcovdel,
         # maplots$ID83delTMD,
         nrow = 1, 
-        rel_widths = c(1.2, 1),
-        labels = c("C", "D")
+        rel_widths = c(1, 1),
+        labels = c("C", "E")
     ),
-    ncol = 1, rel_heights = c(1, 1)
+    ncol = 1, rel_heights = c(1, 1, 1)
 )
 ```
 
