@@ -289,21 +289,28 @@ ave_tpm <- data.frame(
                "Bait not pulled down (150 mM NaCl IP-MS)",
                "Bait pulled down (150 mM NaCl IP-MS)"),
         levels = c("Bait pulled down (150 mM NaCl IP-MS)",
-                   "Bait not pulled down (150 mM NaCl IP-MS)")),
+                   "Bait not pulled down (150 mM NaCl IP-MS)", 
+                   "Meiosis-specific transcription factors")),
     tpm = rowMeans(assay(rnaseq, "abundance")[allbaits, 
                                               rnaseq$Group_name == "wt_WT_mRNA"])
 )
 gg_tpm <- ggplot(ave_tpm, aes(x = fct_reorder(bait, tpm, .desc = TRUE), y = tpm, 
-                              color = bait_pulled)) + 
+                              color = bait_pulled, shape = bait_pulled)) + 
     geom_hline(yintercept = 0, linetype = "dashed", color = na_color) +
-    geom_point(size = 1) + 
+    geom_point(size = 1, show.legend = TRUE) + 
     theme_cowplot() + 
     theme(legend.position = "inside", legend.position.inside = c(0.15, 0.9)) +
     scale_color_manual(values = c("Bait pulled down (150 mM NaCl IP-MS)" = pt_color,
-                                  "Bait not pulled down (150 mM NaCl IP-MS)" = na_color),
-                       name = "") + 
+                                  "Bait not pulled down (150 mM NaCl IP-MS)" = na_color,
+                                  "Meiosis-specific transcription factors" = main_colors[1]),
+                       drop = FALSE, name = "") + 
+    scale_shape_manual(values = c("Bait pulled down (150 mM NaCl IP-MS)" = 16,
+                                  "Bait not pulled down (150 mM NaCl IP-MS)" = 16,
+                                  "Meiosis-specific transcription factors" = 15),
+                       drop = FALSE, name = "") + 
     scale_x_discrete(breaks = c("mei4", "atf31", "atf21", "cuf2", "rsv1")) + 
-    guides(color = guide_legend(nrow = 2, byrow = TRUE)) + 
+    guides(color = guide_legend(nrow = 3, byrow = TRUE,
+                                override.aes = list(size = 3))) + 
     labs(x = "Transcription factors",
          y = "Transcription factor\ngene expression (TPM)")
 (gg_tpm + theme(axis.text.x = element_blank(),
