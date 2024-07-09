@@ -20,6 +20,7 @@ params:
     peakatacfile: "data/fused_peaks_filtered_counts-external_atac.csv.gz"
     peakchipfile: "data/fused_peaks_filtered_counts-external_chip.csv.gz"
     gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
+    ipms150untag: "data/ipms_150_untag_sce.rds"
 ---
 
 ```{r setup, include=FALSE}
@@ -55,6 +56,7 @@ source("params/plot_settings.R")
 source("params/get_testres_function.R")
 source("params/ipms_params.R")
 source("params/mapping_functions.R")
+source("params/ipms_heatmap_functions.R")
 
 ## Heatmap sizes
 w_ipmsHm <-  84 # heatmap body width (mm)
@@ -188,227 +190,6 @@ We define a number of additional helper functions for data extraction and
 summarization, which will be used below. 
 
 ```{r heatmap-helper}
-filterForHeatmap <- function(tstatmat, adjpmat, logfcmat, adjpThreshold, 
-                             logfcThreshold, maxNbrTargets) {
-    ## Filter - require significant in at least one comparison
-    tstatfilt <- tstatmat
-    tstatfilt[adjpmat >= adjpThreshold] <- NA
-    tstatfilt[logfcmat <= logfcThreshold] <- NA
-    # tstatfilt[tstatfilt <= 0] <- NA
-    
-    ## Some experiments pull down a large number of proteins
-    # print(table(colSums(!is.na(tstatfilt))))
-    ## -> remove proteins that are only being pulled down in these experiments
-    keep <- which(colSums(!is.na(tstatfilt)) <= maxNbrTargets)
-    tstatfilt <- tstatfilt[rowSums(!is.na(tstatfilt[, keep])) > 0, ]
-    tstatfilt[is.na(tstatfilt)] <- 0
-    tstatfilt <- tstatfilt[rowSums(tstatfilt) > 0, ]
-    
-    ## Subset the t-statistic matrix to only the retained proteins
-    stopifnot(colnames(tstatfilt) == colnames(tstatmat))
-    tstatmat <- tstatmat[rownames(tstatfilt), colnames(tstatfilt)]
-    colnames(tstatmat) <- .getSimplifiedComparison(colnames(tstatmat))
-    
-    list(tstats = tstatmat, tstatsfilt = tstatfilt)
-}
-
-makeComplexAnnotation <- function(tstatmat, complexes, idmap,
-                                  show_legend = TRUE) {
-    rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
-                           row.names = rownames(tstatmat))
-    rowcols <- list(Complex = c())
-    for (cmplx in names(complexes)) {
-        rowannot$Complex[.getPomBaseIdFromProtein(rownames(rowannot), 
-                                                  idmap = idmap) %in% 
-                             complexes[[cmplx]]$pombase_ids] <- cmplx
-        rowcols$Complex[cmplx] <- complexes[[cmplx]]$color
-    }
-    rowAnnotation(df = rowannot, 
-                  col = rowcols, 
-                  annotation_name_gp = gpar(fontsize = fl),
-                  simple_anno_size_adjust = TRUE,
-                  na_col = bg_color,
-                  show_annotation_name = FALSE,
-                  show_legend = show_legend,
-                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
-}
-
-makeColLabels <- function(tstatmat, colLabel, fontsize) {
-    columnAnnotation(
-        TFnames = anno_mark(which = "column", side = "bottom",
-                            at = match(colLabel, colnames(tstatmat)), 
-                            labels = .getProteinNameFromSimplifiedComparison(colLabel),
-                            labels_gp = gpar(fontsize = fontsize)))
-}
-
-makeHeatmapCol <- function(tstatmat, stringency = "high") {
-    if (stringency == "high") {
-        circlize::colorRamp2(
-            breaks = seq(3.0, 13.0, length.out = 64),
-            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
-    } else {
-        circlize::colorRamp2(
-            breaks = seq(1.5, 13.0, length.out = 64),
-            colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64))
-    }
-}
-
-reorderColsByRows <- function(tstat) {
-    ## Row names should be protein names, column names simplified comparison names
-    ord <- match(rownames(tstat), .getProteinNameFromSimplifiedComparison(colnames(tstat)))
-    ord <- ord[!is.na(ord)]
-    ord <- c(ord, setdiff(seq_len(ncol(tstat)), ord))
-    tstat[, ord]
-}
-
-makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
-    tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)
-    
-    tstats <- filterForHeatmap(tstatmat = tc$tstat, adjpmat = tc$adjp, 
-                               logfcmat = tc$logfc, logfcThreshold = log2fcthr,
-                               adjpThreshold = adjpthr, maxNbrTargets = Inf)
-    tstat <- tstats$tstats 
-    
-    ## tstats$tstatsfile: protein x experiment
-    ## Number of TFs that are pulled down by each bait
-    all_tfs <- setdiff(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
-                       c("Untagged", "untagged", NA))
-    nbrInt <- colSums(tstats$tstatsfilt[rownames(tstats$tstatsfilt) %in% all_tfs, ] > 0, 
-                      na.rm = TRUE)
-    names(nbrInt) <- .getSimplifiedComparison(names(nbrInt))
-
-    ## Split by family - return a matrix with several columns: 
-    ## #pulled down TFs (including itself), #pulled down TFs (excluding itself),
-    ## #pulled down TFs from the same family (excluding itself), 
-    ## #pulled down TFs from another family
-    tmptf <- tstats$tstatsfilt[match(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)), 
-                                     rownames(tstats$tstatsfilt)), ]
-    rownames(tmptf) <- .getProteinNameFromComparison(colnames(tstats$tstatsfilt))
-    dbdtf <- data.frame(PomBaseID = .getPomBaseIdFromComparison(colnames(tstats$tstatsfilt), 
-                                                                idmap = idmap),
-                        bait = .getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
-                        DBD_class = NA)
-    for (i in seq_len(nrow(dbdtf))) {
-        lookfor <- dbdtf$PomBaseID[i]
-        if (!(lookfor %in% c("untagged", "Untagged"))) {
-            dbdtf$DBD_class[i] <- dbd$DBD_class[match(lookfor, dbd$PomBaseID)]
-        } else {
-            dbdtf$DBD_class[i] <- "no_class"
-        }
-    }
-    stopifnot(dbdtf$bait == .getProteinNameFromComparison(colnames(tmptf)))
-    nbrIntMat <- do.call(dplyr::bind_rows, lapply(seq_along(colnames(tmptf)), function(i) {
-        expr <- colnames(tmptf)[i]
-        fam <- dbdtf$DBD_class[i]
-        data.frame(experiment = expr, 
-                   bait = dbdtf$bait[i], 
-                   dbdfam = fam, 
-                   TFs = paste(rownames(tmptf)[-i][which(tmptf[-i, expr] > 0)],
-                               collapse = ","),
-                   nbrTFs = sum(tmptf[, expr] > 0, na.rm = TRUE),
-                   nbrTFs_wobait = sum(tmptf[-i, expr] > 0, na.rm = TRUE),
-                   nbrTFs_samefam = sum(tmptf[-i, expr] > 0 & 
-                                            dbdtf$DBD_class[-i] == fam, 
-                                        na.rm = TRUE),
-                   nbrTFs_difffam = sum(tmptf[-i, expr] > 0 & 
-                                            dbdtf$DBD_class[-i] != fam, 
-                                        na.rm = TRUE)
-        )
-    }))
-    
-    
-    ## Split experiments into three groups
-    if (conc == 150) {
-        stopifnot(all(colnames(tstat) == .getSimplifiedComparison(colnames(tstats$tstatsfilt))))
-        tstat_no_bait <- 
-            tstat[, colSums(tstats$tstatsfilt) == 0 | 
-                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
-                      baitclass$Gene_name[baitclass$class == "nobait"])]
-        tstat_150only <- 
-            tstat[, colSums(tstats$tstatsfilt) > 0 &
-                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
-                      baitclass$Gene_name[baitclass$class == "150only"])]
-        tstat_150and500 <- 
-            tstat[, colSums(tstats$tstatsfilt) > 0 &
-                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in% 
-                      baitclass$Gene_name[baitclass$class == "150and500"])]
-        
-        proteins_150only <- .getProteinNameFromSimplifiedComparison(colnames(tstat_150only))
-        stopifnot(all(proteins_150only %in% rownames(tstat)))
-        tstat_150and500 <- tstat_150and500[!(rownames(tstat_150and500) %in% proteins_150only), ]
-        
-        ## Cluster proteins based on the correlation between their t-stat vectors
-        dst <- sqrt(2 * (1 - cor(t(tstat_150and500), use = "pairwise.complete")))
-        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
-        clst <- hclust(as.dist(dst))
-        
-        ## Reorder proteins by the clustering
-        protorder <- c(rownames(tstat_150and500)[clst$order], proteins_150only)
-        tstat <- tstat[protorder, ]
-        
-        ## Reorder experiments to keep a "diagonal" in the heatmap
-        tstat <- reorderColsByRows(tstat)
-        
-        tmpbaits <- .getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
-                                                             idmap = idmap)
-        colsplit <- ifelse(
-            tmpbaits %in% baitclass$Gene_name[baitclass$class == "nobait"], 
-            "No\nbait", 
-            ifelse(
-                tmpbaits %in% baitclass$Gene_name[baitclass$class == "150only"],
-                "150 mM NaCl",
-                ifelse(
-                    tmpbaits %in% baitclass$Gene_name[baitclass$class == "150and500"],
-                    "150 and\n500 mM NaCl", "NA"
-                )
-            )
-        )
-    } else if (conc == 500) {
-        tstat_onlybait <- 
-            tstat[, colSums(tstats$tstatsfilt > 0) == 1 |
-                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
-                                                      idmap = idmap) %in% 
-                      baitclass$Gene_name[baitclass$class500 == "Lost in 500 mM"])]
-        tstat_several <- 
-            tstat[, colSums(tstats$tstatsfilt > 0) > 1 & 
-                      (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), 
-                                                      idmap = idmap) %in% 
-                      baitclass$Gene_name[baitclass$class500 != "Lost in 500 mM"])]
-        tstat_onlybait <- tstat_onlybait[, colnames(tstat_onlybait) != "Untagged_plate"]
-        tstat_several <- tstat_several[, colnames(tstat_several) != "Untagged_plate"]
-        
-        proteins_onlybait <-
-            .getProteinNameFromSimplifiedComparison(colnames(tstat_onlybait))
-        stopifnot(all(proteins_onlybait %in% rownames(tstat)))
-        tstat_several <- tstat_several[!(rownames(tstat_several) %in% proteins_onlybait), ]
-        
-        ## Cluster proteins based on the correlation between their t-stat vectors
-        dst <- sqrt(2 * (1 - cor(t(tstat_several), use = "pairwise.complete")))
-        dst[is.na(dst)] <- sqrt(2 * (1 - (-1)))
-        clst <- hclust(as.dist(dst))
-        
-        ## Reorder proteins by the clustering
-        protorder <- c(rownames(tstat_several)[clst$order], proteins_onlybait)
-        tstat <- tstat[protorder, ]
-        
-        ## Reorder conditions to keep a "diagonal" in the heatmap
-        tstat <- reorderColsByRows(tstat)
-        
-        colsplit <- factor(
-            structure(baitclass$class500[
-                match(.getOrigBaitNameFromSimplifiedComparison(colnames(tstat), 
-                                                               idmap = idmap), 
-                      baitclass$Gene_name)],
-                names = colnames(tstat)),
-            levels = c("Retained in 500 mM", "Lost in 500 mM", ""))
-        levels(colsplit) <- c("Interactions\nin 500 mM NaCl",
-                              "No interactions\nin 500 mM NaCl", "")
-    } else {
-        stop("Unknown concentration")
-    }
-    return(list(tstat = tstat, colsplit = colsplit, nbrIntMat = nbrIntMat))
-}
-
 # for each region in `from`, calculate the distance to its nearest element in `to`
 # if there are no element in `to` on the sequence of `from`, set distance to NA
 calcDistanceToNearest <- function(from, to) {
@@ -583,6 +364,56 @@ hm_500 <- grid.grabExpr(
 plot_grid(hm_500)
 ```
 
+## IP-MS data for HOT TFs
+
+```{r ipms-hot}
+#| fig.width: 9
+#| fig.height: 9
+
+sce150untag <- readRDS(params$ipms150untag)
+
+res150untag <- .getTestCols(sce150untag, adjp_cutoff = 0.01, logfc_cutoff = 1)
+tstat <- res150untag$tstat
+colnames(tstat) <- .getProteinNameFromComparison(colnames(tstat))
+tstat <- tstat[rownames(tstat) %in% colnames(tstat), ]
+tstat[is.na(tstat)] <- 0
+dim(tstat)
+
+hot_tfs <- c("Php3", "Sak1", "Pcr1", "Prr1", "Atf1", "Rst2", "Adn2", 
+             "Adn3", "Hsr1", "Phx1", "Pho7")
+stopifnot(all(hot_tfs %in% rownames(tstat)))
+stopifnot(all(hot_tfs %in% colnames(tstat)))
+stopifnot(all(rownames(tstat) %in% colnames(tstat)))
+tstat <- tstat[c(hot_tfs, setdiff(rownames(tstat), hot_tfs)), ]
+tstat <- tstat[, c(rownames(tstat), setdiff(colnames(tstat), rownames(tstat)))]
+
+hmipmshot <- Heatmap(
+    tstat, 
+    col = circlize::colorRamp2(
+        breaks = seq(3.0, 13.0, length.out = 64),
+        colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+    border = TRUE,
+    row_split = ifelse(rownames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"), 
+    column_split = ifelse(colnames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"),
+    cluster_rows = FALSE, cluster_columns = FALSE,
+    row_title_gp = gpar(fontsize = fl), row_names_gp = gpar(fontsize = fs),
+    column_title_gp = gpar(fontsize = fl), show_column_names = FALSE,
+    heatmap_legend_param = list(labels_gp = gpar(fontsize = fs),
+                                border = "gray10",
+                                legend_direction = "horizontal",
+                                legend_width = unit(24, "mm"),
+                                title_position = "lefttop",
+                                title_gp = gpar(fontsize = fl)),
+    na_col = bg_color,
+    name = "Mod. t-stat.")
+
+hm_ipms_hot <- grid.grabExpr(
+    hmipmshot <- draw(hmipmshot, merge_legend = TRUE, 
+                      heatmap_legend_side = "bottom")
+)
+plot_grid(hm_ipms_hot)
+```
+
 ## Peak vs. sample heatmap (binary)
 
 The following creates heatmap of peaks (rows) versus ChIP-seq experiments
@@ -709,6 +540,9 @@ sampleLabels <- columnAnnotation(
 
 # create main heatmap with annotations
 hm3 <- Heatmap(m[sel_peaksBin, ],
+               column_title = "ChIP (binary)",
+               column_title_side = "top",
+               column_title_gp = gpar(fontsize = ft),
                col = circlize::colorRamp2(
                    breaks = seq(0, max(m), length.out = 64),
                    colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
@@ -840,6 +674,9 @@ qs <- quantile(abs(m[sel_peaksEnr, ]), .99)
 
 # create main heatmap with annotations
 hm4 <- Heatmap(m[sel_peaksEnr, ], name = "log2 IP/input",
+               column_title = "ChIP (enrichments)",
+               column_title_side = "top",
+               column_title_gp = gpar(fontsize = ft),
                col = circlize::colorRamp2(
                    breaks = c(-mx, seq(-qs, qs, length.out = 62), mx),
                    colors = colorRampPalette(enrichment_heatmap_colors)(64)),
@@ -883,7 +720,7 @@ plot_grid(hm_peaksEnr)
 
 ```{r plot-chipReplPairs}
 #| fig.width: 9
-#| fig.height: 9
+#| fig.height: 18
 
 pd <- peakenr |> as.data.frame() |>
     tibble::rownames_to_column("peakid") |>
@@ -917,7 +754,7 @@ pL <- lapply(levels(fct_relevel(sort(unique(pd$group)), "Untagged", after = Inf)
         theme(legend.position = "none")
 })
 
-(gg_enrpairs <- plot_grid(plotlist = pL, nrow = 9, ncol = 9))
+(gg_enrpairs <- plot_grid(plotlist = pL, ncol = 6))
 ```
 
 
@@ -934,7 +771,7 @@ cowplot::plot_grid(
     hm_150,
     hm_500,
     nrow = 2,
-    labels = c("A  ChIP", "B  ChIP", "C  IP-MS", "D  IP-MS"),
+    labels = c("A", "B", "C", "D"),
     align = "v",
     axis = "b"
 )
@@ -946,13 +783,15 @@ Assemble the panels into Supplementary Figure 2:
 
 ```{r suppFig2}
 #| fig.width: 11
-#| fig.height: 11
+#| fig.height: 18
 #| warning: false
 
 cowplot::plot_grid(
     gg_enrpairs,
-    scale = 0.9,
-    labels = "A"
+    hm_ipms_hot,
+    rel_widths = c(1, 0.65), 
+    scale = 0.9, nrow = 1,
+    labels = c("A", "B")
 )
 ```
 
