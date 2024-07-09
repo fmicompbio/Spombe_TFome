@@ -17,6 +17,7 @@ params:
     peakchipfile: "data/fused_peaks_filtered_counts-external_chip.csv.gz"
     dbdtxt: "data/TF_DBD_annotation.txt"
     motifrds: "data/motifs_annotated.rds"
+    rdsrnaseq_del: "data/rnaseq_del.rds"
     txcsv: "data/promoters-1kb_tes-1kb_annotated.csv.gz"
 editor_options: 
     chunk_output_type: console
@@ -86,6 +87,11 @@ Here we define a few helper functions for using below:
     paste0(tolower(substr(x, 1, 1)), substr(x, 2, nchar(x)))
 }
 
+# make first letter of a string uppercase
+.capitalize <- function(x) {
+    paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x)))
+}
+
 # for each region in `from`, calculate the distance to its nearest element in `to`
 # if there are no element in `to` on the sequence of `from`, set distance to NA
 calc_distance_to_nearest <- function(from, to) {
@@ -132,6 +138,9 @@ genegr <- rtracklayer::import(params$gtf, feature.type = "gene")
 
 # `motifs`: data.frame with annotated motifs
 motifs <- readRDS(params$motifrds)
+
+# `rnaseq_del`: a `SummarizedExperiment` with RNA-seq quantifications
+rnaseq_del <- readRDS(params$rdsrnaseq_del)
 
 # `txannot`: data.frame with transcript start site (TSS) and
 #            transcript end site (TES) annotation
@@ -502,6 +511,48 @@ hm_motifs_small <- grid.grabExpr(
 plot_grid(hm_motifs_small)
 ```
 
+We create the same heatmap in long format, allowing to label all rows:
+
+```{r}
+#| fig.width: 6
+#| fig.height: 8
+
+hm4_long <- Heatmap(matrix = motifsim2, name = "Motif\nsimilarity",
+               col = circlize::colorRamp2(breaks = seq(rng[1], rng[2], length.out = 64),
+                                          colors = cols),
+               cluster_rows = motifcl,
+               show_row_dend = TRUE, row_dend_width = unit(10, "mm"),
+               cluster_columns = motifcl, show_column_dend = FALSE,
+               row_split = n_split, column_split = n_split,
+               column_title = " ",
+               row_gap = unit(0.2, "mm"), column_gap = unit(0.2, "mm"),
+               show_row_names = TRUE, row_names_side = "right",
+               column_title_gp = gpar(fontsize = fl),
+               row_title = " ",
+               row_names_gp = gpar(fontsize = fs),
+               show_column_names = FALSE,
+               heatmap_legend_param = list(
+                   at = round(c(rng[1], mean(rng), rng[2]), 2),
+                   labels_gp = gpar(fontsize = fl),
+                   border = "gray10",
+                   legend_direction = "horizontal",
+                   legend_width = unit(18, "mm"),
+                   title_position = "lefttop",
+                   title_gp = gpar(fontsize = fl)),
+               width = unit(w_peaksHm * 0.5, "mm"), # heatmap body width
+               height = unit(h_peaksHm * 1.15, "mm")) # heatmap body height
+
+set.seed(42L)
+hm_motifs_long <- grid.grabExpr(
+    hm4_long <- draw(hm4_long, merge_legend = FALSE,
+                     heatmap_legend_side = "bottom",
+                     annotation_legend_side = "bottom"),
+    width = w_peaksHm * 0.5, height = h_peaksHm * 1.15
+)
+
+plot_grid(hm_motifs_long)
+```
+
 Here is the complete list of motifs for each of the motif clusters,
 in the order as they appear in the heatmap (from top to bottom):
 
@@ -739,8 +790,7 @@ hm5 <- Heatmap(mprom[o, oc], name = "hm5",
                width = unit(w_peaksHm, "mm"), # heatmap body width
                height = unit(w_peaksHm, "mm"))
 
-hm_prom <- grid.grabExpr(
-    {
+hm_prom <- grid.grabExpr({
         hm5 <- draw(hm5, merge_legend = TRUE,
                     heatmap_legend_side = "bottom",
                     annotation_legend_side = "bottom")
@@ -790,19 +840,19 @@ hm6 <- Heatmap(mprom[o, oc], name = "hm6",
                width = unit(w_peaksHm, "mm"), # heatmap body width
                height = unit(w_peaksHm * mean(keep), "mm"))
 
-hm_prom_bound <- grid.grabExpr(
-    {
-        hm6 <- draw(hm6, merge_legend = TRUE,
-                    heatmap_legend_side = "bottom",
-                    annotation_legend_side = "bottom")
+# manually create a legend
+hm_legend <- Legend(labels = c("TFs binding to another TF promoter",
+                               "TFs binding to their own promoter"),
+                    title = " ", legend_gp = gpar(fill = c("#648FFF", "darkblue")))
+
+hm_prom_bound <- grid.grabExpr({
+        hm6 <- draw(hm6,
+                    annotation_legend_side = "bottom",
+                    annotation_legend_list = packLegend(hm_legend))
         decorate_heatmap_body("hm6", {
             grid.lines(c(mean(grepl("^Bound", promtype[match(tfnms, tfnms_all)])), 0),
                        c(0, 1), gp = gpar(lty = 2, lwd = 0.5))
         }, slice = 1)
-        # decorate_heatmap_body("hm6", {
-        #     grid.lines(c(1, mean(grepl("^Bound", promtype[match(tfnms, tfnms_all)]))),
-        #                c(0, 1), gp = gpar(lty = 2, lwd = 0.5))
-        # }, slice = 2)
     },
     width = w_peaksHm, height = w_peaksHm * mean(keep)
 )
@@ -883,6 +933,64 @@ ggr <- ggraph(as_tbl_graph(gr),
     guides(fill = guide_legend(override.aes = list(size = 4, alpha = 1))) + 
     coord_cartesian(clip = "off") 
 print(ggr)
+```
+
+### Network around `Atf1`
+
+For clearer visualization, we create a sub-network including only the
+connectsion to and from `Atf1`:
+
+```{r make-network-atf1}
+#| fig.width: 10
+#| fig.height: 8
+
+## Create graph
+## ... identify TFs connected to atf1
+to_keep <- rownames(adjm)[adjm["atf1", ] > 0 | adjm[, "atf1"] > 0]
+length(to_keep)
+
+## ... create adjacency matrix (row: from TF, column: to TF promoter)
+adjm2 <- adjm[to_keep, to_keep]
+gr2 <- graph_from_adjacency_matrix(adjm2, mode = "directed")
+
+## Set attributes for vertices and edges
+V(gr2)$vertexclass <- ifelse(adjm[cbind(names(V(gr2)), names(V(gr2)))] > 0,
+                             "Auto-regulated TF",
+                             ifelse(names(V(gr2)) %in% colnames(mprom),
+                                    "ChIP'ed TF", "Other TF"))
+V(gr2)$shape <- "circle"
+eL <- as_edgelist(gr2)
+recipr <- paste0(eL[,1], "-", eL[,2]) %in% paste0(eL[,2], "-", eL[,1]) & eL[,1] != eL[,2]
+E(gr2)$weight <- ifelse(recipr, 2, 1)
+E(gr2)$edgeclass <- ifelse(recipr, "Reciprocal", "Other")
+E(gr2)$color <- ifelse(recipr, gplots::col2hex(main_colors[3]), gplots::col2hex(na_color))
+
+## Visualize
+node_padding <- margin(.2, .2, .2, .2, "mm")
+ggr2 <- ggraph(as_tbl_graph(gr2), 
+               layout = "igraph", algorithm = "fr") + 
+    geom_edge_link(aes(start_cap = label_rect(node1.name, padding = node_padding),
+                       end_cap = label_rect(node2.name, padding = node_padding),
+                       color = edgeclass),
+                   arrow = arrow(length = unit(2, 'mm'))) +
+    geom_edge_loop(aes(start_cap = label_rect(node1.name, padding = node_padding),
+                       end_cap = label_rect(node2.name, padding = node_padding)),
+                   arrow = arrow(length = unit(2, 'mm'))) +  # Handle self-loops
+    scale_edge_color_manual(values = c(Reciprocal = main_colors[3], 
+                                       Other = gplots::col2hex(na_color)),
+                            name = "") + 
+    geom_node_point(size = 4, aes(fill = vertexclass, shape = vertexclass), 
+                    color = "black", stroke = 0.1) + 
+    scale_shape_manual(values = c("Other TF" = 21, "ChIP'ed TF" = 21, "Auto-regulated TF" = 22), name = "") +
+    scale_fill_manual(values = c("Other TF" = gplots::col2hex(bg_color),
+                                 "ChIP'ed TF" = gplots::col2hex(main_colors[5]),
+                                 "Auto-regulated TF" = main_colors[5]),
+                      name = "") + 
+    geom_node_text(aes(label = name), size = 3.5, repel = TRUE, vjust = 1.8) + 
+    theme_graph(base_family = "sans", plot_margin = margin(30, 10, 40, 10)) + 
+    guides(fill = guide_legend(override.aes = list(size = 4, alpha = 1))) + 
+    coord_cartesian(clip = "off") 
+print(ggr2)
 ```
 
 
@@ -989,15 +1097,15 @@ ggplot(pd, aes(prom.number.overlapping.highconf.peaks.categories, avg_tpm + 0.01
 
 ## Put together
 
-Assemble the panels into Figure 2:
+Assemble the panels into Figure 3:
 
-```{r Fig2}
+```{r Fig3}
 #| fig.width: 11.5
 #| fig.height: 8.2
 #| warning: false
 
 cowplot::plot_grid(
-    hm_prom,
+    hm_prom_bound,
     cowplot::plot_grid(gnmtracks1, scale = 0.9),
     hm_motifs_small,
     cowplot::plot_grid(
@@ -1015,9 +1123,9 @@ cowplot::plot_grid(
 
 ## Supplementary figure
 
-Assemble the panels into Supplementary Figure 2:
+Assemble the panels into Supplementary Figure 3:
 
-```{r suppFig2}
+```{r suppFig3}
 #| fig.width: 11
 #| fig.height: 9
 #| warning: false
@@ -1025,17 +1133,13 @@ Assemble the panels into Supplementary Figure 2:
 cowplot::plot_grid(
     cowplot::plot_grid(NULL, NULL, NULL, # space for labels
                        nrow = 1, labels = c("A", "B", "C"),
-                       rel_widths = c(130, 100, 100)),
+                       rel_widths = c(100, 100, 100)),
     cowplot::plot_grid(
-        hm_ipms_hot,
-        cowplot::plot_grid(gnmtracks2, NULL, ncol = 1, rel_heights = c(12, 1)),
+        cowplot::plot_grid(gnmtracks2, NULL, ncol = 1, rel_heights = c(20, 1)),
+        hm_motifs_long,
         p_fracbound,
-        nrow = 1, 
-        labels = c("", "", ""),
-        align = "v",
-        axis = "b",
-        rel_widths = c(130, 100, 100),
-        rel_heights = c(180)
+        nrow = 1,
+        labels = c("", "", "")
     ),
     nrow = 2,
     rel_widths = c(1),
