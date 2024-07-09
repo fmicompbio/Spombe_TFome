@@ -739,7 +739,8 @@ hm5 <- Heatmap(mprom[o, oc], name = "hm5",
                width = unit(w_peaksHm, "mm"), # heatmap body width
                height = unit(w_peaksHm, "mm"))
 
-hm_prom <- grid.grabExpr({
+hm_prom <- grid.grabExpr(
+    {
         hm5 <- draw(hm5, merge_legend = TRUE,
                     heatmap_legend_side = "bottom",
                     annotation_legend_side = "bottom")
@@ -949,6 +950,41 @@ p_ncRNA2 <- ggplot(df_ncRNA, aes(ncRNAtype, fill = group)) +
 ```
 
 
+## Bound promoters
+
+In `txannot$prom.number.overlapping.highconf.peaks`, we record how many TF peaks
+are found in the promoter regions of a gene (defined as a 1kb window
+centered on the annotated transcript start site).
+
+Here we compare the expression levels (obtained from `rnaseq_del`) of
+genes twith different numbers of TFs bound at their promoters.
+
+```{r bound-promoters}
+#| fig.width: 6
+#| fig.height: 4
+
+# calculate average expression of each gene
+avg_tpm <- rowMeans(assay(rnaseq_del, "abundance"))
+
+# add average expression to gene annotation and filter out
+# genes that are not protein coding genes
+pd <- txannot |>
+    mutate(avg_tpm = avg_tpm[unique_einprot_id]) |>
+    filter(!is.na(avg_tpm),
+           gene_biotype == "protein_coding") |>
+    mutate(prom.number.overlapping.highconf.peaks.categories = 
+               cut(prom.number.overlapping.highconf.peaks,
+                   breaks = c(-Inf, 0, 1, Inf),
+                   labels = c("0", "1", ">1"),
+                   right = TRUE))
+
+# visualize
+ggplot(pd, aes(prom.number.overlapping.highconf.peaks.categories, avg_tpm + 0.01)) +
+    geom_violin(draw_quantiles = 0.5) +
+    scale_y_log10() +
+    labs(x = "Number of promoter TF peaks",
+         y = "RNA level (TPM + 0.01, log-scale)") +
+    theme_cowplot()
 ```
 
 ## Put together
