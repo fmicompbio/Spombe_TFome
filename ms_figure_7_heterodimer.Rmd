@@ -355,12 +355,20 @@ maplots <- lapply(structure(names(resList), names = names(resList)), function(nm
               plot.title = element_text(face = "italic"))
 })
 
+cowplot::plot_grid(
+    plotlist = maplots, nrow = 1, align = "hv", axis = "b"
+)
+```
+
+```{r}
+#| label: rnaseq-corrplot
+
 ## Correlation between log2 fold changes for ntu1/ntu2
 stopifnot(all(rownames(resList$ntu1) == rownames(resList$ntu2)))
 dfcorr <- data.frame(gene = rownames(resList$ntu1), 
                      ntu1 = resList$ntu1$log2FoldChange,
                      ntu2 = resList$ntu2$log2FoldChange)
-corrplot <- list(
+(corrplot <- list(
     ggplot(dfcorr, aes(x = ntu1, y = ntu2)) + 
         geom_abline(slope = 1, intercept = 0, linetype = "dashed", 
                     color = "grey50") + 
@@ -373,11 +381,7 @@ corrplot <- list(
              y = "*ntu2\U141E* log2(fold-change)") + 
         theme_cowplot() + 
         theme(axis.title = element_markdown())
-)
-
-cowplot::plot_grid(
-    plotlist = maplots, nrow = 1, align = "hv", axis = "b"
-)
+))
 ```
 
 ```{r rnaseq-genomeplot}
@@ -536,16 +540,18 @@ g1a <- ggplot(plotdf_chip1 |>
                                      flag = .add_space_to_label),
                  nest_line = element_line(),
                  strip = strip_nested(size = "variable")) + 
-    scale_y_continuous(limits = c(0, 0.9), expand = c(0, 0))
+    scale_y_continuous(limits = c(0, 0.9), expand = c(0, 0)) + 
+    labs(y = "ChIP-seq")
 g1b <- ggplot(plotdf_rna, 
               aes(x = pos, y = cpmnorm)) + 
     geom_area(aes(group = strand, fill = gene)) + 
-    scale_fill_manual(values = c(wt = lighten("black", amount = 0.4), 
-                                 "ntu1\U141E" = lighten(main_colors[5], amount = 0.4), 
-                                 "ntu2\U141E" = lighten(main_colors[1], amount = 0.4))) + 
+    scale_fill_manual(values = c(wt = "black", 
+                                 "ntu1\U141E" = main_colors[5], 
+                                 "ntu2\U141E" = main_colors[1])) + 
     facet_grid(sample ~ seqnames, scale = "free_x", space = "free_x",
                switch = "y") + 
-    scale_y_continuous(limits = c(-0.9, 0.3), expand = c(0, 0))
+    scale_y_continuous(limits = c(-0.9, 0.3), expand = c(0, 0)) + 
+    labs(y = "RNA-seq")
 g2 <- ggplot(gtf, aes(x = start2, xend = end2, y = y, yend = y, 
                       color = unique_einprot_id %in% c("tna1", "SPCC576.17c"), 
                       label = unique_einprot_id_label)) + 
@@ -566,12 +572,16 @@ gcov <- cowplot::plot_grid(
     g1c + theme_void() + theme(strip.text = element_blank()),
     g1a + theme_void() + theme(legend.position = "none", 
                                strip.text.y = element_text(size = 12),
-                               strip.text.x = element_text(size = 12, hjust = 0.95)), 
+                               strip.text.x = element_text(size = 12, hjust = 0.95),
+                               axis.title.y = element_text(size = 12, angle = 90,
+                                                           margin = margin(t = 0, r = 10, b = 0, l = 0))), 
     NULL,
     g1b + theme_void() + theme(strip.text.y = element_text(size = 12, 
                                                            face = "italic"), 
                                legend.position = "none",
-                               strip.text.x = element_blank()), 
+                               strip.text.x = element_blank(),
+                               axis.title.y = element_text(size = 12, angle = 90,
+                                                           margin = margin(t = 0, r = 15, b = 0, l = 0))), 
     g2 + theme_void() + 
         theme(legend.position = "none",
               strip.text = element_blank()), 
@@ -604,7 +614,7 @@ fig7e <- ggdraw() +
 fig7f <- ggdraw() + 
     draw_image("schematics/Fig7F_Nattou_lacR_microscopy_images_Arial.png")
 
-fig7c <- wrap_plots(maplots, ncol = 1) | corrplot[[1]]
+fig7c <- wrap_plots(maplots, ncol = 2)
 
 cowplot::plot_grid(
     cowplot::plot_grid(
@@ -704,7 +714,7 @@ cowplot::plot_grid(
         # maplots$ID83delTMD,
         nrow = 1, 
         rel_widths = c(1, 1),
-        labels = c("C", "E")
+        labels = c("D", "E")
     ),
     ncol = 1, rel_heights = c(1, 1, 1)
 )
