@@ -18,7 +18,6 @@ params:
     dbdtxt: "data/TF_DBD_annotation.txt"
     motifrds: "data/motifs_annotated.rds"
     txcsv: "data/promoters-1kb_tes-1kb_annotated.csv.gz"
-    ipms150untag: "data/ipms_150_untag_sce.rds"
 editor_options: 
     chunk_output_type: console
 ---
@@ -67,8 +66,6 @@ suppressPackageStartupMessages({
 })
 
 source("params/plot_settings.R")
-source("params/get_testres_function.R")
-source("params/mapping_functions.R")
 source("params/plottracks_function.R")
 
 # define heatmap dimensions and font sizes
@@ -952,54 +949,7 @@ p_ncRNA2 <- ggplot(df_ncRNA, aes(ncRNAtype, fill = group)) +
 (p_ncRNA <- plot_grid(p_ncRNA1, p_ncRNA2, align = "v", nrow = 2))
 ```
 
-## IP-MS data for HOT TFs
 
-```{r ipms-hot}
-#| fig.width: 9
-#| fig.height: 9
-
-sce150untag <- readRDS(params$ipms150untag)
-
-res150untag <- .getTestCols(sce150untag, adjp_cutoff = 0.01, logfc_cutoff = 1)
-tstat <- res150untag$tstat
-colnames(tstat) <- .getProteinNameFromComparison(colnames(tstat))
-tstat <- tstat[rownames(tstat) %in% colnames(tstat), ]
-tstat[is.na(tstat)] <- 0
-dim(tstat)
-
-hot_tfs <- c("Php3", "Sak1", "Pcr1", "Prr1", "Atf1", "Rst2", "Adn2", 
-             "Adn3", "Hsr1", "Phx1", "Pho7")
-stopifnot(all(hot_tfs %in% rownames(tstat)))
-stopifnot(all(hot_tfs %in% colnames(tstat)))
-stopifnot(all(rownames(tstat) %in% colnames(tstat)))
-tstat <- tstat[c(hot_tfs, setdiff(rownames(tstat), hot_tfs)), ]
-tstat <- tstat[, c(rownames(tstat), setdiff(colnames(tstat), rownames(tstat)))]
-
-hmipmshot <- Heatmap(
-    tstat, 
-    col = circlize::colorRamp2(
-        breaks = seq(3.0, 13.0, length.out = 64),
-        colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
-    border = TRUE,
-    row_split = ifelse(rownames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"), 
-    column_split = ifelse(colnames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"),
-    cluster_rows = FALSE, cluster_columns = FALSE,
-    row_title_gp = gpar(fontsize = fl), row_names_gp = gpar(fontsize = fs),
-    column_title_gp = gpar(fontsize = fl), show_column_names = FALSE,
-    heatmap_legend_param = list(labels_gp = gpar(fontsize = fs),
-                                border = "gray10",
-                                legend_direction = "horizontal",
-                                legend_width = unit(24, "mm"),
-                                title_position = "lefttop",
-                                title_gp = gpar(fontsize = fl)),
-    na_col = bg_color,
-    name = "Mod. t-stat.")
-
-hm_ipms_hot <- grid.grabExpr(
-    hmipmshot <- draw(hmipmshot, merge_legend = TRUE, 
-                      heatmap_legend_side = "bottom")
-)
-plot_grid(hm_ipms_hot)
 ```
 
 ## Put together
