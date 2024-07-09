@@ -10,9 +10,9 @@ output:
         code_folding: hide
 params:
     rds150: "data/ipms_150_sce.rds"
-    coords150: "data/visnetwork_coords_150_new.csv"
+    coords150: "data/visnetwork_coords_150.csv"
     rds500: "data/ipms_500_sce.rds"
-    coords500: "data/visnetwork_coords_500_new.csv"
+    coords500: "data/visnetwork_coords_500.csv"
     rds150untag: "data/ipms_150_untag_sce.rds"
     interactors: "data/Gene_list_TFinteractors_Pombase20240226.txt"
     idmap: "data/id_mapping_table.txt"
@@ -57,6 +57,7 @@ suppressPackageStartupMessages({
 source("params/plot_settings.R")
 source("params/get_testres_function.R")
 source("params/mapping_functions.R")
+source("params/ipms_params.R")
 ```
 
 # Settings
@@ -439,12 +440,12 @@ rad24_rad25_tbl <- read.delim(params$rad24_rad25_tbl)[, 1:2] |>
     setNames(c("TF", "R-x-x-[S/T]-x-P")) |>
     dplyr::mutate(TF = .capitalize(TF))
 stopifnot(all(gnames %in% rad24_rad25_tbl$TF))
-ft <- flextable(rad24_rad25_tbl) |>
+ftbl <- flextable(rad24_rad25_tbl) |>
   width(width =  c(0.5, 1.25)) |>
   set_table_properties(layout = "fixed")
 ggtbl <- ggplot() +
     theme_void() +
-    annotation_custom(grid::rasterGrob(as_raster(ft)),
+    annotation_custom(grid::rasterGrob(as_raster(ftbl)),
                       xmin = -Inf, xmax = Inf, ymin = 0, ymax = 1)
 
 data.frame(`Number of TFs interacting with at least one 14-3-3 protein` = 
@@ -483,6 +484,37 @@ ggrad_upset <- ggplot(pd, aes(x = ind)) +
                      combmatrix.label.width = unit(18, "mm")) +
     guides(fill = guide_legend(nrow = 1))
 ```
+
+# Pho7 volcano plot
+
+```{r}
+md <- metadata(sce500)
+volc <- md$testres$tests$Pho7_500_plate_vs_compl_Pho7_500_plate |>
+    mutate(signif = adj.P.Val < adjpThreshold & logFC > log2fcThreshold)
+(pho7volc <- ggplot(volc, aes(x = logFC, y = mlog10p)) + 
+        geom_text_repel(data = volc |> filter(signif),
+                        aes(label = pid), min.segment.length = 0,
+                        max.overlaps = Inf) + 
+        geom_point(aes(alpha = signif, color = signif), 
+                   show.legend = c(alpha = FALSE, color = TRUE)) + 
+        scale_color_manual(values = c(`TRUE` = main_colors[5], `FALSE` = na_color), 
+                           labels = c(`TRUE` = paste0("adj. p < ", adjpThreshold, 
+                                                      " and logFC > ", log2fcThreshold)),
+                           na.value = "black", breaks = "TRUE") + 
+        scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.5)) + 
+        geom_point(data = volc |> dplyr::filter(pid == "Pho7") |>
+                       dplyr::mutate(type = "Bait"), 
+                   mapping = aes(fill = type), color = main_colors[3], 
+                   shape = 21, alpha = 1, size = 2) + 
+        scale_fill_manual(values = c(Bait = main_colors[3])) + 
+        labs(x = "log2(fold-change)", y = "-log10(p-value)", 
+             title = "Pho7 vs complement (500 mM NaCl)") + 
+        theme_cowplot(ft) + 
+        theme(legend.position = "bottom") + 
+        guides(color = guide_legend(nrow = 1, byrow = TRUE, title = ""),
+               fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+```
+
 
 # Figure 6
 
@@ -639,13 +671,15 @@ fig5a <- cowplot::plot_grid(
 
 ```{r Fig6}
 #| fig.width: 10
-#| fig.height: 10
+#| fig.height: 12
+#| warning: false
 
 fig6c <- ggdraw() + 
     draw_image("schematics/Fig6C_Pho7_protein_domains_cartoon_Arial_RGB.png")
 
 coords150 <- read.csv(params$coords150)
 coords500 <- read.csv(params$coords500)
+coords150$y <- -coords150$y
 coords500$y <- -coords500$y
 
 .plotGraph <- function(grph, coords, nudge_y) {
@@ -684,9 +718,14 @@ cowplot::plot_grid(
         get_legend(ggr150 + theme(legend.position = "bottom"), "bottom"),
         nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
     ),
-    cowplot::plot_grid(fig6c, ggrad_upset,
-                       nrow = 1, labels = c("C", "D")), 
-    rel_heights = c(5, 2), 
+    cowplot::plot_grid(
+        cowplot::plot_grid(fig6c, ggrad_upset,
+                           ncol = 1, labels = c("C", "D"),
+                           rel_heights = c(1, 1.25)), 
+        pho7volc, 
+        nrow = 1, labels = c("", "E")
+    ),
+    rel_heights = c(5, 3.5), 
     ncol = 1
 )
 ```
