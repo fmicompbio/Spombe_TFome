@@ -299,9 +299,9 @@ table(baitclass$class)
 
 ## Summary tables
 
-The 'high stringency' thresholds correspond to an adjusted p-value cutoff of 
+The 'strict cutoff' thresholds correspond to an adjusted p-value cutoff of 
 `r adjpThreshold` and a log2 fold change cutoff of `r log2fcThreshold`.
-The 'low stringency' thresholds correspond to an adjusted p-value cutoff of 
+The 'lenient cutoff' thresholds correspond to an adjusted p-value cutoff of 
 `r adjpThresholdLoose` and a log2 fold change cutoff of `r log2fcThreshold`.
 
 ```{r}
@@ -357,24 +357,24 @@ makeInteractorSummary <- function(sce, baitdata, adjp_cutoff, logfc_cutoff, idma
 makeInteractorSummary(sce = sce150, baitdata = baitdata_150, adjp_cutoff = adjpThreshold,
                       logfc_cutoff = log2fcThreshold, idmap = idmap, 
                       baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                      tbl_title = "150 mM, high stringency") |>
+                      tbl_title = "150 mM, strict cutoff") |>
     dplyr::full_join(
         makeInteractorSummary(sce = sce500, baitdata = baitdata_500, adjp_cutoff = adjpThreshold,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "500 mM, high stringency")
+                              tbl_title = "500 mM, strict cutoff")
     ) |> 
     dplyr::full_join(
         makeInteractorSummary(sce = sce150, baitdata = baitdata_150_loose, adjp_cutoff = adjpThresholdLoose,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "150 mM, low stringency")
+                              tbl_title = "150 mM, lenient cutoff")
     ) |>
     dplyr::full_join(
         makeInteractorSummary(sce = sce500, baitdata = baitdata_500_loose, adjp_cutoff = adjpThresholdLoose,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "500 mM, low stringency")
+                              tbl_title = "500 mM, lenient cutoff")
     ) |>
     kbl() |>
     kable_styling()
@@ -491,7 +491,8 @@ pie_data_150 <- baitdata_150$nbrIntMat |>
     select(nbrTFs_samefam, nbrTFs_difffam) |>
     pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
     group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop")
+    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
+    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
 pie_bait_150 <- ggplot(
     pie_data_150,
     aes(x = "", y = nbrTF, fill = class)) + 
@@ -499,6 +500,7 @@ pie_bait_150 <- ggplot(
     geom_segment(x = 1.55, xend = 1.55, 
                  y = 0, yend = exp_same * sum(pie_data_150$nbrTF),
                  linewidth = 1.5) + 
+    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
     coord_polar("y", start = 0) + 
     scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
                                  nbrTFs_difffam = main_colors[5]),
@@ -585,7 +587,8 @@ pie_data_150_loose <- baitdata_150_loose$nbrIntMat |>
     select(nbrTFs_samefam, nbrTFs_difffam) |>
     pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
     group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop")
+    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
+    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
 pie_bait_150_loose <- ggplot(
     pie_data_150_loose,
     aes(x = "", y = nbrTF, fill = class)) + 
@@ -593,6 +596,7 @@ pie_bait_150_loose <- ggplot(
     geom_segment(x = 1.55, xend = 1.55, 
                  y = 0, yend = exp_same * sum(pie_data_150_loose$nbrTF),
                  linewidth = 1.5) + 
+    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
     coord_polar("y", start = 0) + 
     scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
                                  nbrTFs_difffam = main_colors[5]),
@@ -825,7 +829,8 @@ pie_data_500 <- baitdata_500$nbrIntMat |>
     select(nbrTFs_samefam, nbrTFs_difffam) |>
     pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
     group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop")
+    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
+    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
 pie_bait_500 <- ggplot(
     pie_data_500,
     aes(x = "", y = nbrTF, fill = class)) + 
@@ -833,6 +838,7 @@ pie_bait_500 <- ggplot(
     geom_segment(x = 1.55, xend = 1.55, 
                  y = 0, yend = exp_same * sum(pie_data_500$nbrTF),
                  linewidth = 1.5) + 
+    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
     coord_polar("y", start = 0) + 
     scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
                                  nbrTFs_difffam = main_colors[5]),
@@ -858,7 +864,8 @@ pie_data_500_loose <- baitdata_500_loose$nbrIntMat |>
     select(nbrTFs_samefam, nbrTFs_difffam) |>
     pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
     group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop")
+    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
+    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
 pie_bait_500_loose <- ggplot(
     pie_data_500_loose,
     aes(x = "", y = nbrTF, fill = class)) + 
@@ -866,6 +873,7 @@ pie_bait_500_loose <- ggplot(
     geom_segment(x = 1.55, xend = 1.55, 
                  y = 0, yend = exp_same * sum(pie_data_500_loose$nbrTF),
                  linewidth = 1.5) + 
+    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
     coord_polar("y", start = 0) + 
     scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
                                  nbrTFs_difffam = main_colors[5]),
