@@ -155,10 +155,12 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
                    nbrTFs = sum(tmptf[, expr] > 0, na.rm = TRUE),
                    nbrTFs_wobait = sum(tmptf[-i, expr] > 0, na.rm = TRUE),
                    nbrTFs_samefam = sum(tmptf[-i, expr] > 0 &
-                                            dbdtf$DBD_class[-i] == fam,
+                                            dbdtf$DBD_class[-i] == fam &
+                                            dbdtf$DBD_class[-i] != "Other",
                                         na.rm = TRUE),
                    nbrTFs_difffam = sum(tmptf[-i, expr] > 0 &
-                                            dbdtf$DBD_class[-i] != fam,
+                                            (dbdtf$DBD_class[-i] != fam |
+                                                 dbdtf$DBD_class[-i] == "Other"),
                                         na.rm = TRUE)
         )
     }))
