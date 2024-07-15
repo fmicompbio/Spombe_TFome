@@ -719,9 +719,12 @@ cowplot::plot_grid(
         nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
     ),
     cowplot::plot_grid(
-        cowplot::plot_grid(fig6c, ggrad_upset,
-                           ncol = 1, labels = c("C", "D"),
-                           rel_heights = c(1, 1.25)), 
+        cowplot::plot_grid(
+            cowplot::plot_grid(NULL, fig6c, NULL, nrow = 1,
+                               rel_widths = c(0.25, 1, 0.1)),  
+            ggrad_upset,
+            ncol = 1, labels = c("C", "D"),
+            rel_heights = c(1, 1.75)), 
         pho7volc, 
         nrow = 1, labels = c("", "E")
     ),
