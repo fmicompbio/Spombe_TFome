@@ -577,7 +577,10 @@ cowplot::plot_grid(
 #| message: false
 
 cowplot::plot_grid(
-    gg_tpm + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+    gg_tpm + theme(axis.text.x = element_blank(),
+                   axis.ticks.length.x = unit(4, "mm"),
+                   axis.ticks.x = element_line(color = main_colors[1],
+                                               linewidth = 2.25)) +
         labs(x = "") + geom_point(size = 3), 
     gg_nbrint_all,
     gg_nbrpeaks_all_wide,
