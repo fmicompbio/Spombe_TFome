@@ -4,10 +4,8 @@ filterForHeatmap <- function(tstatmat, adjpmat, logfcmat, adjpThreshold,
     tstatfilt <- tstatmat
     tstatfilt[adjpmat >= adjpThreshold] <- NA
     tstatfilt[logfcmat <= logfcThreshold] <- NA
-    # tstatfilt[tstatfilt <= 0] <- NA
 
     ## Some experiments pull down a large number of proteins
-    # print(table(colSums(!is.na(tstatfilt))))
     ## -> remove proteins that are only being pulled down in these experiments
     keep <- which(colSums(!is.na(tstatfilt)) <= maxNbrTargets)
     tstatfilt <- tstatfilt[rowSums(!is.na(tstatfilt[, keep])) > 0, ]
@@ -40,7 +38,8 @@ makeComplexAnnotation <- function(tstatmat, complexes, idmap,
                   na_col = bg_color,
                   show_annotation_name = FALSE,
                   show_legend = show_legend,
-                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fl),
+                                                 legend_direction = "horizontal"))
 }
 
 makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
@@ -204,10 +203,10 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
             "No\nbait",
             ifelse(
                 tmpbaits %in% baitclass$Gene_name[baitclass$class == "150only"],
-                "150 mM NaCl",
+                "150 mM\nNaCl IP-MS",
                 ifelse(
                     tmpbaits %in% baitclass$Gene_name[baitclass$class == "150and500"],
-                    "150 and\n500 mM NaCl", "NA"
+                    "150 and 500 mM\nNaCl IP-MS", "NA"
                 )
             )
         )
@@ -249,8 +248,8 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
                       baitclass$Gene_name)],
                 names = colnames(tstat)),
             levels = c("Retained in 500 mM", "Lost in 500 mM", ""))
-        levels(colsplit) <- c("Interactions\nin 500 mM NaCl",
-                              "No interactions\nin 500 mM NaCl", "")
+        levels(colsplit) <- c("Interactions in\n500 mM NaCl IP-MS",
+                              "No interactions in\n500 mM NaCl IP-MS", "")
     } else {
         stop("Unknown concentration")
     }
