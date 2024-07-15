@@ -336,7 +336,7 @@ ZnII2Cys6_kmer_1 <- kmerEnrPlot(k = 6,
                                 colorByMotif = pfmL[match(sel_motifs[sel_motif_idx_1], name(pfmL))],
                                 font_size = 10)
 
-plot_grid(ZnII2Cys6_kmer_1)
+print(ZnII2Cys6_kmer_1)
 ```
 
 ### Zn(II)2Cys6 TF `CCG`, `CGG` enrichments (TF peaks from `r length(sel_motifs)` selected motifs)
@@ -415,8 +415,8 @@ hm_3mers <- Heatmap(enr_3mers, name = "Pearson's resid.",
                     cluster_columns = TRUE, column_dend_height = unit(10, "mm"),
                     row_names_gp = gpar(fontsize = fl, fontfamily = "sans"),
                     column_names_gp = gpar(fontsize = fs, fontfamily = "mono"),
-                    column_title = "Binuclear zinc cluster TFs",
-                    column_title_side = "top", column_title_gp = gpar(fontsize = ft),
+                    row_title = "Binuclear zinc cluster TFs",
+                    row_title_side = "left", column_title_gp = gpar(fontsize = ft),
                     border = TRUE, border_gp = gpar(lwd = 0.5),
                     show_row_names = TRUE, show_column_names = TRUE,
                     use_raster = FALSE, show_heatmap_legend = TRUE,
@@ -695,7 +695,7 @@ cowplot::plot_grid(
         cowplot::plot_grid(ZnII2Cys6_kmer_1, scale = 0.85),
         hm_ZnII2Cys6_sel_3mers,
         labels = c("A", "B"),
-        rel_widths = c(2, 3.2),
+        rel_widths = c(1.9, 3.3),
         nrow = 1
     ),
     cowplot::plot_grid(
