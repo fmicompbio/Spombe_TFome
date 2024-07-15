@@ -1,5 +1,5 @@
 ---
-title: "Figure 3 - Motifs"
+title: "Figure 4 - Motifs"
 author: "Michael Stadler, Charlotte Soneson, Merle Skribbe"
 date: "`r Sys.Date()`"
 output: 
@@ -306,7 +306,7 @@ create_cobound_peaks_plot <- function(sel_tfs) {
 }
 ```
 
-# Figure 3
+# Figure 4
 
 ## Zn(II)2Cys6 family motifs
 
@@ -684,9 +684,9 @@ motif_characterization_plots[[length(motif_characterization_plots) + 1]] <-
 
 ## Put together
 
-Assemble the panels into Figure 3:
+Assemble the panels into Figure 4:
 
-```{r Fig3}
+```{r Fig4}
 #| fig.width: 11
 #| fig.height: 14
 
@@ -712,9 +712,9 @@ cowplot::plot_grid(
 
 ## Supplementary figure
 
-Assemble the panels into Supplementary Figure 3:
+Assemble the panels into Supplementary Figure 4:
 
-```{r suppFig3}
+```{r suppFig4}
 #| fig.width: 4.5
 #| fig.height: 6
 
