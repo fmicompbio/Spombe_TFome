@@ -17,7 +17,6 @@ params:
     peakchipfile: "data/fused_peaks_filtered_counts-external_chip.csv.gz"
     dbdtxt: "data/TF_DBD_annotation.txt"
     motifrds: "data/motifs_annotated.rds"
-    rdsrnaseq_del: "data/rnaseq_del.rds"
     txcsv: "data/promoters-1kb_tes-1kb_annotated.csv.gz"
 editor_options: 
     chunk_output_type: console
@@ -138,9 +137,6 @@ genegr <- rtracklayer::import(params$gtf, feature.type = "gene")
 
 # `motifs`: data.frame with annotated motifs
 motifs <- readRDS(params$motifrds)
-
-# `rnaseq_del`: a `SummarizedExperiment` with RNA-seq quantifications
-rnaseq_del <- readRDS(params$rdsrnaseq_del)
 
 # `txannot`: data.frame with transcript start site (TSS) and
 #            transcript end site (TES) annotation
@@ -1057,43 +1053,6 @@ p_ncRNA2 <- ggplot(df_ncRNA, aes(ncRNAtype, fill = group)) +
 (p_ncRNA <- plot_grid(p_ncRNA1, p_ncRNA2, align = "v", nrow = 2))
 ```
 
-
-## Bound promoters
-
-In `txannot$prom.number.overlapping.highconf.peaks`, we record how many TF peaks
-are found in the promoter regions of a gene (defined as a 1kb window
-centered on the annotated transcript start site).
-
-Here we compare the expression levels (obtained from `rnaseq_del`) of
-genes twith different numbers of TFs bound at their promoters.
-
-```{r bound-promoters}
-#| fig.width: 6
-#| fig.height: 4
-
-# calculate average expression of each gene
-avg_tpm <- rowMeans(assay(rnaseq_del, "abundance"))
-
-# add average expression to gene annotation and filter out
-# genes that are not protein coding genes
-pd <- txannot |>
-    mutate(avg_tpm = avg_tpm[unique_einprot_id]) |>
-    filter(!is.na(avg_tpm),
-           gene_biotype == "protein_coding") |>
-    mutate(prom.number.overlapping.highconf.peaks.categories = 
-               cut(prom.number.overlapping.highconf.peaks,
-                   breaks = c(-Inf, 0, 1, Inf),
-                   labels = c("0", "1", ">1"),
-                   right = TRUE))
-
-# visualize
-ggplot(pd, aes(prom.number.overlapping.highconf.peaks.categories, avg_tpm + 0.01)) +
-    geom_violin(draw_quantiles = 0.5) +
-    scale_y_log10() +
-    labs(x = "Number of promoter TF peaks",
-         y = "RNA level (TPM + 0.01, log-scale)") +
-    theme_cowplot()
-```
 
 ## Put together
 

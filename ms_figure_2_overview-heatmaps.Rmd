@@ -19,6 +19,8 @@ params:
     peakenr: "data/fused_peaks_filtered_enrichments.csv.gz"
     peakatacfile: "data/fused_peaks_filtered_counts-external_atac.csv.gz"
     peakchipfile: "data/fused_peaks_filtered_counts-external_chip.csv.gz"
+    rdsrnaseq_del: "data/rnaseq_del.rds"
+    txcsv: "data/promoters-1kb_tes-1kb_annotated.csv.gz"
     gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
     ipms150untag: "data/ipms_150_untag_sce.rds"
 ---
@@ -138,6 +140,13 @@ peakenrAvg <- do.call(cbind, lapply(split(colnames(peakenr), grp)[unique(grp)],
                                     function(j) {
                                         rowMeans(peakenr[, j, drop = FALSE])
                                     }))
+
+# `rnaseq_del`: a `SummarizedExperiment` with RNA-seq quantifications
+rnaseq_del <- readRDS(params$rdsrnaseq_del)
+
+# `txannot`: data.frame with transcript start site (TSS) and
+#            transcript end site (TES) annotation
+txannot <- read.csv(params$txcsv, row.names = 1)
 
 # `atac_raw`: public ATAC-seq read counts in ChIP-seq peaks from this study
 atac_raw <- as.matrix(read.csv(params$peakatacfile, row.names = 1))
@@ -364,7 +373,7 @@ hm_500 <- grid.grabExpr(
 plot_grid(hm_500)
 ```
 
-## IP-MS data for HOT TFs
+## Supplementary plots - IP-MS data for HOT TFs
 
 ```{r ipms-hot}
 #| fig.width: 9
@@ -540,7 +549,7 @@ sampleLabels <- columnAnnotation(
 
 # create main heatmap with annotations
 hm3 <- Heatmap(m[sel_peaksBin, ],
-               column_title = "ChIP (binary)",
+               column_title = "Binarized ChIP enrichments",
                column_title_side = "top",
                column_title_gp = gpar(fontsize = ft),
                col = circlize::colorRamp2(
@@ -674,7 +683,7 @@ qs <- quantile(abs(m[sel_peaksEnr, ]), .99)
 
 # create main heatmap with annotations
 hm4 <- Heatmap(m[sel_peaksEnr, ], name = "log2 IP/input",
-               column_title = "ChIP (enrichments)",
+               column_title = "ChIP enrichments",
                column_title_side = "top",
                column_title_gp = gpar(fontsize = ft),
                col = circlize::colorRamp2(
@@ -716,7 +725,7 @@ hm_peaksEnr <- grid.grabExpr(
 plot_grid(hm_peaksEnr)
 ```
 
-## ChIP enrichment replicate-pair correlations
+## Supplementary plots - ChIP enrichment replicate-pair correlations
 
 ```{r plot-chipReplPairs}
 #| fig.width: 9
@@ -758,6 +767,45 @@ pL <- lapply(levels(fct_relevel(sort(unique(pd$group)), "Untagged", after = Inf)
 ```
 
 
+## Supplementary plots - Bound promoters
+
+In `txannot$prom.number.overlapping.highconf.peaks`, we record how many TF peaks
+are found in the promoter regions of a gene (defined as a 1kb window
+centered on the annotated transcript start site).
+
+Here we compare the expression levels (obtained from `rnaseq_del`) of
+genes twith different numbers of TFs bound at their promoters.
+
+```{r bound-promoters}
+#| fig.width: 6
+#| fig.height: 4
+
+# calculate average expression of each gene
+avg_tpm <- rowMeans(assay(rnaseq_del, "abundance"))
+
+# add average expression to gene annotation and filter out
+# genes that are not protein coding genes
+pd <- txannot |>
+    mutate(avg_tpm = avg_tpm[unique_einprot_id]) |>
+    filter(!is.na(avg_tpm),
+           gene_biotype == "protein_coding") |>
+    mutate(prom.number.overlapping.highconf.peaks.categories = 
+               cut(prom.number.overlapping.highconf.peaks,
+                   breaks = c(-Inf, 0, 1, Inf),
+                   labels = c("0", "1", ">1"),
+                   right = TRUE))
+
+# visualize
+(gg_rnaviolin <- ggplot(pd, aes(prom.number.overlapping.highconf.peaks.categories, avg_tpm + 0.01)) +
+        geom_violin(draw_quantiles = 0.5, fill = bg_color) +
+        scale_y_log10(labels = scales::label_number(big.mark = "")) +
+        labs(x = "Number of promoter TF peaks",
+             y = "RNA level\n(TPM + 0.01, log-scale)") +
+        theme_cowplot())
+```
+
+
+
 
 ## Put together
 
@@ -788,7 +836,15 @@ Assemble the panels into Supplementary Figure 2:
 
 cowplot::plot_grid(
     gg_enrpairs,
-    hm_ipms_hot,
+    cowplot::plot_grid(
+        hm_ipms_hot,
+        gg_rnaviolin,
+        NULL,
+        NULL,
+        ncol = 1,
+        rel_heights = c(1.25, 0.75, 1, 1),
+        labels = c("", "C", "D", "E")
+    ),
     rel_widths = c(1, 0.65), 
     scale = 0.9, nrow = 1,
     labels = c("A", "B")
