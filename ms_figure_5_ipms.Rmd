@@ -1061,74 +1061,6 @@ lowhighsub2 <- lowhigh |>
                fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
 ```
 
-## Supplementary plots - PCA
-
-```{r}
-## Low salt
-sce150_pca <- einprot::doPCA(
-    sce150[rowSums(!assay(sce150, 
-                          metadata(sce150)$aNames$assayImputIndic)) >= 2, ],
-    metadata(sce150)$aNames$assayImputed)$sce
-df <- scuttle::makePerCellDF(sce150_pca, features = NULL, use.coldata = TRUE, 
-                             use.dimred = TRUE) |>
-    dplyr::mutate(Protocol = .capitalize(sub("_digest|_freeze", "", sub("SOP_", "", Protocol))))
-pcvar150 <- attr(reducedDim(sce150_pca, "PCA_log2_LFQ.intensity"), "percentVar")
-(ggpca1 <- ggplot(
-    df, 
-    aes(x = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".1")]], 
-        y = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".2")]], 
-        color = Protocol)) + 
-    geom_point(size = 3, alpha = 0.5) +
-    scale_color_manual(values = c(Plate = main_colors[1], 
-                                  Tube = main_colors[5]), name = "") + 
-    coord_fixed() + 
-    labs(x = paste0("PC1 (", round(pcvar150[1], 1), "%)"), 
-         y = paste0("PC2 (", round(pcvar150[2], 1), "%)"), 
-         title = "150 mM NaCl") + 
-    theme_cowplot() + 
-    theme(legend.position = "bottom") + 
-    guides(color = guide_legend(nrow = 1, byrow = TRUE)))
-(ggpca2 <- ggplot(
-    df |>
-        dplyr::mutate(bait = ifelse(Gene_name == "atf1", "Atf1", "Other baits")) |>
-        dplyr::mutate(prot = .capitalize(prot)), 
-    aes(x = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".1")]], 
-        y = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".2")]], 
-        color = bait, shape = prot)) + 
-    geom_point(size = 3, alpha = 0.5) +
-    scale_color_manual(values = c(Atf1 = main_colors[3], 
-                                  `Other baits` = na_color), name = "") + 
-    scale_shape_manual(values = c(Plate = 16, Tube = 17), name = "") + 
-    coord_fixed() + 
-    labs(x = paste0("PC1 (", round(pcvar150[1], 1), "%)"), 
-         y = paste0("PC2 (", round(pcvar150[2], 1), "%)"), title = "150 mM NaCl") + 
-    theme_cowplot() + 
-    theme(legend.position = "bottom", legend.box = "horizontal", 
-          legend.margin = margin()))
-
-sce500_pca <- einprot::doPCA(
-    sce500[rowSums(!assay(sce500, metadata(sce500)$aNames$assayImputIndic)) >= 2, ],
-    metadata(sce500)$aNames$assayImputed)$sce
-df <- scuttle::makePerCellDF(sce500_pca, features = NULL, use.coldata = TRUE, 
-                             use.dimred = TRUE)
-pcvar500 <- attr(reducedDim(sce500_pca, "PCA_log2_LFQ.intensity"), "percentVar")
-(ggpca3 <- ggplot(
-    df |>
-        dplyr::mutate(bait = ifelse(Gene_name == "atf1", "Atf1", "Other baits")), 
-    aes(x = .data[[paste0("PCA_", metadata(sce500)$aNames$assayImputed, ".1")]], 
-        y = .data[[paste0("PCA_", metadata(sce500)$aNames$assayImputed, ".2")]], 
-        color = bait)) + 
-    geom_point(size = 3, alpha = 0.5) +
-    scale_color_manual(values = c(Atf1 = main_colors[3], 
-                                  `Other baits` = na_color), name = "") + 
-    coord_fixed() + 
-    labs(x = paste0("PC1 (", round(pcvar500[1], 1), "%)"), 
-         y = paste0("PC2 (", round(pcvar500[2], 1), "%)"), 
-         title = "500 mM NaCl") + 
-    theme_cowplot() + 
-    theme(legend.position = "bottom"))
-```
-
 ## Supplementary plot - tube vs plate t-statistics for Atf1 pull-down
 
 The low-salt experiments were done using two different protocols (`tube` or 
@@ -1185,18 +1117,6 @@ cowplot::plot_grid(
     nrow = 2,
     rel_heights = c(12, 1)
 )
-```
-
-## Supplementary Figure
-
-```{r suppFig5}
-#| fig.width: 10.8
-#| fig.height: 10.8
-#| warning: false
-
-wrap_plots(ggpca1, ggpca2, ggatf1, ggpca3, ncol = 2) + 
-    # plot_annotation(tag_levels = list(c("A", "", "", "", "B"))) & 
-    theme(plot.tag = element_text(size = 14, face = "bold"))
 ```
 
 
