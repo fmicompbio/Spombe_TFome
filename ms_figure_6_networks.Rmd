@@ -52,6 +52,7 @@ suppressPackageStartupMessages({
     library(kableExtra)
     library(ggupset)
     library(tidyr)
+    library(jsonlite)
 })
 
 source("params/plot_settings.R")
@@ -379,6 +380,66 @@ gr500 <- createNetwork(similList = simil500, threshold = 6,
                        known_interactors = interactors, settings = "igraph")
 ```
 
+We export the generated networks for use by TFexplorer.
+
+```{r}
+## 150 mM NaCl
+n150 <- as_tbl_graph(gr150) |>
+    activate(nodes) |>
+    data.frame() |>
+    mutate(idx = seq_along(name))
+e150 <- as_tbl_graph(gr150) |>
+    activate(edges) |>
+    data.frame() |>
+    left_join(n150 |> select(name, idx) |> rename(from = idx, from_name = name), 
+              by = "from") |>
+    left_join(n150 |> select(name, idx) |> rename(to = idx, to_name = name),
+              by = "to")
+exp150 <- list(
+    nodes = lapply(seq_len(nrow(n150)), function(i) {
+        list(id = n150$name[i], 
+             label = n150$name[i], 
+             value = 1)
+    }),
+    edges = lapply(seq_len(nrow(e150)), function(i) {
+        list(source = e150$from_name[i],
+             target = e150$to_name[i],
+             value = e150$value[i])
+    })
+)
+exp150 <- toJSON(exp150,
+                 pretty = TRUE)
+write(exp150, file = "data/networkData_150mMSalt.json")
+
+## 500 mM NaCl
+n500 <- as_tbl_graph(gr500) |>
+    activate(nodes) |>
+    data.frame() |>
+    mutate(idx = seq_along(name))
+e500 <- as_tbl_graph(gr500) |>
+    activate(edges) |>
+    data.frame() |>
+    left_join(n500 |> select(name, idx) |> rename(from = idx, from_name = name), 
+              by = "from") |>
+    left_join(n500 |> select(name, idx) |> rename(to = idx, to_name = name),
+              by = "to")
+exp500 <- list(
+    nodes = lapply(seq_len(nrow(n500)), function(i) {
+        list(id = n500$name[i], 
+             label = n500$name[i], 
+             value = 1)
+    }),
+    edges = lapply(seq_len(nrow(e500)), function(i) {
+        list(source = e500$from_name[i],
+             target = e500$to_name[i],
+             value = e500$value[i])
+    })
+)
+exp500 <- toJSON(exp500,
+                 pretty = TRUE)
+write(exp500, file = "data/networkData_500mMSalt.json")
+```
+
 # 14-3-3 protein interactions
 
 We extract all IPs where either `Rad24` or `Rad25` are pulled down, 
@@ -684,8 +745,8 @@ coords500$y <- -coords500$y
 
 .plotGraph <- function(grph, coords, nudge_y) {
     ggraph(as_tbl_graph(grph), 
-                 layout = coords, 
-                 weights = weight) + 
+           layout = coords, 
+           weights = weight) + 
     geom_edge_link(aes(color = edgeclass, width = weight)) +
     scale_edge_color_manual(values = c(`Unannotated TF interaction` = main_colors[3], 
                                        Other = gplots::col2hex(na_color)),

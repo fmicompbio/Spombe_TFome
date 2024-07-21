@@ -11,7 +11,7 @@
 
 <meta name="author" content="Charlotte Soneson, Michael Stadler, Merle Skribbe" />
 
-<meta name="date" content="2024-07-15" />
+<meta name="date" content="2024-07-20" />
 
 <title>Figure 6 - networks</title>
 
@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Figure 6 - networks</h1>
 <h4 class="author">Charlotte Soneson, Michael Stadler, Merle Skribbe</h4>
-<h4 class="date">2024-07-15</h4>
+<h4 class="date">2024-07-20</h4>
 
 </div>
 
@@ -306,6 +306,7 @@ div.tocify {
     library(kableExtra)
     library(ggupset)
     library(tidyr)
+    library(jsonlite)
 })
 
 source(&quot;params/plot_settings.R&quot;)
@@ -514,6 +515,62 @@ maxSimil &lt;- round(max(max(simil150$simil, na.rm = TRUE),
                        known_interactors = interactors, settings = &quot;igraph&quot;)
 gr500 &lt;- createNetwork(similList = simil500, threshold = 6, 
                        known_interactors = interactors, settings = &quot;igraph&quot;)</code></pre>
+<p>We export the generated networks for use by TFexplorer.</p>
+<pre class="r"><code>## 150 mM NaCl
+n150 &lt;- as_tbl_graph(gr150) |&gt;
+    activate(nodes) |&gt;
+    data.frame() |&gt;
+    mutate(idx = seq_along(name))
+e150 &lt;- as_tbl_graph(gr150) |&gt;
+    activate(edges) |&gt;
+    data.frame() |&gt;
+    left_join(n150 |&gt; select(name, idx) |&gt; rename(from = idx, from_name = name), 
+              by = &quot;from&quot;) |&gt;
+    left_join(n150 |&gt; select(name, idx) |&gt; rename(to = idx, to_name = name),
+              by = &quot;to&quot;)
+exp150 &lt;- list(
+    nodes = lapply(seq_len(nrow(n150)), function(i) {
+        list(id = n150$name[i], 
+             label = n150$name[i], 
+             value = 1)
+    }),
+    edges = lapply(seq_len(nrow(e150)), function(i) {
+        list(source = e150$from_name[i],
+             target = e150$to_name[i],
+             value = e150$value[i])
+    })
+)
+exp150 &lt;- toJSON(exp150,
+                 pretty = TRUE)
+write(exp150, file = &quot;data/networkData_150mMSalt.json&quot;)
+
+## 500 mM NaCl
+n500 &lt;- as_tbl_graph(gr500) |&gt;
+    activate(nodes) |&gt;
+    data.frame() |&gt;
+    mutate(idx = seq_along(name))
+e500 &lt;- as_tbl_graph(gr500) |&gt;
+    activate(edges) |&gt;
+    data.frame() |&gt;
+    left_join(n500 |&gt; select(name, idx) |&gt; rename(from = idx, from_name = name), 
+              by = &quot;from&quot;) |&gt;
+    left_join(n500 |&gt; select(name, idx) |&gt; rename(to = idx, to_name = name),
+              by = &quot;to&quot;)
+exp500 &lt;- list(
+    nodes = lapply(seq_len(nrow(n500)), function(i) {
+        list(id = n500$name[i], 
+             label = n500$name[i], 
+             value = 1)
+    }),
+    edges = lapply(seq_len(nrow(e500)), function(i) {
+        list(source = e500$from_name[i],
+             target = e500$to_name[i],
+             value = e500$value[i])
+    })
+)
+exp500 &lt;- toJSON(exp500,
+                 pretty = TRUE)
+write(exp500, file = &quot;data/networkData_500mMSalt.json&quot;)</code></pre>
 </div>
 <div id="protein-interactions" class="section level1">
 <h1>14-3-3 protein interactions</h1>
@@ -822,8 +879,8 @@ coords500$y &lt;- -coords500$y
 
 .plotGraph &lt;- function(grph, coords, nudge_y) {
     ggraph(as_tbl_graph(grph), 
-                 layout = coords, 
-                 weights = weight) + 
+           layout = coords, 
+           weights = weight) + 
     geom_edge_link(aes(color = edgeclass, width = weight)) +
     scale_edge_color_manual(values = c(`Unannotated TF interaction` = main_colors[3], 
                                        Other = gplots::col2hex(na_color)),
@@ -914,58 +971,59 @@ cowplot::plot_grid(
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] tidyr_1.3.1                 ggupset_0.3.0              
-##  [3] kableExtra_1.4.0            flextable_0.9.5            
-##  [5] ComplexHeatmap_2.18.0       ggrepel_0.9.5              
-##  [7] tidygraph_1.3.1             latex2exp_0.9.6            
-##  [9] ggraph_2.2.1                ggplotify_0.1.2            
-## [11] cowplot_1.1.3               shiny_1.8.1.1              
-## [13] igraph_2.0.3                ggplot2_3.5.0              
-## [15] dplyr_1.1.4                 SingleCellExperiment_1.24.0
-## [17] SummarizedExperiment_1.32.0 Biobase_2.62.0             
-## [19] GenomicRanges_1.54.1        GenomeInfoDb_1.38.8        
-## [21] IRanges_2.36.0              S4Vectors_0.40.2           
-## [23] BiocGenerics_0.48.1         MatrixGenerics_1.14.0      
-## [25] matrixStats_1.3.0           visNetwork_2.1.2           
+##  [1] jsonlite_1.8.8              tidyr_1.3.1                
+##  [3] ggupset_0.3.0               kableExtra_1.4.0           
+##  [5] flextable_0.9.5             ComplexHeatmap_2.18.0      
+##  [7] ggrepel_0.9.5               tidygraph_1.3.1            
+##  [9] latex2exp_0.9.6             ggraph_2.2.1               
+## [11] ggplotify_0.1.2             cowplot_1.1.3              
+## [13] shiny_1.8.1.1               igraph_2.0.3               
+## [15] ggplot2_3.5.0               dplyr_1.1.4                
+## [17] SingleCellExperiment_1.24.0 SummarizedExperiment_1.32.0
+## [19] Biobase_2.62.0              GenomicRanges_1.54.1       
+## [21] GenomeInfoDb_1.38.8         IRanges_2.36.0             
+## [23] S4Vectors_0.40.2            BiocGenerics_0.48.1        
+## [25] MatrixGenerics_1.14.0       matrixStats_1.3.0          
+## [27] visNetwork_2.1.2           
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] RColorBrewer_1.1-3      rstudioapi_0.16.0       jsonlite_1.8.8         
-##   [4] shape_1.4.6.1           magrittr_2.0.3          magick_2.8.3           
-##   [7] farver_2.1.1            rmarkdown_2.26          GlobalOptions_0.1.2    
-##  [10] fs_1.6.3                zlibbioc_1.48.2         ragg_1.3.0             
-##  [13] vctrs_0.6.5             Cairo_1.6-2             memoise_2.0.1          
-##  [16] RCurl_1.98-1.14         askpass_1.2.0           htmltools_0.5.8.1      
-##  [19] S4Arrays_1.2.1          curl_5.2.1              SparseArray_1.2.4      
-##  [22] gridGraphics_0.5-1      sass_0.4.9              KernSmooth_2.23-22     
-##  [25] bslib_0.7.0             htmlwidgets_1.6.4       cachem_1.0.8           
-##  [28] uuid_1.2-0              mime_0.12               lifecycle_1.0.4        
-##  [31] iterators_1.0.14        pkgconfig_2.0.3         Matrix_1.6-5           
-##  [34] R6_2.5.1                fastmap_1.1.1           GenomeInfoDbData_1.2.11
-##  [37] clue_0.3-65             digest_0.6.35           colorspace_2.1-0       
-##  [40] textshaping_0.3.7       labeling_0.4.3          fansi_1.0.6            
-##  [43] polyclip_1.10-6         abind_1.4-5             compiler_4.3.2         
-##  [46] fontquiver_0.2.1        withr_3.0.0             doParallel_1.0.17      
-##  [49] viridis_0.6.5           highr_0.10              ggforce_0.4.2          
-##  [52] gplots_3.1.3.1          MASS_7.3-60             openssl_2.1.2          
-##  [55] DelayedArray_0.28.0     rjson_0.2.21            gfonts_0.2.0           
-##  [58] gtools_3.9.5            caTools_1.18.2          tools_4.3.2            
-##  [61] zip_2.3.1               httpuv_1.6.15           glue_1.7.0             
-##  [64] promises_1.3.0          cluster_2.1.4           generics_0.1.3         
-##  [67] gtable_0.3.5            data.table_1.15.4       xml2_1.3.6             
-##  [70] utf8_1.2.4              XVector_0.42.0          foreach_1.5.2          
-##  [73] pillar_1.9.0            stringr_1.5.1           yulab.utils_0.1.4      
-##  [76] later_1.3.2             circlize_0.4.16         tweenr_2.0.3           
-##  [79] lattice_0.22-6          tidyselect_1.2.1        fontLiberation_0.1.0   
-##  [82] knitr_1.46              fontBitstreamVera_0.1.1 gridExtra_2.3          
-##  [85] svglite_2.1.3           crul_1.4.2              xfun_0.43              
-##  [88] graphlayouts_1.1.1      stringi_1.8.3           yaml_2.3.8             
-##  [91] evaluate_0.23           codetools_0.2-19        httpcode_0.3.0         
-##  [94] officer_0.6.5           gdtools_0.3.7           tibble_3.2.1           
-##  [97] cli_3.6.2               xtable_1.8-4            systemfonts_1.0.6      
-## [100] munsell_0.5.1           jquerylib_0.1.4         Rcpp_1.0.12            
-## [103] png_0.1-8               parallel_4.3.2          bitops_1.0-7           
-## [106] viridisLite_0.4.2       scales_1.3.0            purrr_1.0.2            
-## [109] crayon_1.5.2            GetoptLong_1.0.5        rlang_1.1.3</code></pre>
+##   [1] RColorBrewer_1.1-3      rstudioapi_0.16.0       shape_1.4.6.1          
+##   [4] magrittr_2.0.3          magick_2.8.3            farver_2.1.1           
+##   [7] rmarkdown_2.26          GlobalOptions_0.1.2     fs_1.6.3               
+##  [10] zlibbioc_1.48.2         ragg_1.3.0              vctrs_0.6.5            
+##  [13] Cairo_1.6-2             memoise_2.0.1           RCurl_1.98-1.14        
+##  [16] askpass_1.2.0           htmltools_0.5.8.1       S4Arrays_1.2.1         
+##  [19] curl_5.2.1              SparseArray_1.2.4       gridGraphics_0.5-1     
+##  [22] sass_0.4.9              KernSmooth_2.23-22      bslib_0.7.0            
+##  [25] htmlwidgets_1.6.4       cachem_1.0.8            uuid_1.2-0             
+##  [28] mime_0.12               lifecycle_1.0.4         iterators_1.0.14       
+##  [31] pkgconfig_2.0.3         Matrix_1.6-5            R6_2.5.1               
+##  [34] fastmap_1.1.1           GenomeInfoDbData_1.2.11 clue_0.3-65            
+##  [37] digest_0.6.35           colorspace_2.1-0        textshaping_0.3.7      
+##  [40] labeling_0.4.3          fansi_1.0.6             polyclip_1.10-6        
+##  [43] abind_1.4-5             compiler_4.3.2          fontquiver_0.2.1       
+##  [46] withr_3.0.0             doParallel_1.0.17       viridis_0.6.5          
+##  [49] highr_0.10              ggforce_0.4.2           gplots_3.1.3.1         
+##  [52] MASS_7.3-60             openssl_2.1.2           DelayedArray_0.28.0    
+##  [55] rjson_0.2.21            gfonts_0.2.0            gtools_3.9.5           
+##  [58] caTools_1.18.2          tools_4.3.2             zip_2.3.1              
+##  [61] httpuv_1.6.15           glue_1.7.0              promises_1.3.0         
+##  [64] cluster_2.1.4           generics_0.1.3          gtable_0.3.5           
+##  [67] data.table_1.15.4       xml2_1.3.6              utf8_1.2.4             
+##  [70] XVector_0.42.0          foreach_1.5.2           pillar_1.9.0           
+##  [73] stringr_1.5.1           yulab.utils_0.1.4       later_1.3.2            
+##  [76] circlize_0.4.16         tweenr_2.0.3            lattice_0.22-6         
+##  [79] tidyselect_1.2.1        fontLiberation_0.1.0    knitr_1.46             
+##  [82] fontBitstreamVera_0.1.1 gridExtra_2.3           svglite_2.1.3          
+##  [85] crul_1.4.2              xfun_0.43               graphlayouts_1.1.1     
+##  [88] stringi_1.8.3           yaml_2.3.8              evaluate_0.23          
+##  [91] codetools_0.2-19        httpcode_0.3.0          officer_0.6.5          
+##  [94] gdtools_0.3.7           tibble_3.2.1            cli_3.6.2              
+##  [97] xtable_1.8-4            systemfonts_1.0.6       munsell_0.5.1          
+## [100] jquerylib_0.1.4         Rcpp_1.0.12             png_0.1-8              
+## [103] parallel_4.3.2          bitops_1.0-7            viridisLite_0.4.2      
+## [106] scales_1.3.0            purrr_1.0.2             crayon_1.5.2           
+## [109] GetoptLong_1.0.5        rlang_1.1.3</code></pre>
 </details>
 </div>
 
