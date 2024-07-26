@@ -11,7 +11,7 @@
 
 <meta name="author" content="Charlotte Soneson, Michael Stadler, Merle Skribbe" />
 
-<meta name="date" content="2024-07-20" />
+<meta name="date" content="2024-07-22" />
 
 <title>Figure 6 - networks</title>
 
@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Figure 6 - networks</h1>
 <h4 class="author">Charlotte Soneson, Michael Stadler, Merle Skribbe</h4>
-<h4 class="date">2024-07-20</h4>
+<h4 class="date">2024-07-22</h4>
 
 </div>
 
@@ -541,7 +541,8 @@ exp150 &lt;- list(
     })
 )
 exp150 &lt;- toJSON(exp150,
-                 pretty = TRUE)
+                 pretty = TRUE, 
+                 auto_unbox = TRUE)
 write(exp150, file = &quot;data/networkData_150mMSalt.json&quot;)
 
 ## 500 mM NaCl
@@ -569,7 +570,8 @@ exp500 &lt;- list(
     })
 )
 exp500 &lt;- toJSON(exp500,
-                 pretty = TRUE)
+                 pretty = TRUE, 
+                 auto_unbox = TRUE)
 write(exp500, file = &quot;data/networkData_500mMSalt.json&quot;)</code></pre>
 </div>
 <div id="protein-interactions" class="section level1">

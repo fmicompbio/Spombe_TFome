@@ -408,7 +408,8 @@ exp150 <- list(
     })
 )
 exp150 <- toJSON(exp150,
-                 pretty = TRUE)
+                 pretty = TRUE, 
+                 auto_unbox = TRUE)
 write(exp150, file = "data/networkData_150mMSalt.json")
 
 ## 500 mM NaCl
@@ -436,14 +437,15 @@ exp500 <- list(
     })
 )
 exp500 <- toJSON(exp500,
-                 pretty = TRUE)
+                 pretty = TRUE, 
+                 auto_unbox = TRUE)
 write(exp500, file = "data/networkData_500mMSalt.json")
 ```
 
 # 14-3-3 protein interactions
 
 We extract all IPs where either `Rad24` or `Rad25` are pulled down, 
-using a relatively lenient adjusted p-value cutoff.
+using a relatively lenient adjusted p-value cutoff. 
 
 ```{r rad24-rad25}
 #| fig.width: 9

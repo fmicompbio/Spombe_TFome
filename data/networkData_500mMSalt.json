@@ -1,1186 +1,1186 @@
 {
   "nodes": [
     {
-      "id": ["Tif1"],
-      "label": ["Tif1"],
-      "value": [1]
+      "id": "Tif1",
+      "label": "Tif1",
+      "value": 1
     },
     {
-      "id": ["Dal81"],
-      "label": ["Dal81"],
-      "value": [1]
+      "id": "Dal81",
+      "label": "Dal81",
+      "value": 1
     },
     {
-      "id": ["SPAC11D3.17"],
-      "label": ["SPAC11D3.17"],
-      "value": [1]
+      "id": "SPAC11D3.17",
+      "label": "SPAC11D3.17",
+      "value": 1
     },
     {
-      "id": ["Map1"],
-      "label": ["Map1"],
-      "value": [1]
+      "id": "Map1",
+      "label": "Map1",
+      "value": 1
     },
     {
-      "id": ["Idh1"],
-      "label": ["Idh1"],
-      "value": [1]
+      "id": "Idh1",
+      "label": "Idh1",
+      "value": 1
     },
     {
-      "id": ["Ssa1"],
-      "label": ["Ssa1"],
-      "value": [1]
+      "id": "Ssa1",
+      "label": "Ssa1",
+      "value": 1
     },
     {
-      "id": ["Spe1"],
-      "label": ["Spe1"],
-      "value": [1]
+      "id": "Spe1",
+      "label": "Spe1",
+      "value": 1
     },
     {
-      "id": ["Pap1"],
-      "label": ["Pap1"],
-      "value": [1]
+      "id": "Pap1",
+      "label": "Pap1",
+      "value": 1
     },
     {
-      "id": ["Rad25"],
-      "label": ["Rad25"],
-      "value": [1]
+      "id": "Rad25",
+      "label": "Rad25",
+      "value": 1
     },
     {
-      "id": ["Hht2"],
-      "label": ["Hht2"],
-      "value": [1]
+      "id": "Hht2",
+      "label": "Hht2",
+      "value": 1
     },
     {
-      "id": ["Erg5"],
-      "label": ["Erg5"],
-      "value": [1]
+      "id": "Erg5",
+      "label": "Erg5",
+      "value": 1
     },
     {
-      "id": ["Mce1"],
-      "label": ["Mce1"],
-      "value": [1]
+      "id": "Mce1",
+      "label": "Mce1",
+      "value": 1
     },
     {
-      "id": ["Elo2"],
-      "label": ["Elo2"],
-      "value": [1]
+      "id": "Elo2",
+      "label": "Elo2",
+      "value": 1
     },
     {
-      "id": ["Lsh1"],
-      "label": ["Lsh1"],
-      "value": [1]
+      "id": "Lsh1",
+      "label": "Lsh1",
+      "value": 1
     },
     {
-      "id": ["Has1"],
-      "label": ["Has1"],
-      "value": [1]
+      "id": "Has1",
+      "label": "Has1",
+      "value": 1
     },
     {
-      "id": ["Dal2"],
-      "label": ["Dal2"],
-      "value": [1]
+      "id": "Dal2",
+      "label": "Dal2",
+      "value": 1
     },
     {
-      "id": ["Pdc101"],
-      "label": ["Pdc101"],
-      "value": [1]
+      "id": "Pdc101",
+      "label": "Pdc101",
+      "value": 1
     },
     {
-      "id": ["Pcr1"],
-      "label": ["Pcr1"],
-      "value": [1]
+      "id": "Pcr1",
+      "label": "Pcr1",
+      "value": 1
     },
     {
-      "id": ["Res2"],
-      "label": ["Res2"],
-      "value": [1]
+      "id": "Res2",
+      "label": "Res2",
+      "value": 1
     },
     {
-      "id": ["Ura1"],
-      "label": ["Ura1"],
-      "value": [1]
+      "id": "Ura1",
+      "label": "Ura1",
+      "value": 1
     },
     {
-      "id": ["Php3"],
-      "label": ["Php3"],
-      "value": [1]
+      "id": "Php3",
+      "label": "Php3",
+      "value": 1
     },
     {
-      "id": ["Sds3"],
-      "label": ["Sds3"],
-      "value": [1]
+      "id": "Sds3",
+      "label": "Sds3",
+      "value": 1
     },
     {
-      "id": ["SPAC25B8.11"],
-      "label": ["SPAC25B8.11"],
-      "value": [1]
+      "id": "SPAC25B8.11",
+      "label": "SPAC25B8.11",
+      "value": 1
     },
     {
-      "id": ["Ost1"],
-      "label": ["Ost1"],
-      "value": [1]
+      "id": "Ost1",
+      "label": "Ost1",
+      "value": 1
     },
     {
-      "id": ["Prw1"],
-      "label": ["Prw1"],
-      "value": [1]
+      "id": "Prw1",
+      "label": "Prw1",
+      "value": 1
     },
     {
-      "id": ["Hsf1"],
-      "label": ["Hsf1"],
-      "value": [1]
+      "id": "Hsf1",
+      "label": "Hsf1",
+      "value": 1
     },
     {
-      "id": ["Rer2"],
-      "label": ["Rer2"],
-      "value": [1]
+      "id": "Rer2",
+      "label": "Rer2",
+      "value": 1
     },
     {
-      "id": ["Ura3"],
-      "label": ["Ura3"],
-      "value": [1]
+      "id": "Ura3",
+      "label": "Ura3",
+      "value": 1
     },
     {
-      "id": ["SPAC644.13c"],
-      "label": ["SPAC644.13c"],
-      "value": [1]
+      "id": "SPAC644.13c",
+      "label": "SPAC644.13c",
+      "value": 1
     },
     {
-      "id": ["Puf4"],
-      "label": ["Puf4"],
-      "value": [1]
+      "id": "Puf4",
+      "label": "Puf4",
+      "value": 1
     },
     {
-      "id": ["Tif308"],
-      "label": ["Tif308"],
-      "value": [1]
+      "id": "Tif308",
+      "label": "Tif308",
+      "value": 1
     },
     {
-      "id": ["Moc3"],
-      "label": ["Moc3"],
-      "value": [1]
+      "id": "Moc3",
+      "label": "Moc3",
+      "value": 1
     },
     {
-      "id": ["Prr1"],
-      "label": ["Prr1"],
-      "value": [1]
+      "id": "Prr1",
+      "label": "Prr1",
+      "value": 1
     },
     {
-      "id": ["Rad24"],
-      "label": ["Rad24"],
-      "value": [1]
+      "id": "Rad24",
+      "label": "Rad24",
+      "value": 1
     },
     {
-      "id": ["Pvg1"],
-      "label": ["Pvg1"],
-      "value": [1]
+      "id": "Pvg1",
+      "label": "Pvg1",
+      "value": 1
     },
     {
-      "id": ["SPBC106.03"],
-      "label": ["SPBC106.03"],
-      "value": [1]
+      "id": "SPBC106.03",
+      "label": "SPBC106.03",
+      "value": 1
     },
     {
-      "id": ["Cct4"],
-      "label": ["Cct4"],
-      "value": [1]
+      "id": "Cct4",
+      "label": "Cct4",
+      "value": 1
     },
     {
-      "id": ["Lys4"],
-      "label": ["Lys4"],
-      "value": [1]
+      "id": "Lys4",
+      "label": "Lys4",
+      "value": 1
     },
     {
-      "id": ["Stt3"],
-      "label": ["Stt3"],
-      "value": [1]
+      "id": "Stt3",
+      "label": "Stt3",
+      "value": 1
     },
     {
-      "id": ["Adn2"],
-      "label": ["Adn2"],
-      "value": [1]
+      "id": "Adn2",
+      "label": "Adn2",
+      "value": 1
     },
     {
-      "id": ["Pst1"],
-      "label": ["Pst1"],
-      "value": [1]
+      "id": "Pst1",
+      "label": "Pst1",
+      "value": 1
     },
     {
-      "id": ["Fma2"],
-      "label": ["Fma2"],
-      "value": [1]
+      "id": "Fma2",
+      "label": "Fma2",
+      "value": 1
     },
     {
-      "id": ["Nrm1"],
-      "label": ["Nrm1"],
-      "value": [1]
+      "id": "Nrm1",
+      "label": "Nrm1",
+      "value": 1
     },
     {
-      "id": ["Rpt1"],
-      "label": ["Rpt1"],
-      "value": [1]
+      "id": "Rpt1",
+      "label": "Rpt1",
+      "value": 1
     },
     {
-      "id": ["Fkh2"],
-      "label": ["Fkh2"],
-      "value": [1]
+      "id": "Fkh2",
+      "label": "Fkh2",
+      "value": 1
     },
     {
-      "id": ["Ntu1"],
-      "label": ["Ntu1"],
-      "value": [1]
+      "id": "Ntu1",
+      "label": "Ntu1",
+      "value": 1
     },
     {
-      "id": ["Aha1"],
-      "label": ["Aha1"],
-      "value": [1]
+      "id": "Aha1",
+      "label": "Aha1",
+      "value": 1
     },
     {
-      "id": ["Pst3"],
-      "label": ["Pst3"],
-      "value": [1]
+      "id": "Pst3",
+      "label": "Pst3",
+      "value": 1
     },
     {
-      "id": ["Cct3"],
-      "label": ["Cct3"],
-      "value": [1]
+      "id": "Cct3",
+      "label": "Cct3",
+      "value": 1
     },
     {
-      "id": ["Yox1"],
-      "label": ["Yox1"],
-      "value": [1]
+      "id": "Yox1",
+      "label": "Yox1",
+      "value": 1
     },
     {
-      "id": ["Pho7"],
-      "label": ["Pho7"],
-      "value": [1]
+      "id": "Pho7",
+      "label": "Pho7",
+      "value": 1
     },
     {
-      "id": ["Cyb502"],
-      "label": ["Cyb502"],
-      "value": [1]
+      "id": "Cyb502",
+      "label": "Cyb502",
+      "value": 1
     },
     {
-      "id": ["Atf1"],
-      "label": ["Atf1"],
-      "value": [1]
+      "id": "Atf1",
+      "label": "Atf1",
+      "value": 1
     },
     {
-      "id": ["Ldb1"],
-      "label": ["Ldb1"],
-      "value": [1]
+      "id": "Ldb1",
+      "label": "Ldb1",
+      "value": 1
     },
     {
-      "id": ["Ncb2"],
-      "label": ["Ncb2"],
-      "value": [1]
+      "id": "Ncb2",
+      "label": "Ncb2",
+      "value": 1
     },
     {
-      "id": ["Sar1"],
-      "label": ["Sar1"],
-      "value": [1]
+      "id": "Sar1",
+      "label": "Sar1",
+      "value": 1
     },
     {
-      "id": ["Cdc10"],
-      "label": ["Cdc10"],
-      "value": [1]
+      "id": "Cdc10",
+      "label": "Cdc10",
+      "value": 1
     },
     {
-      "id": ["Cct8"],
-      "label": ["Cct8"],
-      "value": [1]
+      "id": "Cct8",
+      "label": "Cct8",
+      "value": 1
     },
     {
-      "id": ["Clr6"],
-      "label": ["Clr6"],
-      "value": [1]
+      "id": "Clr6",
+      "label": "Clr6",
+      "value": 1
     },
     {
-      "id": ["Php5"],
-      "label": ["Php5"],
-      "value": [1]
+      "id": "Php5",
+      "label": "Php5",
+      "value": 1
     },
     {
-      "id": ["Ntu2"],
-      "label": ["Ntu2"],
-      "value": [1]
+      "id": "Ntu2",
+      "label": "Ntu2",
+      "value": 1
     },
     {
-      "id": ["Cct6"],
-      "label": ["Cct6"],
-      "value": [1]
+      "id": "Cct6",
+      "label": "Cct6",
+      "value": 1
     },
     {
-      "id": ["Php2"],
-      "label": ["Php2"],
-      "value": [1]
+      "id": "Php2",
+      "label": "Php2",
+      "value": 1
     },
     {
-      "id": ["Res1"],
-      "label": ["Res1"],
-      "value": [1]
+      "id": "Res1",
+      "label": "Res1",
+      "value": 1
     },
     {
-      "id": ["Rxt3"],
-      "label": ["Rxt3"],
-      "value": [1]
+      "id": "Rxt3",
+      "label": "Rxt3",
+      "value": 1
     },
     {
-      "id": ["Adn3"],
-      "label": ["Adn3"],
-      "value": [1]
+      "id": "Adn3",
+      "label": "Adn3",
+      "value": 1
     },
     {
-      "id": ["Mug33"],
-      "label": ["Mug33"],
-      "value": [1]
+      "id": "Mug33",
+      "label": "Mug33",
+      "value": 1
     },
     {
-      "id": ["Ssa2"],
-      "label": ["Ssa2"],
-      "value": [1]
+      "id": "Ssa2",
+      "label": "Ssa2",
+      "value": 1
     },
     {
-      "id": ["SPCC320.08"],
-      "label": ["SPCC320.08"],
-      "value": [1]
+      "id": "SPCC320.08",
+      "label": "SPCC320.08",
+      "value": 1
     },
     {
-      "id": ["Wbp1"],
-      "label": ["Wbp1"],
-      "value": [1]
+      "id": "Wbp1",
+      "label": "Wbp1",
+      "value": 1
     },
     {
-      "id": ["SPCC584.13"],
-      "label": ["SPCC584.13"],
-      "value": [1]
+      "id": "SPCC584.13",
+      "label": "SPCC584.13",
+      "value": 1
     },
     {
-      "id": ["Htb1"],
-      "label": ["Htb1"],
-      "value": [1]
+      "id": "Htb1",
+      "label": "Htb1",
+      "value": 1
     },
     {
-      "id": ["Alp14"],
-      "label": ["Alp14"],
-      "value": [1]
+      "id": "Alp14",
+      "label": "Alp14",
+      "value": 1
     },
     {
-      "id": ["Vma8"],
-      "label": ["Vma8"],
-      "value": [1]
+      "id": "Vma8",
+      "label": "Vma8",
+      "value": 1
     }
   ],
   "edges": [
     {
-      "source": ["Pap1"],
-      "target": ["Hht2"],
-      "value": [6.0785]
+      "source": "Pap1",
+      "target": "Hht2",
+      "value": 6.0785
     },
     {
-      "source": ["SPAC11D3.17"],
-      "target": ["Erg5"],
-      "value": [6.1467]
+      "source": "SPAC11D3.17",
+      "target": "Erg5",
+      "value": 6.1467
     },
     {
-      "source": ["Erg5"],
-      "target": ["Mce1"],
-      "value": [6.323]
+      "source": "Erg5",
+      "target": "Mce1",
+      "value": 6.323
     },
     {
-      "source": ["SPAC11D3.17"],
-      "target": ["Elo2"],
-      "value": [8.4812]
+      "source": "SPAC11D3.17",
+      "target": "Elo2",
+      "value": 8.4812
     },
     {
-      "source": ["Erg5"],
-      "target": ["Elo2"],
-      "value": [7.2341]
+      "source": "Erg5",
+      "target": "Elo2",
+      "value": 7.2341
     },
     {
-      "source": ["Ssa1"],
-      "target": ["Lsh1"],
-      "value": [9.2842]
+      "source": "Ssa1",
+      "target": "Lsh1",
+      "value": 9.2842
     },
     {
-      "source": ["Idh1"],
-      "target": ["Has1"],
-      "value": [7.4513]
+      "source": "Idh1",
+      "target": "Has1",
+      "value": 7.4513
     },
     {
-      "source": ["Tif1"],
-      "target": ["Pdc101"],
-      "value": [6.8549]
+      "source": "Tif1",
+      "target": "Pdc101",
+      "value": 6.8549
     },
     {
-      "source": ["Tif1"],
-      "target": ["Ura1"],
-      "value": [8.5162]
+      "source": "Tif1",
+      "target": "Ura1",
+      "value": 8.5162
     },
     {
-      "source": ["Idh1"],
-      "target": ["Ura1"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Ura1",
+      "value": 7.6726
     },
     {
-      "source": ["Has1"],
-      "target": ["Ura1"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Ura1",
+      "value": 7.4513
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Ura1"],
-      "value": [6.9547]
+      "source": "Pdc101",
+      "target": "Ura1",
+      "value": 6.9547
     },
     {
-      "source": ["Spe1"],
-      "target": ["SPAC25B8.11"],
-      "value": [21.8426]
+      "source": "Spe1",
+      "target": "SPAC25B8.11",
+      "value": 21.8426
     },
     {
-      "source": ["Sds3"],
-      "target": ["Prw1"],
-      "value": [8.9777]
+      "source": "Sds3",
+      "target": "Prw1",
+      "value": 8.9777
     },
     {
-      "source": ["Ssa1"],
-      "target": ["Hsf1"],
-      "value": [9.2842]
+      "source": "Ssa1",
+      "target": "Hsf1",
+      "value": 9.2842
     },
     {
-      "source": ["Lsh1"],
-      "target": ["Hsf1"],
-      "value": [10.477]
+      "source": "Lsh1",
+      "target": "Hsf1",
+      "value": 10.477
     },
     {
-      "source": ["Elo2"],
-      "target": ["Ura3"],
-      "value": [6.2465]
+      "source": "Elo2",
+      "target": "Ura3",
+      "value": 6.2465
     },
     {
-      "source": ["Map1"],
-      "target": ["SPAC644.13c"],
-      "value": [6.5428]
+      "source": "Map1",
+      "target": "SPAC644.13c",
+      "value": 6.5428
     },
     {
-      "source": ["Spe1"],
-      "target": ["Puf4"],
-      "value": [12.7841]
+      "source": "Spe1",
+      "target": "Puf4",
+      "value": 12.7841
     },
     {
-      "source": ["SPAC25B8.11"],
-      "target": ["Puf4"],
-      "value": [12.7841]
+      "source": "SPAC25B8.11",
+      "target": "Puf4",
+      "value": 12.7841
     },
     {
-      "source": ["Dal81"],
-      "target": ["Tif308"],
-      "value": [8.749]
+      "source": "Dal81",
+      "target": "Tif308",
+      "value": 8.749
     },
     {
-      "source": ["Dal2"],
-      "target": ["Moc3"],
-      "value": [21.7107]
+      "source": "Dal2",
+      "target": "Moc3",
+      "value": 21.7107
     },
     {
-      "source": ["Tif1"],
-      "target": ["Prr1"],
-      "value": [10.5037]
+      "source": "Tif1",
+      "target": "Prr1",
+      "value": 10.5037
     },
     {
-      "source": ["Idh1"],
-      "target": ["Prr1"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Prr1",
+      "value": 7.6726
     },
     {
-      "source": ["Mce1"],
-      "target": ["Prr1"],
-      "value": [7.2567]
+      "source": "Mce1",
+      "target": "Prr1",
+      "value": 7.2567
     },
     {
-      "source": ["Has1"],
-      "target": ["Prr1"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Prr1",
+      "value": 7.4513
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Prr1"],
-      "value": [7.557]
+      "source": "Pdc101",
+      "target": "Prr1",
+      "value": 7.557
     },
     {
-      "source": ["Ura1"],
-      "target": ["Prr1"],
-      "value": [11.2509]
+      "source": "Ura1",
+      "target": "Prr1",
+      "value": 11.2509
     },
     {
-      "source": ["Rer2"],
-      "target": ["Pvg1"],
-      "value": [7.283]
+      "source": "Rer2",
+      "target": "Pvg1",
+      "value": 7.283
     },
     {
-      "source": ["SPAC11D3.17"],
-      "target": ["SPBC106.03"],
-      "value": [6.3856]
+      "source": "SPAC11D3.17",
+      "target": "SPBC106.03",
+      "value": 6.3856
     },
     {
-      "source": ["Elo2"],
-      "target": ["SPBC106.03"],
-      "value": [8.4876]
+      "source": "Elo2",
+      "target": "SPBC106.03",
+      "value": 8.4876
     },
     {
-      "source": ["Tif1"],
-      "target": ["Cct4"],
-      "value": [7.1785]
+      "source": "Tif1",
+      "target": "Cct4",
+      "value": 7.1785
     },
     {
-      "source": ["Idh1"],
-      "target": ["Cct4"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Cct4",
+      "value": 7.6726
     },
     {
-      "source": ["Has1"],
-      "target": ["Cct4"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Cct4",
+      "value": 7.4513
     },
     {
-      "source": ["Ura1"],
-      "target": ["Cct4"],
-      "value": [9.4836]
+      "source": "Ura1",
+      "target": "Cct4",
+      "value": 9.4836
     },
     {
-      "source": ["Prr1"],
-      "target": ["Cct4"],
-      "value": [9.4836]
+      "source": "Prr1",
+      "target": "Cct4",
+      "value": 9.4836
     },
     {
-      "source": ["Elo2"],
-      "target": ["Lys4"],
-      "value": [7.4515]
+      "source": "Elo2",
+      "target": "Lys4",
+      "value": 7.4515
     },
     {
-      "source": ["SPBC106.03"],
-      "target": ["Lys4"],
-      "value": [7.4515]
+      "source": "SPBC106.03",
+      "target": "Lys4",
+      "value": 7.4515
     },
     {
-      "source": ["Ost1"],
-      "target": ["Stt3"],
-      "value": [11.3705]
+      "source": "Ost1",
+      "target": "Stt3",
+      "value": 11.3705
     },
     {
-      "source": ["Sds3"],
-      "target": ["Pst1"],
-      "value": [8.9777]
+      "source": "Sds3",
+      "target": "Pst1",
+      "value": 8.9777
     },
     {
-      "source": ["Prw1"],
-      "target": ["Pst1"],
-      "value": [13.0212]
+      "source": "Prw1",
+      "target": "Pst1",
+      "value": 13.0212
     },
     {
-      "source": ["Idh1"],
-      "target": ["Fma2"],
-      "value": [6.7627]
+      "source": "Idh1",
+      "target": "Fma2",
+      "value": 6.7627
     },
     {
-      "source": ["Has1"],
-      "target": ["Fma2"],
-      "value": [6.7627]
+      "source": "Has1",
+      "target": "Fma2",
+      "value": 6.7627
     },
     {
-      "source": ["Ura1"],
-      "target": ["Fma2"],
-      "value": [6.7627]
+      "source": "Ura1",
+      "target": "Fma2",
+      "value": 6.7627
     },
     {
-      "source": ["Prr1"],
-      "target": ["Fma2"],
-      "value": [6.7627]
+      "source": "Prr1",
+      "target": "Fma2",
+      "value": 6.7627
     },
     {
-      "source": ["Cct4"],
-      "target": ["Fma2"],
-      "value": [6.7627]
+      "source": "Cct4",
+      "target": "Fma2",
+      "value": 6.7627
     },
     {
-      "source": ["Res2"],
-      "target": ["Nrm1"],
-      "value": [7.7968]
+      "source": "Res2",
+      "target": "Nrm1",
+      "value": 7.7968
     },
     {
-      "source": ["Tif1"],
-      "target": ["Rpt1"],
-      "value": [6.8161]
+      "source": "Tif1",
+      "target": "Rpt1",
+      "value": 6.8161
     },
     {
-      "source": ["Idh1"],
-      "target": ["Rpt1"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Rpt1",
+      "value": 7.6726
     },
     {
-      "source": ["Has1"],
-      "target": ["Rpt1"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Rpt1",
+      "value": 7.4513
     },
     {
-      "source": ["Ura1"],
-      "target": ["Rpt1"],
-      "value": [9.0048]
+      "source": "Ura1",
+      "target": "Rpt1",
+      "value": 9.0048
     },
     {
-      "source": ["Prr1"],
-      "target": ["Rpt1"],
-      "value": [9.0048]
+      "source": "Prr1",
+      "target": "Rpt1",
+      "value": 9.0048
     },
     {
-      "source": ["Cct4"],
-      "target": ["Rpt1"],
-      "value": [9.0048]
+      "source": "Cct4",
+      "target": "Rpt1",
+      "value": 9.0048
     },
     {
-      "source": ["Fma2"],
-      "target": ["Rpt1"],
-      "value": [6.7627]
+      "source": "Fma2",
+      "target": "Rpt1",
+      "value": 6.7627
     },
     {
-      "source": ["Sds3"],
-      "target": ["Fkh2"],
-      "value": [8.9777]
+      "source": "Sds3",
+      "target": "Fkh2",
+      "value": 8.9777
     },
     {
-      "source": ["Prw1"],
-      "target": ["Fkh2"],
-      "value": [17.6803]
+      "source": "Prw1",
+      "target": "Fkh2",
+      "value": 17.6803
     },
     {
-      "source": ["Pst1"],
-      "target": ["Fkh2"],
-      "value": [13.0212]
+      "source": "Pst1",
+      "target": "Fkh2",
+      "value": 13.0212
     },
     {
-      "source": ["Ost1"],
-      "target": ["Ntu1"],
-      "value": [6.4434]
+      "source": "Ost1",
+      "target": "Ntu1",
+      "value": 6.4434
     },
     {
-      "source": ["Tif1"],
-      "target": ["Aha1"],
-      "value": [9.06]
+      "source": "Tif1",
+      "target": "Aha1",
+      "value": 9.06
     },
     {
-      "source": ["Idh1"],
-      "target": ["Aha1"],
-      "value": [6.1193]
+      "source": "Idh1",
+      "target": "Aha1",
+      "value": 6.1193
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Aha1"],
-      "value": [6.9722]
+      "source": "Pdc101",
+      "target": "Aha1",
+      "value": 6.9722
     },
     {
-      "source": ["Ura1"],
-      "target": ["Aha1"],
-      "value": [8.9731]
+      "source": "Ura1",
+      "target": "Aha1",
+      "value": 8.9731
     },
     {
-      "source": ["Prr1"],
-      "target": ["Aha1"],
-      "value": [13.4733]
+      "source": "Prr1",
+      "target": "Aha1",
+      "value": 13.4733
     },
     {
-      "source": ["Cct4"],
-      "target": ["Aha1"],
-      "value": [7.5636]
+      "source": "Cct4",
+      "target": "Aha1",
+      "value": 7.5636
     },
     {
-      "source": ["Rpt1"],
-      "target": ["Aha1"],
-      "value": [7.1818]
+      "source": "Rpt1",
+      "target": "Aha1",
+      "value": 7.1818
     },
     {
-      "source": ["Sds3"],
-      "target": ["Pst3"],
-      "value": [8.8406]
+      "source": "Sds3",
+      "target": "Pst3",
+      "value": 8.8406
     },
     {
-      "source": ["Prw1"],
-      "target": ["Pst3"],
-      "value": [8.8406]
+      "source": "Prw1",
+      "target": "Pst3",
+      "value": 8.8406
     },
     {
-      "source": ["Pst1"],
-      "target": ["Pst3"],
-      "value": [8.8406]
+      "source": "Pst1",
+      "target": "Pst3",
+      "value": 8.8406
     },
     {
-      "source": ["Fkh2"],
-      "target": ["Pst3"],
-      "value": [8.8406]
+      "source": "Fkh2",
+      "target": "Pst3",
+      "value": 8.8406
     },
     {
-      "source": ["Tif1"],
-      "target": ["Cct3"],
-      "value": [8.5112]
+      "source": "Tif1",
+      "target": "Cct3",
+      "value": 8.5112
     },
     {
-      "source": ["Idh1"],
-      "target": ["Cct3"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Cct3",
+      "value": 7.6726
     },
     {
-      "source": ["Has1"],
-      "target": ["Cct3"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Cct3",
+      "value": 7.4513
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Cct3"],
-      "value": [6.9506]
+      "source": "Pdc101",
+      "target": "Cct3",
+      "value": 6.9506
     },
     {
-      "source": ["Ura1"],
-      "target": ["Cct3"],
-      "value": [11.2443]
+      "source": "Ura1",
+      "target": "Cct3",
+      "value": 11.2443
     },
     {
-      "source": ["Prr1"],
-      "target": ["Cct3"],
-      "value": [11.2443]
+      "source": "Prr1",
+      "target": "Cct3",
+      "value": 11.2443
     },
     {
-      "source": ["Cct4"],
-      "target": ["Cct3"],
-      "value": [9.4836]
+      "source": "Cct4",
+      "target": "Cct3",
+      "value": 9.4836
     },
     {
-      "source": ["Fma2"],
-      "target": ["Cct3"],
-      "value": [6.7627]
+      "source": "Fma2",
+      "target": "Cct3",
+      "value": 6.7627
     },
     {
-      "source": ["Rpt1"],
-      "target": ["Cct3"],
-      "value": [9.0048]
+      "source": "Rpt1",
+      "target": "Cct3",
+      "value": 9.0048
     },
     {
-      "source": ["Aha1"],
-      "target": ["Cct3"],
-      "value": [8.9678]
+      "source": "Aha1",
+      "target": "Cct3",
+      "value": 8.9678
     },
     {
-      "source": ["Res2"],
-      "target": ["Yox1"],
-      "value": [7.794]
+      "source": "Res2",
+      "target": "Yox1",
+      "value": 7.794
     },
     {
-      "source": ["Nrm1"],
-      "target": ["Yox1"],
-      "value": [7.7974]
+      "source": "Nrm1",
+      "target": "Yox1",
+      "value": 7.7974
     },
     {
-      "source": ["Rad25"],
-      "target": ["Pho7"],
-      "value": [12.4655]
+      "source": "Rad25",
+      "target": "Pho7",
+      "value": 12.4655
     },
     {
-      "source": ["Rad24"],
-      "target": ["Pho7"],
-      "value": [6.5034]
+      "source": "Rad24",
+      "target": "Pho7",
+      "value": 6.5034
     },
     {
-      "source": ["Elo2"],
-      "target": ["Cyb502"],
-      "value": [7.1732]
+      "source": "Elo2",
+      "target": "Cyb502",
+      "value": 7.1732
     },
     {
-      "source": ["SPBC106.03"],
-      "target": ["Cyb502"],
-      "value": [6.3179]
+      "source": "SPBC106.03",
+      "target": "Cyb502",
+      "value": 6.3179
     },
     {
-      "source": ["Hht2"],
-      "target": ["Atf1"],
-      "value": [6.1126]
+      "source": "Hht2",
+      "target": "Atf1",
+      "value": 6.1126
     },
     {
-      "source": ["Pcr1"],
-      "target": ["Atf1"],
-      "value": [9.7292]
+      "source": "Pcr1",
+      "target": "Atf1",
+      "value": 9.7292
     },
     {
-      "source": ["Adn2"],
-      "target": ["Ldb1"],
-      "value": [24.4321]
+      "source": "Adn2",
+      "target": "Ldb1",
+      "value": 24.4321
     },
     {
-      "source": ["Php3"],
-      "target": ["Ncb2"],
-      "value": [12.5791]
+      "source": "Php3",
+      "target": "Ncb2",
+      "value": 12.5791
     },
     {
-      "source": ["Map1"],
-      "target": ["Sar1"],
-      "value": [6.3494]
+      "source": "Map1",
+      "target": "Sar1",
+      "value": 6.3494
     },
     {
-      "source": ["Res2"],
-      "target": ["Cdc10"],
-      "value": [7.6985]
+      "source": "Res2",
+      "target": "Cdc10",
+      "value": 7.6985
     },
     {
-      "source": ["Nrm1"],
-      "target": ["Cdc10"],
-      "value": [7.6606]
+      "source": "Nrm1",
+      "target": "Cdc10",
+      "value": 7.6606
     },
     {
-      "source": ["Yox1"],
-      "target": ["Cdc10"],
-      "value": [7.6587]
+      "source": "Yox1",
+      "target": "Cdc10",
+      "value": 7.6587
     },
     {
-      "source": ["Tif1"],
-      "target": ["Cct8"],
-      "value": [7.8357]
+      "source": "Tif1",
+      "target": "Cct8",
+      "value": 7.8357
     },
     {
-      "source": ["Idh1"],
-      "target": ["Cct8"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Cct8",
+      "value": 7.6726
     },
     {
-      "source": ["Has1"],
-      "target": ["Cct8"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Cct8",
+      "value": 7.4513
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Cct8"],
-      "value": [6.399]
+      "source": "Pdc101",
+      "target": "Cct8",
+      "value": 6.399
     },
     {
-      "source": ["Ura1"],
-      "target": ["Cct8"],
-      "value": [10.3519]
+      "source": "Ura1",
+      "target": "Cct8",
+      "value": 10.3519
     },
     {
-      "source": ["Prr1"],
-      "target": ["Cct8"],
-      "value": [10.3519]
+      "source": "Prr1",
+      "target": "Cct8",
+      "value": 10.3519
     },
     {
-      "source": ["Cct4"],
-      "target": ["Cct8"],
-      "value": [9.4836]
+      "source": "Cct4",
+      "target": "Cct8",
+      "value": 9.4836
     },
     {
-      "source": ["Fma2"],
-      "target": ["Cct8"],
-      "value": [6.7627]
+      "source": "Fma2",
+      "target": "Cct8",
+      "value": 6.7627
     },
     {
-      "source": ["Rpt1"],
-      "target": ["Cct8"],
-      "value": [9.0048]
+      "source": "Rpt1",
+      "target": "Cct8",
+      "value": 9.0048
     },
     {
-      "source": ["Aha1"],
-      "target": ["Cct8"],
-      "value": [8.2562]
+      "source": "Aha1",
+      "target": "Cct8",
+      "value": 8.2562
     },
     {
-      "source": ["Cct3"],
-      "target": ["Cct8"],
-      "value": [10.3519]
+      "source": "Cct3",
+      "target": "Cct8",
+      "value": 10.3519
     },
     {
-      "source": ["Sds3"],
-      "target": ["Clr6"],
-      "value": [8.9777]
+      "source": "Sds3",
+      "target": "Clr6",
+      "value": 8.9777
     },
     {
-      "source": ["Prw1"],
-      "target": ["Clr6"],
-      "value": [13.4315]
+      "source": "Prw1",
+      "target": "Clr6",
+      "value": 13.4315
     },
     {
-      "source": ["Pst1"],
-      "target": ["Clr6"],
-      "value": [13.0212]
+      "source": "Pst1",
+      "target": "Clr6",
+      "value": 13.0212
     },
     {
-      "source": ["Fkh2"],
-      "target": ["Clr6"],
-      "value": [13.4315]
+      "source": "Fkh2",
+      "target": "Clr6",
+      "value": 13.4315
     },
     {
-      "source": ["Pst3"],
-      "target": ["Clr6"],
-      "value": [8.8406]
+      "source": "Pst3",
+      "target": "Clr6",
+      "value": 8.8406
     },
     {
-      "source": ["Php3"],
-      "target": ["Php5"],
-      "value": [9.3075]
+      "source": "Php3",
+      "target": "Php5",
+      "value": 9.3075
     },
     {
-      "source": ["Ncb2"],
-      "target": ["Php5"],
-      "value": [10.2537]
+      "source": "Ncb2",
+      "target": "Php5",
+      "value": 10.2537
     },
     {
-      "source": ["Ost1"],
-      "target": ["Ntu2"],
-      "value": [7.4656]
+      "source": "Ost1",
+      "target": "Ntu2",
+      "value": 7.4656
     },
     {
-      "source": ["Stt3"],
-      "target": ["Ntu2"],
-      "value": [6.1806]
+      "source": "Stt3",
+      "target": "Ntu2",
+      "value": 6.1806
     },
     {
-      "source": ["Ntu1"],
-      "target": ["Ntu2"],
-      "value": [10.7427]
+      "source": "Ntu1",
+      "target": "Ntu2",
+      "value": 10.7427
     },
     {
-      "source": ["Ura1"],
-      "target": ["Cct6"],
-      "value": [6.7988]
+      "source": "Ura1",
+      "target": "Cct6",
+      "value": 6.7988
     },
     {
-      "source": ["Prr1"],
-      "target": ["Cct6"],
-      "value": [6.7988]
+      "source": "Prr1",
+      "target": "Cct6",
+      "value": 6.7988
     },
     {
-      "source": ["Cct4"],
-      "target": ["Cct6"],
-      "value": [6.7988]
+      "source": "Cct4",
+      "target": "Cct6",
+      "value": 6.7988
     },
     {
-      "source": ["Rpt1"],
-      "target": ["Cct6"],
-      "value": [6.4879]
+      "source": "Rpt1",
+      "target": "Cct6",
+      "value": 6.4879
     },
     {
-      "source": ["Cct3"],
-      "target": ["Cct6"],
-      "value": [6.7988]
+      "source": "Cct3",
+      "target": "Cct6",
+      "value": 6.7988
     },
     {
-      "source": ["Cct8"],
-      "target": ["Cct6"],
-      "value": [6.7988]
+      "source": "Cct8",
+      "target": "Cct6",
+      "value": 6.7988
     },
     {
-      "source": ["Php3"],
-      "target": ["Php2"],
-      "value": [7.577]
+      "source": "Php3",
+      "target": "Php2",
+      "value": 7.577
     },
     {
-      "source": ["Ncb2"],
-      "target": ["Php2"],
-      "value": [8.5607]
+      "source": "Ncb2",
+      "target": "Php2",
+      "value": 8.5607
     },
     {
-      "source": ["Php5"],
-      "target": ["Php2"],
-      "value": [6.3429]
+      "source": "Php5",
+      "target": "Php2",
+      "value": 6.3429
     },
     {
-      "source": ["Res2"],
-      "target": ["Res1"],
-      "value": [7.7925]
+      "source": "Res2",
+      "target": "Res1",
+      "value": 7.7925
     },
     {
-      "source": ["Nrm1"],
-      "target": ["Res1"],
-      "value": [7.8083]
+      "source": "Nrm1",
+      "target": "Res1",
+      "value": 7.8083
     },
     {
-      "source": ["Yox1"],
-      "target": ["Res1"],
-      "value": [7.8413]
+      "source": "Yox1",
+      "target": "Res1",
+      "value": 7.8413
     },
     {
-      "source": ["Cdc10"],
-      "target": ["Res1"],
-      "value": [7.6569]
+      "source": "Cdc10",
+      "target": "Res1",
+      "value": 7.6569
     },
     {
-      "source": ["Sds3"],
-      "target": ["Rxt3"],
-      "value": [8.9777]
+      "source": "Sds3",
+      "target": "Rxt3",
+      "value": 8.9777
     },
     {
-      "source": ["Prw1"],
-      "target": ["Rxt3"],
-      "value": [17.6803]
+      "source": "Prw1",
+      "target": "Rxt3",
+      "value": 17.6803
     },
     {
-      "source": ["Pst1"],
-      "target": ["Rxt3"],
-      "value": [13.0212]
+      "source": "Pst1",
+      "target": "Rxt3",
+      "value": 13.0212
     },
     {
-      "source": ["Fkh2"],
-      "target": ["Rxt3"],
-      "value": [18.1961]
+      "source": "Fkh2",
+      "target": "Rxt3",
+      "value": 18.1961
     },
     {
-      "source": ["Pst3"],
-      "target": ["Rxt3"],
-      "value": [8.8406]
+      "source": "Pst3",
+      "target": "Rxt3",
+      "value": 8.8406
     },
     {
-      "source": ["Clr6"],
-      "target": ["Rxt3"],
-      "value": [13.4315]
+      "source": "Clr6",
+      "target": "Rxt3",
+      "value": 13.4315
     },
     {
-      "source": ["Adn2"],
-      "target": ["Adn3"],
-      "value": [11.5828]
+      "source": "Adn2",
+      "target": "Adn3",
+      "value": 11.5828
     },
     {
-      "source": ["Ldb1"],
-      "target": ["Adn3"],
-      "value": [11.5828]
+      "source": "Ldb1",
+      "target": "Adn3",
+      "value": 11.5828
     },
     {
-      "source": ["Map1"],
-      "target": ["Mug33"],
-      "value": [7.1423]
+      "source": "Map1",
+      "target": "Mug33",
+      "value": 7.1423
     },
     {
-      "source": ["Sar1"],
-      "target": ["Mug33"],
-      "value": [6.3494]
+      "source": "Sar1",
+      "target": "Mug33",
+      "value": 6.3494
     },
     {
-      "source": ["Ssa1"],
-      "target": ["Ssa2"],
-      "value": [7.0605]
+      "source": "Ssa1",
+      "target": "Ssa2",
+      "value": 7.0605
     },
     {
-      "source": ["Lsh1"],
-      "target": ["Ssa2"],
-      "value": [7.9676]
+      "source": "Lsh1",
+      "target": "Ssa2",
+      "value": 7.9676
     },
     {
-      "source": ["Hsf1"],
-      "target": ["Ssa2"],
-      "value": [10.9488]
+      "source": "Hsf1",
+      "target": "Ssa2",
+      "value": 10.9488
     },
     {
-      "source": ["Map1"],
-      "target": ["SPCC320.08"],
-      "value": [6.4303]
+      "source": "Map1",
+      "target": "SPCC320.08",
+      "value": 6.4303
     },
     {
-      "source": ["Ost1"],
-      "target": ["Wbp1"],
-      "value": [8.5176]
+      "source": "Ost1",
+      "target": "Wbp1",
+      "value": 8.5176
     },
     {
-      "source": ["Stt3"],
-      "target": ["Wbp1"],
-      "value": [7.0516]
+      "source": "Stt3",
+      "target": "Wbp1",
+      "value": 7.0516
     },
     {
-      "source": ["Map1"],
-      "target": ["SPCC584.13"],
-      "value": [9.5463]
+      "source": "Map1",
+      "target": "SPCC584.13",
+      "value": 9.5463
     },
     {
-      "source": ["Atf1"],
-      "target": ["Htb1"],
-      "value": [6.1297]
+      "source": "Atf1",
+      "target": "Htb1",
+      "value": 6.1297
     },
     {
-      "source": ["Spe1"],
-      "target": ["Alp14"],
-      "value": [21.8426]
+      "source": "Spe1",
+      "target": "Alp14",
+      "value": 21.8426
     },
     {
-      "source": ["SPAC25B8.11"],
-      "target": ["Alp14"],
-      "value": [23.433]
+      "source": "SPAC25B8.11",
+      "target": "Alp14",
+      "value": 23.433
     },
     {
-      "source": ["Puf4"],
-      "target": ["Alp14"],
-      "value": [12.7841]
+      "source": "Puf4",
+      "target": "Alp14",
+      "value": 12.7841
     },
     {
-      "source": ["Tif1"],
-      "target": ["Vma8"],
-      "value": [10.5037]
+      "source": "Tif1",
+      "target": "Vma8",
+      "value": 10.5037
     },
     {
-      "source": ["Idh1"],
-      "target": ["Vma8"],
-      "value": [7.6726]
+      "source": "Idh1",
+      "target": "Vma8",
+      "value": 7.6726
     },
     {
-      "source": ["Mce1"],
-      "target": ["Vma8"],
-      "value": [7.2567]
+      "source": "Mce1",
+      "target": "Vma8",
+      "value": 7.2567
     },
     {
-      "source": ["Has1"],
-      "target": ["Vma8"],
-      "value": [7.4513]
+      "source": "Has1",
+      "target": "Vma8",
+      "value": 7.4513
     },
     {
-      "source": ["Pdc101"],
-      "target": ["Vma8"],
-      "value": [7.557]
+      "source": "Pdc101",
+      "target": "Vma8",
+      "value": 7.557
     },
     {
-      "source": ["Ura1"],
-      "target": ["Vma8"],
-      "value": [11.2509]
+      "source": "Ura1",
+      "target": "Vma8",
+      "value": 11.2509
     },
     {
-      "source": ["Prr1"],
-      "target": ["Vma8"],
-      "value": [16.9698]
+      "source": "Prr1",
+      "target": "Vma8",
+      "value": 16.9698
     },
     {
-      "source": ["Cct4"],
-      "target": ["Vma8"],
-      "value": [9.4836]
+      "source": "Cct4",
+      "target": "Vma8",
+      "value": 9.4836
     },
     {
-      "source": ["Fma2"],
-      "target": ["Vma8"],
-      "value": [6.7627]
+      "source": "Fma2",
+      "target": "Vma8",
+      "value": 6.7627
     },
     {
-      "source": ["Rpt1"],
-      "target": ["Vma8"],
-      "value": [9.0048]
+      "source": "Rpt1",
+      "target": "Vma8",
+      "value": 9.0048
     },
     {
-      "source": ["Aha1"],
-      "target": ["Vma8"],
-      "value": [13.4733]
+      "source": "Aha1",
+      "target": "Vma8",
+      "value": 13.4733
     },
     {
-      "source": ["Cct3"],
-      "target": ["Vma8"],
-      "value": [11.2443]
+      "source": "Cct3",
+      "target": "Vma8",
+      "value": 11.2443
     },
     {
-      "source": ["Cct8"],
-      "target": ["Vma8"],
-      "value": [10.3519]
+      "source": "Cct8",
+      "target": "Vma8",
+      "value": 10.3519
     },
     {
-      "source": ["Cct6"],
-      "target": ["Vma8"],
-      "value": [6.7988]
+      "source": "Cct6",
+      "target": "Vma8",
+      "value": 6.7988
     }
   ]
 }
