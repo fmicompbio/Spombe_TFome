@@ -87,7 +87,8 @@ dist_ne <- read.delim(params$dist_from_ne) |>
     mutate(SampleID = factor(paste0(Condition, "\n", Replicate),
                              levels = c("wt\nrep1", "wt\nrep2", "ntu1\U141E\nrep1",
                                         "ntu1\U141E\nrep2", "ntu2\U141E\nrep1",
-                                        "ntu2\U141E\nrep2")))
+                                        "ntu2\U141E\nrep2"))) |>
+    dplyr::ungroup()
 
 ## Remove one cell where Distance was slightly larger than the Radius
 # table(dist_ne$rel_distance_from_ne > 1)
@@ -241,32 +242,32 @@ contrasts_high <- c(
     "Ntu1_500_plate_vs_compl_Ntu1_500_plate.t", 
     "Ntu2_500_plate_vs_compl_Ntu2_500_plate.t")
 high <- as.data.frame(rdhigh[, c("einprotId", contrasts_high)]) |>
-    setNames(c("einprotId", c("Ntu1", "Ntu2")))
+    setNames(c("einprotId", "Ntu1", "Ntu2"))
 
 ## Plot t-statistics
 (gg_ipdimer <- ggplot(high, aes(x = Ntu1, y = Ntu2)) +
-    geom_abline(data = high |> 
-                    dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")), 
-                aes(slope = mean(Ntu2 / Ntu1), intercept = 0), 
-                linetype = "dashed", color = "grey50") + 
-    geom_text_repel(data = high |> 
-                        dplyr::filter(einprotId %in% c("Ntu1", "Ntu2") | 
-                                          Ntu2 > 5),
-                    aes(label = einprotId), min.segment.length = 0) + 
-    geom_point(alpha = 0.25) + 
-    geom_point(data = high |> 
-                   dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")) |>
-                   dplyr::mutate(type = "Baits"),
-               mapping = aes(fill = type), color = main_colors[3],
-               shape = 21, alpha = 1, size = 2) + 
-    scale_fill_manual(values = c(Baits = main_colors[3])) + 
-    theme_cowplot() + 
-    labs(x = "500 mM NaCl mod. t-stat. (Ntu1)", 
-         y = "500 mM NaCl mod. t-stat. (Ntu2)") + 
-    theme(strip.text = element_blank(),
-          legend.position = "inside",
-           legend.position.inside = c(0.8, 0.1)) + 
-    guides(fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+        geom_abline(data = high |> 
+                        dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")), 
+                    aes(slope = mean(Ntu2 / Ntu1), intercept = 0), 
+                    linetype = "dashed", color = "grey50") + 
+        geom_text_repel(data = high |> 
+                            dplyr::filter(einprotId %in% c("Ntu1", "Ntu2") | 
+                                              Ntu2 > 5),
+                        aes(label = einprotId), min.segment.length = 0) + 
+        geom_point(alpha = 0.25) + 
+        geom_point(data = high |> 
+                       dplyr::filter(einprotId %in% c("Ntu1", "Ntu2")) |>
+                       dplyr::mutate(type = "Baits"),
+                   mapping = aes(fill = type), color = main_colors[3],
+                   shape = 21, alpha = 1, size = 2) + 
+        scale_fill_manual(values = c(Baits = main_colors[3])) + 
+        theme_cowplot() + 
+        labs(x = "500 mM NaCl mod. t-stat. (Ntu1)", 
+             y = "500 mM NaCl mod. t-stat. (Ntu2)") + 
+        theme(strip.text = element_blank(),
+              legend.position = "inside",
+              legend.position.inside = c(0.8, 0.1)) + 
+        guides(fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
 ```
 
 ## RNA-seq expression levels for genes around the tna1 locus
@@ -362,6 +363,7 @@ cowplot::plot_grid(
 
 ```{r}
 #| label: rnaseq-corrplot
+#| warning: false
 
 ## Correlation between log2 fold changes for ntu1/ntu2
 stopifnot(all(rownames(resList$ntu1) == rownames(resList$ntu2)))
@@ -371,7 +373,7 @@ dfcorr <- data.frame(gene = rownames(resList$ntu1),
 (corrplot <- list(
     ggplot(dfcorr, aes(x = ntu1, y = ntu2)) + 
         geom_abline(slope = 1, intercept = 0, linetype = "dashed", 
-                    color = "grey50") + 
+                    color = na_color) + 
         geom_point(alpha = 0.25) + 
         geom_text_repel(data = dfcorr |>
                             dplyr::filter(gene %in% c("tna1", "SPCC576.17c")), 
@@ -416,7 +418,7 @@ plotList <- lapply(names(resListToPlot), function(nm) {
                   color = lighten(main_colors[4], amount = 0.6), fill = NA,
                   alpha = 0.1, show.legend = FALSE) + 
         geom_point(alpha = 0.6, size = 2) + 
-        scale_color_manual(values = c(`FALSE` = "grey50", 
+        scale_color_manual(values = c(`FALSE` = na_color, 
                                       `TRUE` = main_colors[4])) + 
         geom_text_repel(aes(label = ifelse(abs(log2FoldChange) > 3 & padj < 0.001,
                                            as.character(gene), "")),
@@ -479,6 +481,8 @@ plotdf_chip1 <- covs_chip |>
                        "ntu1_TAG", "ntu1_KO_ntu2TAG")) |>
     mutate(pair = factor(pair, levels = c("ntu1_TAG", "ntu2_KO_ntu1TAG",
                                           "ntu2_TAG", "ntu1_KO_ntu2TAG")))
+table(plotdf_chip1$sample, plotdf_chip1$flag)
+table(plotdf_chip1$sample, plotdf_chip1$label)
 plotdf_rna <- covs_rna |>
     filter(sample %in% c("SPBC530.08_KO_mRNA_rep1",
                          "SPBC16G5.16_KO_mRNA_rep1",
@@ -563,36 +567,40 @@ g2 <- ggplot(gtf, aes(x = start2, xend = end2, y = y, yend = y,
         label.padding = grid::unit(rep(0, 4), "pt"),
         size = 4
     ) + 
-    # geom_text(aes(x = (start2 + end2) / 2, y = y - 0.5), 
-    #           size.unit = "in", size = 0.1) + 
     scale_color_manual(values = c(`FALSE` = "black", `TRUE` = main_colors[4])) + 
     facet_grid(~ seqnames, scales = "free_x", space = "free_x") + 
     ylim(-0.75, 1.5)
 gcov <- cowplot::plot_grid(
-    g1c + theme_void() + theme(strip.text = element_blank()),
-    g1a + theme_void() + theme(legend.position = "none", 
-                               strip.text.y = element_text(size = 12),
-                               strip.text.x = element_text(size = 12, hjust = 0.95),
-                               axis.title.y = element_text(size = 12, angle = 90,
-                                                           margin = margin(t = 0, r = 10, b = 0, l = 0))), 
+    g1c + theme_void() + 
+        theme(strip.text = element_blank()),
+    g1a + theme_void() + 
+        theme(legend.position = "none", 
+              strip.text.y = element_text(size = 12),
+              strip.text.x = element_text(size = 12, hjust = 0.95),
+              axis.title.y = element_text(size = 12, angle = 90,
+                                          margin = margin(t = 0, r = 10, b = 0, l = 0))), 
     NULL,
-    g1b + theme_void() + theme(strip.text.y = element_text(size = 12, 
-                                                           face = "italic"), 
-                               legend.position = "none",
-                               strip.text.x = element_blank(),
-                               axis.title.y = element_text(size = 12, angle = 90,
-                                                           margin = margin(t = 0, r = 15, b = 0, l = 0))), 
+    g1b + theme_void() + 
+        theme(strip.text.y = element_text(size = 12, 
+                                          face = "italic"), 
+              legend.position = "none",
+              strip.text.x = element_blank(),
+              axis.title.y = element_text(size = 12, angle = 90,
+                                          margin = margin(t = 0, r = 15, b = 0, l = 0))), 
     g2 + theme_void() + 
         theme(legend.position = "none",
               strip.text = element_blank()), 
     ncol = 1, rel_heights = c(0.75, 2, 0.5, 2, 1),
     align = "v", axis = "lr")
 (gcov2 <- cowplot::plot_grid(
-    g1c + theme_bw() + theme(axis.text.x = element_text(size = 5)),
-    g1a + theme_bw() + theme(legend.position = "none",
-                             axis.text.x = element_text(size = 5)), 
-    g1b + theme_bw() + theme(legend.position = "none",
-                             axis.text.x = element_text(size = 5)), 
+    g1c + theme_bw() + 
+        theme(axis.text.x = element_text(size = 5)),
+    g1a + theme_bw() + 
+        theme(legend.position = "none",
+              axis.text.x = element_text(size = 5)), 
+    g1b + theme_bw() + 
+        theme(legend.position = "none",
+              axis.text.x = element_text(size = 5)), 
     g2 + theme_bw() + 
         theme(legend.position = "none",
               axis.text.x = element_text(size = 5)), 
@@ -638,7 +646,6 @@ cowplot::plot_grid(
         NULL,
         p_zone + theme(legend.position = "top"), 
         labels = c("E", "", "F", "", "G"),
-        # rel_widths = c(7.65, 0.5, 1.45, 0.5, 9)
         rel_widths = c(6, 0.75, 1.2, 0.75, 10.4), nrow = 1
     ), 
     ncol = 1
@@ -668,6 +675,8 @@ plotdf_chip2 <- covs_chip |>
     mutate(pair = ifelse(pair == "ntu2_delTMD", "Ntu2\U141E\U1D40\U1D39\U1D30", 
                          ifelse(pair == "ntu2_TAG", "Ntu2", pair))) |>
     mutate(pair = factor(pair, levels = c("Ntu2", "Ntu2\U141E\U1D40\U1D39\U1D30")))
+table(plotdf_chip2$sample, plotdf_chip2$flag)
+table(plotdf_chip2$sample, plotdf_chip2$pair)
 
 gtr <- ggplot(plotdf_chip2 |>
                   mutate(seqnames = paste0("chr", seqnames)), 
@@ -681,9 +690,10 @@ gtr <- ggplot(plotdf_chip2 |>
                space = "free_x", switch = "y") + 
     scale_y_continuous(limits = c(0, 0.9), expand = c(0, 0))
 gcovdel <- cowplot::plot_grid(
-    gtr + theme_void() + theme(strip.text.y = element_text(size = 12, vjust = 0.05),
-                               legend.position = "none", 
-                               strip.text.x = element_text(size = 12, hjust = 0.95)), 
+    gtr + theme_void() +
+        theme(strip.text.y = element_text(size = 12, vjust = 0.05),
+              legend.position = "none", 
+              strip.text.x = element_text(size = 12, hjust = 0.95)), 
     g2 + theme_void() + 
         theme(legend.position = "none",
               strip.text = element_blank()), 
@@ -696,11 +706,11 @@ gcovdel <- cowplot::plot_grid(
 #| fig.height: 15
 #| warning: false
 
-figs6a <- ggdraw() + 
+figs7a <- ggdraw() + 
     draw_image("schematics/FigS7A_Nattou_AF2_fl_Arial.png")
 
 cowplot::plot_grid(
-    figs6a,
+    figs7a,
     cowplot::plot_grid(
         p_rel_dis,
         genomeplot_tpm,
@@ -711,11 +721,11 @@ cowplot::plot_grid(
     cowplot::plot_grid(
         genomeplot,
         gcovdel,
-        # maplots$ID83delTMD,
         nrow = 1, 
         rel_widths = c(1, 1),
         labels = c("D", "E")
     ),
+    labels = c("A", "", ""), 
     ncol = 1, rel_heights = c(1, 1, 1)
 )
 ```
