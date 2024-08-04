@@ -72,6 +72,23 @@ makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
                   annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
 }
 
+makeTFIntAnnotation <- function(baitdata) {
+    HeatmapAnnotation(
+        which = "column",
+        `Number of\ninteractors` =
+            anno_barplot(x = rowSums(as.matrix(baitdata$nbrIntMat[colnames(baitdata$mat),
+                                                                  c("nbrTFs_samefam",
+                                                                    "nbrTFs_difffam")])),
+                         gp = gpar(fill = na_color,
+                                   col = na_color),
+                         border = FALSE, bar_width = 1.0,
+                         axis_param = list(gp = gpar(fontsize = fs)),
+                         width = unit(10, "mm")),
+        annotation_name_side = "left",
+        annotation_name_rot = 0,
+        annotation_name_gp = gpar(fontsize = fl))
+}
+
 makeColLabels <- function(tstatmat, colLabel, fontsize) {
     columnAnnotation(
         TFnames = anno_mark(which = "column", side = "bottom",
@@ -88,7 +105,7 @@ makeRowLabels <- function(tstatmat, rowLabel, fontsize) {
                             labels_gp = gpar(fontsize = fontsize)))
 }
 
-makeHeatmapCol <- function(tstatmat, stringency = "high") {
+makeHeatmapCol <- function(stringency = "high") {
     if (stringency == "high") {
         circlize::colorRamp2(
             breaks = seq(3.0, 13.0, length.out = 64),
@@ -167,8 +184,8 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
 
 
     ## Split experiments into three groups
+    stopifnot(all(colnames(tstat) == .getSimplifiedComparison(colnames(tstats$tstatsfilt))))
     if (conc == 150) {
-        stopifnot(all(colnames(tstat) == .getSimplifiedComparison(colnames(tstats$tstatsfilt))))
         tstat_no_bait <-
             tstat[, colSums(tstats$tstatsfilt) == 0 |
                       (.getOrigBaitNameFromComparison(colnames(tstats$tstatsfilt), idmap = idmap) %in%

@@ -297,7 +297,7 @@ complexLabel <- c("NuA4", "SAGA")
 hm1a <- Heatmap(hmdata_150$tstat, 
                 cluster_rows = FALSE, 
                 cluster_columns = FALSE, 
-                col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                col = makeHeatmapCol(stringency = "high"), 
                 border = TRUE, 
                 border_gp = gpar(lwd = 0.5),
                 column_split = hmdata_150$colsplit, 
@@ -325,8 +325,8 @@ hm1a <- Heatmap(hmdata_150$tstat,
 set.seed(42L)
 hm_150 <- grid.grabExpr(
     hm1a <- draw(hm1a, merge_legend = TRUE,
-                heatmap_legend_side = "bottom",
-                annotation_legend_side = "bottom"),
+                 heatmap_legend_side = "bottom",
+                 annotation_legend_side = "bottom"),
     width = w_ipmsHm, height = h_ipmsHm
 )
 
@@ -344,7 +344,7 @@ plot_grid(hm_150)
 hm2a <- Heatmap(hmdata_500$tstat, 
                 cluster_rows = FALSE, 
                 cluster_columns = FALSE, 
-                col = makeHeatmapCol(hmdata_500$tstat, stringency = "high"), 
+                col = makeHeatmapCol(stringency = "high"), 
                 border = TRUE, 
                 border_gp = gpar(lwd = 0.5),
                 column_split = hmdata_500$colsplit, 
@@ -403,9 +403,7 @@ tstat <- tstat[, c(rownames(tstat), setdiff(colnames(tstat), rownames(tstat)))]
 
 hmipmshot <- Heatmap(
     tstat, 
-    col = circlize::colorRamp2(
-        breaks = seq(3.0, 13.0, length.out = 64),
-        colors = colorRampPalette(binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+    col = makeHeatmapCol(stringency = "high"), 
     border = TRUE,
     row_split = ifelse(rownames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"), 
     column_split = ifelse(colnames(tstat) %in% hot_tfs, "HOT TFs", "Other TFs"),
@@ -822,7 +820,8 @@ sce150_pca <- einprot::doPCA(
 df <- scuttle::makePerCellDF(sce150_pca, features = NULL, use.coldata = TRUE, 
                              use.dimred = TRUE) |>
     dplyr::mutate(Protocol = .capitalize(sub("_digest|_freeze", "", sub("SOP_", "", Protocol))))
-pcvar150 <- attr(reducedDim(sce150_pca, "PCA_log2_LFQ.intensity"), "percentVar")
+pcvar150 <- attr(reducedDim(sce150_pca, paste0("PCA_", metadata(sce150)$aNames$assayImputed)), 
+                 "percentVar")
 (ggpca1 <- ggplot(
     df, 
     aes(x = .data[[paste0("PCA_", metadata(sce150)$aNames$assayImputed, ".1")]], 
@@ -861,7 +860,8 @@ sce500_pca <- einprot::doPCA(
     metadata(sce500)$aNames$assayImputed)$sce
 df <- scuttle::makePerCellDF(sce500_pca, features = NULL, use.coldata = TRUE, 
                              use.dimred = TRUE)
-pcvar500 <- attr(reducedDim(sce500_pca, "PCA_log2_LFQ.intensity"), "percentVar")
+pcvar500 <- attr(reducedDim(sce500_pca, paste0("PCA_", metadata(sce150)$aNames$assayImputed)), 
+                 "percentVar")
 (ggpca3 <- ggplot(
     df |>
         dplyr::mutate(bait = ifelse(Gene_name == "atf1", "Atf1", "Other baits")), 
@@ -922,10 +922,6 @@ cowplot::plot_grid(
     labels = c("A", "B")
 )
 ```
-
-
-
-
 
 # Session info
 

@@ -68,7 +68,7 @@ fl <- 10 # large font size
 ft <- 12 # title font size
 ```
 
-# Helper function
+# Helper functions
 
 ```{r}
 ## Overwrite the get_legend function from cowplot temporarily, 
@@ -96,6 +96,46 @@ get_legend <- function(plot, legend = NULL) {
         return(gt$grobs[[indices[1]]])
     }
     return(NULL)
+}
+```
+
+```{r}
+makePie <- function(baitdata, title) {
+    ## Expected fraction of 'same family' pairs
+    famtbl <- table(baitdata$nbrIntMat |>
+                        filter(dbdfam != "Other" & 
+                                   bait != "Untagged") |>
+                        pull(dbdfam))
+    nbait <- sum(baitdata$nbrIntMat$bait != "Untagged")
+    exp_same <- sum(famtbl * (famtbl - 1)) / (nbait * (nbait - 1))
+    print(paste0("Expected fraction of 'same family' pairs: ", 
+                 round(exp_same, digits = 5)))
+    
+    ## Pie chart, within-vs-between DBD family interactions
+    pie_data <- baitdata$nbrIntMat |>
+        filter(bait != "Untagged") |>
+        select(nbrTFs_samefam, nbrTFs_difffam) |>
+        pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
+        group_by(class) |>
+        summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
+        mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
+    
+    ggplot(
+        pie_data,
+        aes(x = "", y = nbrTF, fill = class)) + 
+        geom_col(width = 1) + 
+        geom_segment(x = 1.55, xend = 1.55, 
+                     y = 0, yend = exp_same * sum(pie_data$nbrTF),
+                     linewidth = 1.5) + 
+        geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
+        coord_polar("y", start = 0) + 
+        scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
+                                     nbrTFs_difffam = main_colors[5]),
+                          labels = c(nbrTFs_samefam = "Same DBD family",
+                                     nbrTFs_difffam = "Different DBD family"),
+                          name = "") + 
+        labs(title = title) + 
+        theme_void()
 }
 ```
 
@@ -150,7 +190,6 @@ DT::datatable(dbd, extensions = "FixedColumns", rownames = FALSE,
                              pageLength = 10))
 ```
 
-
 # Extract data for heatmaps
 
 ```{r extract-heatmap-data}
@@ -204,7 +243,7 @@ conditions.
     heatmap_data_mean <- as.matrix(tstat)
     
     ## cluster the rows (to avoid slow clustering in LinkedCharts)
-    dist_mat1 <- dist(heatmap_data_mean, method = "euclidian")
+    dist_mat1 <- dist(heatmap_data_mean, method = "euclidean")
     hclust_avg1 <- hclust(dist_mat1, method = "average")
     heatmap_data_mean_clustered <- heatmap_data_mean[hclust_avg1$order, ]
     
@@ -245,7 +284,6 @@ conditions.
     volcano_list <- volcano_list[sub("\\.t", "", colnames(testres$tstat))]
     TFIDs <- names(volcano_list)
     TFnames <- .getProteinNameFromComparison(TFIDs)
-    # TFnames <- ifelse(grepl("^SP", TFnames), TFnames, stringr::str_to_title(TFnames))
     
     ## using sce object
     vp_list <- lapply(
@@ -317,24 +355,11 @@ makeInteractorSummary <- function(sce, baitdata, adjp_cutoff, logfc_cutoff, idma
                       seq_len(ncol(ni_int)))
     ni_int[ni_baits] <- NA
     
-    ## Total number of interactions
-    table(ni_int > 0)
-    
-    ## Number of TFs with interactions
-    table(colSums(ni_int, na.rm = TRUE) > 0)
-    
-    ## Total number of TFs
-    ncol(ni_int)
-    
-    ## Total number of TF-TF interactions (no self-interactions)
-    sum(baitdata$nbrIntMat$nbrTFs_wobait)
-    
-    ## Number of TFs involved in these TF-TF interactions
+    ## TF-TF interactions
     tmp <- baitdata$nbrIntMat |>
         filter(nbrTFs_wobait > 0)
-    length(unique(c(tmp$bait, unlist(strsplit(tmp$TFs, ",")))))
     
-    ## Bilateral interactions
+    ## Bilateral TF-TF interactions
     nbr_bilateral <- tmp |>
         select(bait, TFs) |>
         separate_longer_delim(TFs, delim = ",") |>
@@ -390,25 +415,10 @@ makeInteractorSummary(sce = sce150, baitdata = baitdata_150, adjp_cutoff = adjpT
 #| fig.width: 6
 #| fig.height: 5
 
-nbrInteractors <- HeatmapAnnotation(
-    which = "column",
-    `Number of\ninteractors` = 
-        anno_barplot(x = rowSums(as.matrix(baitdata_150$nbrIntMat[colnames(baitdata_150$mat), 
-                                                     c("nbrTFs_samefam", 
-                                                       "nbrTFs_difffam")])), 
-                     gp = gpar(fill = na_color,
-                               col = na_color),
-                     border = FALSE, bar_width = 1.0,
-                     axis_param = list(gp = gpar(fontsize = fs)),
-                     width = unit(10, "mm")),
-    annotation_name_side = "left",
-    annotation_name_rot = 0,
-    annotation_name_gp = gpar(fontsize = fl))
-
 hm1b <- Heatmap(baitdata_150$mat, 
                 cluster_rows = FALSE, 
                 cluster_columns = FALSE, 
-                col = makeHeatmapCol(baitdata_150$mat, stringency = "high"), 
+                col = makeHeatmapCol(stringency = "high"), 
                 border = TRUE, 
                 border_gp = gpar(lwd = 0.5),
                 name = "Mod.\nt-stat.", 
@@ -428,7 +438,7 @@ hm1b <- Heatmap(baitdata_150$mat,
                                 "Atf1-Pcr1")],
                     dbd = dbd, 
                     idmap = idmap),
-                top_annotation = nbrInteractors, 
+                top_annotation = makeTFIntAnnotation(baitdata_150), 
                 width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                 heatmap_height = unit(h_ipmsHm / 2.2, "mm"),
                 heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
@@ -454,17 +464,17 @@ use_complexes <- c("MBF transcription complex",
                    "CCAAT-binding factor complex",
                    "Atf1-Pcr1")
 lgd_complex <- Legend(labels = use_complexes,
-                legend_gp = gpar(fill = vapply(complexes[use_complexes],
-                                               function(x) x$color, NA_character_)),
-                title = "Complex", nrow = 2)
+                      legend_gp = gpar(fill = vapply(complexes[use_complexes],
+                                                     function(x) x$color, NA_character_)),
+                      title = "Complex", nrow = 2)
 
 dbd_colors <- c(`KilA-N` = main_colors[5], 
                 `Zn(II)2Cys6` = main_colors[4],
                 bZIP = main_colors[3], 
                 `Other (combined)` = bg_color)
 lgd_dbd <- Legend(labels = names(dbd_colors), 
-                 legend_gp = gpar(fill = dbd_colors), 
-                 title = "DBD family", nrow = 2)
+                  legend_gp = gpar(fill = dbd_colors), 
+                  title = "DBD family", nrow = 2)
 
 legend_bait_1 <- grid.grabExpr(
     hm1b <- ComplexHeatmap::draw(lgd_complex),
@@ -477,38 +487,8 @@ legend_bait_2 <- grid.grabExpr(
 ```
 
 ```{r}
-## Expected fraction of 'same family' pairs
-famtbl <- table(baitdata_150$nbrIntMat |>
-                    filter(dbdfam != "Other" & 
-                               bait != "Untagged") |>
-                    pull(dbdfam))
-nbait <- sum(baitdata_150$nbrIntMat$bait != "Untagged")
-(exp_same <- sum(famtbl * (famtbl - 1)) / (nbait * (nbait - 1)))
-
-## Pie chart, within-vs-between DBD family interactions
-pie_data_150 <- baitdata_150$nbrIntMat |>
-    filter(bait != "Untagged") |>
-    select(nbrTFs_samefam, nbrTFs_difffam) |>
-    pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
-    group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
-    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
-pie_bait_150 <- ggplot(
-    pie_data_150,
-    aes(x = "", y = nbrTF, fill = class)) + 
-    geom_col(width = 1) + 
-    geom_segment(x = 1.55, xend = 1.55, 
-                 y = 0, yend = exp_same * sum(pie_data_150$nbrTF),
-                 linewidth = 1.5) + 
-    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
-    coord_polar("y", start = 0) + 
-    scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
-                                 nbrTFs_difffam = main_colors[5]),
-                      labels = c(nbrTFs_samefam = "Same DBD family",
-                                 nbrTFs_difffam = "Different DBD family"),
-                      name = "") + 
-    labs(title = "150 mM NaCl\nstrict cutoff") + 
-    theme_void()
+pie_bait_150 <- makePie(baitdata = baitdata_150,
+                        title = "150 mM NaCl\nstrict cutoff")
 ```
 
 ### Bait-vs-bait, less stringent adjusted p-value threshold
@@ -517,25 +497,10 @@ pie_bait_150 <- ggplot(
 #| fig.width: 6
 #| fig.height: 5
 
-nbrInteractors <- HeatmapAnnotation(
-    which = "column",
-    `Number of\ninteractors` = 
-        anno_barplot(x = rowSums(as.matrix(baitdata_150_loose$nbrIntMat[colnames(baitdata_150_loose$mat), 
-                                                     c("nbrTFs_samefam", 
-                                                       "nbrTFs_difffam")])), 
-                     gp = gpar(fill = na_color,
-                               col = na_color),
-                     border = FALSE, bar_width = 1.0,
-                     axis_param = list(gp = gpar(fontsize = fs)),
-                     width = unit(10, "mm")),
-    annotation_name_side = "left",
-    annotation_name_rot = 0,
-    annotation_name_gp = gpar(fontsize = fl))
-
 hm1b_loose <- Heatmap(baitdata_150_loose$mat, 
                       cluster_rows = FALSE, 
                       cluster_columns = FALSE, 
-                      col = makeHeatmapCol(baitdata_150_loose$mat, stringency = "low"), 
+                      col = makeHeatmapCol(stringency = "low"), 
                       border = TRUE, 
                       border_gp = gpar(lwd = 0.5),
                       name = "Mod.\nt-stat.", 
@@ -555,7 +520,7 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                                       "Atf1-Pcr1")],
                           dbd = dbd, 
                           idmap = idmap),
-                      top_annotation = nbrInteractors, 
+                      top_annotation = makeTFIntAnnotation(baitdata_150_loose), 
                       width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                       heatmap_height = unit(h_ipmsHm / 2.2, "mm"), 
                       heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
@@ -573,38 +538,8 @@ plot_grid(hm_150_0.05_bait)
 ```
 
 ```{r}
-## Expected fraction of 'same family' pairs
-famtbl <- table(baitdata_150_loose$nbrIntMat |>
-                    filter(dbdfam != "Other" & 
-                               bait != "Untagged") |>
-                    pull(dbdfam))
-nbait <- sum(baitdata_150_loose$nbrIntMat$bait != "Untagged")
-(exp_same <- sum(famtbl * (famtbl - 1)) / (nbait * (nbait - 1)))
-
-## Pie chart, within-vs-between DBD family interactions
-pie_data_150_loose <- baitdata_150_loose$nbrIntMat |>
-    filter(bait != "Untagged") |>
-    select(nbrTFs_samefam, nbrTFs_difffam) |>
-    pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
-    group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
-    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
-pie_bait_150_loose <- ggplot(
-    pie_data_150_loose,
-    aes(x = "", y = nbrTF, fill = class)) + 
-    geom_col(width = 1) + 
-    geom_segment(x = 1.55, xend = 1.55, 
-                 y = 0, yend = exp_same * sum(pie_data_150_loose$nbrTF),
-                 linewidth = 1.5) + 
-    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
-    coord_polar("y", start = 0) + 
-    scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
-                                 nbrTFs_difffam = main_colors[5]),
-                      labels = c(nbrTFs_samefam = "Same DBD family",
-                                 nbrTFs_difffam = "Different DBD family"),
-                      name = "") + 
-    labs(title = "150 mM NaCl\nlenient cutoff") + 
-    theme_void()
+pie_bait_150_loose <- makePie(baitdata = baitdata_150_loose, 
+                              title = "150 mM NaCl\nlenient cutoff")
 ```
 
 ### SAGA/NuA4 heatmap
@@ -690,7 +625,7 @@ sum(keep)
 hm1rna <- Heatmap(hmdata_150$tstat[keep, ], 
                   cluster_rows = FALSE, 
                   cluster_columns = TRUE, 
-                  col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                  col = makeHeatmapCol(stringency = "high"), 
                   border = TRUE, 
                   border_gp = gpar(lwd = 0.5),
                   name = "Mod.\nt-stat.", 
@@ -728,7 +663,7 @@ sum(keep)
 hm1dna <- Heatmap(hmdata_150$tstat[keep, ], 
                   cluster_rows = FALSE, 
                   cluster_columns = TRUE, 
-                  col = makeHeatmapCol(hmdata_150$tstat, stringency = "high"), 
+                  col = makeHeatmapCol(stringency = "high"), 
                   border = TRUE, 
                   border_gp = gpar(lwd = 0.5),
                   name = "Mod.\nt-stat.", 
@@ -761,25 +696,10 @@ plot_grid(hm_150_dna)
 #| fig.width: 6
 #| fig.height: 5
 
-nbrInteractors <- HeatmapAnnotation(
-    which = "column",
-    `Number of\ninteractors` = 
-        anno_barplot(x = rowSums(as.matrix(baitdata_500$nbrIntMat[colnames(baitdata_500$mat), 
-                                                     c("nbrTFs_samefam", 
-                                                       "nbrTFs_difffam")])), 
-                     gp = gpar(fill = na_color,
-                               col = na_color),
-                     border = FALSE, bar_width = 1.0,
-                     axis_param = list(gp = gpar(fontsize = fs)),
-                     width = unit(10, "mm")),
-    annotation_name_side = "left",
-    annotation_name_rot = 0,
-    annotation_name_gp = gpar(fontsize = fl))
-
 hm1b2 <- Heatmap(baitdata_500$mat, 
                  cluster_rows = FALSE, 
                  cluster_columns = FALSE, 
-                 col = makeHeatmapCol(baitdata_500$mat, stringency = "high"), 
+                 col = makeHeatmapCol(stringency = "high"), 
                  border = TRUE, 
                  border_gp = gpar(lwd = 0.5),
                  name = "Mod.\nt-stat.", 
@@ -797,7 +717,7 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                      complexes[c("MBF transcription complex", 
                                  "CCAAT-binding factor complex", "Atf1-Pcr1")], 
                      dbd = dbd, idmap = idmap),
-                 top_annotation = nbrInteractors, 
+                 top_annotation = makeTFIntAnnotation(baitdata_500), 
                  width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                  heatmap_height = unit(h_ipmsHm / 2.2, "mm"), # whole heatmap height
                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
@@ -815,73 +735,11 @@ plot_grid(hm_500_bait)
 ```
 
 ```{r}
-## Expected fraction of 'same family' pairs
-famtbl <- table(baitdata_500$nbrIntMat |>
-                    filter(dbdfam != "Other" & 
-                               bait != "Untagged") |>
-                    pull(dbdfam))
-nbait <- sum(baitdata_500$nbrIntMat$bait != "Untagged")
-(exp_same <- sum(famtbl * (famtbl - 1)) / (nbait * (nbait - 1)))
+pie_bait_500 <- makePie(baitdata = baitdata_500, 
+                        title = "500 mM NaCl\nstrict cutoff")
 
-## Pie chart, within-vs-between DBD family interactions
-pie_data_500 <- baitdata_500$nbrIntMat |>
-    filter(bait != "Untagged") |>
-    select(nbrTFs_samefam, nbrTFs_difffam) |>
-    pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
-    group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
-    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
-pie_bait_500 <- ggplot(
-    pie_data_500,
-    aes(x = "", y = nbrTF, fill = class)) + 
-    geom_col(width = 1) + 
-    geom_segment(x = 1.55, xend = 1.55, 
-                 y = 0, yend = exp_same * sum(pie_data_500$nbrTF),
-                 linewidth = 1.5) + 
-    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
-    coord_polar("y", start = 0) + 
-    scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
-                                 nbrTFs_difffam = main_colors[5]),
-                      labels = c(nbrTFs_samefam = "Same DBD family",
-                                 nbrTFs_difffam = "Different DBD family"),
-                      name = "") + 
-    labs(title = "500 mM NaCl\nstrict cutoff") + 
-    theme_void()
-```
-
-```{r}
-## Expected fraction of 'same family' pairs
-famtbl <- table(baitdata_500_loose$nbrIntMat |>
-                    filter(dbdfam != "Other" & 
-                               bait != "Untagged") |>
-                    pull(dbdfam))
-nbait <- sum(baitdata_500_loose$nbrIntMat$bait != "Untagged")
-(exp_same <- sum(famtbl * (famtbl - 1)) / (nbait * (nbait - 1)))
-
-## Pie chart, within-vs-between DBD family interactions
-pie_data_500_loose <- baitdata_500_loose$nbrIntMat |>
-    filter(bait != "Untagged") |>
-    select(nbrTFs_samefam, nbrTFs_difffam) |>
-    pivot_longer(everything(), names_to = "class", values_to = "nbrTF") |>
-    group_by(class) |>
-    summarize(nbrTF = sum(nbrTF), .groups = "drop") |>
-    mutate(ypos = sum(nbrTF) - cumsum(nbrTF) + 0.5 * nbrTF)
-pie_bait_500_loose <- ggplot(
-    pie_data_500_loose,
-    aes(x = "", y = nbrTF, fill = class)) + 
-    geom_col(width = 1) + 
-    geom_segment(x = 1.55, xend = 1.55, 
-                 y = 0, yend = exp_same * sum(pie_data_500_loose$nbrTF),
-                 linewidth = 1.5) + 
-    geom_text(aes(y = ypos, label = nbrTF), size = 7, color = "black") + 
-    coord_polar("y", start = 0) + 
-    scale_fill_manual(values = c(nbrTFs_samefam = main_colors[3],
-                                 nbrTFs_difffam = main_colors[5]),
-                      labels = c(nbrTFs_samefam = "Same DBD family",
-                                 nbrTFs_difffam = "Different DBD family"),
-                      name = "") + 
-    labs(title = "500 mM NaCl\nlenient cutoff") + 
-    theme_void()
+pie_bait_500_loose <- makePie(baitdata = baitdata_500_loose, 
+                              title = "500 mM NaCl\nlenient cutoff")
 ```
 
 ## Pie charts for bait-vs-bait interactions (within/between DBD families)
