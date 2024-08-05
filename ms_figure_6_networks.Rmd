@@ -716,14 +716,14 @@ ggr150example <- ggraph(as_tbl_graph(gr150example),
     coord_cartesian(clip = "off") 
 
 ## Put together
-figs6a <- cowplot::plot_grid(
+figs6c <- cowplot::plot_grid(
     cowplot::plot_grid(
         tplot, 
         get_legend(ggeqn1, "right"), 
         similplot + theme(legend.position = "bottom"), 
         ggr150example + theme(legend.position = "none"), 
         align = "v", axis = "t", 
-        labels = c("A", "", "", ""), nrow = 1, 
+        labels = c("C", "", "", ""), nrow = 1, 
         rel_widths = c(1.1, 0.9, 1, 0.5)
     ),
     ggeqn2, ncol = 1, labels = "", 
@@ -807,11 +807,11 @@ using a relatively lenient adjusted p-value cutoff.
 #| fig.height: 15
 
 plot_grid(
-    figs6a, 
     plot_grid(hm_rad, ggtbl, nrow = 1, align = "h", axis = "b", 
-              rel_widths = c(2, 2.5), labels = c("B", "C")),
-    rel_heights = c(1, 3), ncol = 1,
-    labels = c("A", "")
+              rel_widths = c(2, 2.5), labels = c("A", "B")),
+    figs6c, 
+    rel_heights = c(3, 1), ncol = 1,
+    labels = c("", "")
 )
 ```
 
