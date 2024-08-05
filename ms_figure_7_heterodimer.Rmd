@@ -192,7 +192,7 @@ p_ntu2 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu2\U141
         labs(title = "Relative distance from nuclear envelope",
              x = "", y = "Distance from NE relative to radius") + 
         scale_fill_manual(values = c(na_color, main_colors[5], main_colors[1]),
-                          name = "") + 
+                          name = "Condition") + 
         scale_x_discrete(labels = get_xlabs) +
         scale_y_continuous(breaks = c(0, 0.5, 1), limits = c(0, 1.2)) + 
         theme_cowplot() + 
@@ -431,7 +431,7 @@ plotList <- lapply(names(resListToPlot), function(nm) {
         theme(legend.position = "none",
               plot.title = element_text(face = "italic"))
 })
-genomeplot <- cowplot::plot_grid(plotlist = plotList, ncol = 1)
+genomeplot <- cowplot::plot_grid(plotlist = plotList[c(2, 1)], ncol = 1)
 ```
 
 ## Coverage tracks
