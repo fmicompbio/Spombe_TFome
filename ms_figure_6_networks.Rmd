@@ -572,7 +572,7 @@ volc <- md$testres$tests$Pho7_500_plate_vs_compl_Pho7_500_plate |>
                    shape = 21, alpha = 1, size = 2) + 
         scale_fill_manual(values = c(Bait = main_colors[3])) + 
         labs(x = "log2(fold-change)", y = "-log10(p-value)", 
-             title = "Pho7 vs complement (500 mM NaCl)") + 
+             title = "Pho7 vs complement (500 mM NaCl IP-MS)") + 
         theme_cowplot(ft) + 
         theme(legend.position = "bottom") + 
         guides(color = guide_legend(nrow = 1, byrow = TRUE, title = ""),
@@ -774,25 +774,29 @@ ggr500 <- .plotGraph(grph = gr500, coords = as.matrix(coords500[, c("x", "y")]),
 
 cowplot::plot_grid(
     cowplot::plot_grid(
-        cowplot::plot_grid(
-            ggr150 + theme(legend.position = "none"), 
-            ggr500 + theme(legend.position = "none"), 
-            nrow = 1, labels = c("A", "B")
-        ),
-        get_legend(ggr150 + theme(legend.position = "bottom"), "bottom"),
-        nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
-    ),
-    cowplot::plot_grid(
+        pho7volc, 
         cowplot::plot_grid(
             cowplot::plot_grid(NULL, fig6c, NULL, nrow = 1,
                                rel_widths = c(0.25, 1, 0.1)),  
             ggrad_upset,
-            ncol = 1, labels = c("C", "D"),
+            ncol = 1, labels = c("B", "C"),
             rel_heights = c(1, 1.75)), 
-        pho7volc, 
-        nrow = 1, labels = c("", "E")
+        nrow = 1, labels = c("A", "")
     ),
-    rel_heights = c(5, 3.5), 
+    cowplot::plot_grid(
+        cowplot::plot_grid(
+            ggr150 + theme(legend.position = "none") + 
+                ggtitle("150 mM NaCl IP-MS") + 
+                theme(plot.title = element_text(hjust = 0.075, size = ft)), 
+            ggr500 + theme(legend.position = "none") + 
+                ggtitle("500 mM NaCl IP-MS") +
+                theme(plot.title = element_text(hjust = 0.075, size = ft)), 
+            nrow = 1, labels = c("D", "E")
+        ),
+        get_legend(ggr150 + theme(legend.position = "bottom"), "bottom"),
+        nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
+    ),
+    rel_heights = c(3.5, 5), 
     ncol = 1
 )
 ```
