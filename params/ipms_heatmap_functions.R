@@ -55,12 +55,13 @@ makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
     rowannot$`DBD fam.` <- dbd$DBD_class[match(
         .getPomBaseIdFromProtein(rownames(tstatmat), idmap = idmap),
         dbd$PomBaseID)]
-    setfam <- c("KilA-N", "Zn(II)2Cys6", "bZIP")
+    setfam <- c("KilA-N", "Zn(II)2Cys6", "bZIP", "bHLH_SF")
     unsetfam <- setdiff(unique(dbd$DBD_class), setfam)
     rowannot$`DBD fam.`[rowannot$`DBD fam.` %in% unsetfam] <- "Other (combined)"
     rowcols <- c(rowcols, list(`DBD fam.` = c(`KilA-N` = main_colors[5],
                                               `Zn(II)2Cys6` = main_colors[4],
                                               bZIP = main_colors[3],
+                                              bHLH_SF = main_colors[2],
                                               `Other (combined)` = bg_color)))
     rowAnnotation(df = rowannot,
                   col = rowcols,

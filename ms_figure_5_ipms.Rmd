@@ -423,7 +423,7 @@ hm1b <- Heatmap(baitdata_150$mat,
                 border_gp = gpar(lwd = 0.5),
                 name = "Mod.\nt-stat.", 
                 na_col = binary_heatmap_colors["FALSE"],
-                column_title = paste(c("150 mM NaCl", rep(" ", 45)), collapse = ""),
+                column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
                 row_title = "Transcription factors",
                 column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                 row_title_gp = gpar(fontsize = fl),
@@ -439,8 +439,11 @@ hm1b <- Heatmap(baitdata_150$mat,
                     dbd = dbd, 
                     idmap = idmap),
                 top_annotation = makeTFIntAnnotation(baitdata_150), 
-                width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                heatmap_height = unit(h_ipmsHm / 2.2, "mm"),
+                bottom_annotation = makeColLabels(baitdata_150_loose$mat, 
+                                                  c("Ntu1_plate", "Ntu2_plate", 
+                                                    "Esc1_tube", "SPAC3F10.12c_plate"), fl),
+                      width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
+                heatmap_height = unit(h_ipmsHm / 1.7, "mm"),
                 heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                             border = "gray10",
                                             border_gp = gpar(lwd = 0.5)))
@@ -450,7 +453,7 @@ hm_150_bait <- grid.grabExpr(
     hm1b <- draw(hm1b, merge_legend = TRUE,
                  heatmap_legend_side = "right",
                  annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
 )
 
 plot_grid(hm_150_bait)
@@ -471,6 +474,7 @@ lgd_complex <- Legend(labels = use_complexes,
 dbd_colors <- c(`KilA-N` = main_colors[5], 
                 `Zn(II)2Cys6` = main_colors[4],
                 bZIP = main_colors[3], 
+                bHLH_SF = main_colors[2],
                 `Other (combined)` = bg_color)
 lgd_dbd <- Legend(labels = names(dbd_colors), 
                   legend_gp = gpar(fill = dbd_colors), 
@@ -505,7 +509,7 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                       border_gp = gpar(lwd = 0.5),
                       name = "Mod.\nt-stat.", 
                       na_col = binary_heatmap_colors["FALSE"],
-                      column_title = paste(c("150 mM NaCl", rep(" ", 45)), collapse = ""),
+                      column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
                       row_title = "Transcription factors",
                       column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                       row_title_gp = gpar(fontsize = fl),
@@ -521,8 +525,11 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                           dbd = dbd, 
                           idmap = idmap),
                       top_annotation = makeTFIntAnnotation(baitdata_150_loose), 
+                      bottom_annotation = makeColLabels(baitdata_150_loose$mat, 
+                                                  c("Ntu1_plate", "Ntu2_plate", 
+                                                    "Esc1_tube", "SPAC3F10.12c_plate"), fl),
                       width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                      heatmap_height = unit(h_ipmsHm / 2.2, "mm"), 
+                      heatmap_height = unit(h_ipmsHm / 1.7, "mm"), 
                       heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                                   border = "gray10",
                                                   border_gp = gpar(lwd = 0.5)))
@@ -531,7 +538,7 @@ hm_150_0.05_bait <- grid.grabExpr(
     hm1b <- draw(hm1b_loose, merge_legend = TRUE,
                  heatmap_legend_side = "right",
                  annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
 )
 
 plot_grid(hm_150_0.05_bait)
@@ -704,7 +711,7 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                  border_gp = gpar(lwd = 0.5),
                  name = "Mod.\nt-stat.", 
                  na_col = binary_heatmap_colors["FALSE"],
-                 column_title = paste(c("500 mM NaCl", rep(" ", 45)), collapse = ""),
+                 column_title = paste(c("500 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
                  row_title = "Transcription factors",
                  column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                  row_title_gp = gpar(fontsize = fl),
@@ -718,8 +725,11 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                                  "CCAAT-binding factor complex", "Atf1-Pcr1")], 
                      dbd = dbd, idmap = idmap),
                  top_annotation = makeTFIntAnnotation(baitdata_500), 
+                 bottom_annotation = makeColLabels(baitdata_500$mat, 
+                                                  c("Ntu1_plate", "Ntu2_plate",
+                                                    "Esc1_plate", "SPAC3F10.12c_plate"), fl),
                  width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                 heatmap_height = unit(h_ipmsHm / 2.2, "mm"), # whole heatmap height
+                 heatmap_height = unit(h_ipmsHm / 1.7, "mm"), # whole heatmap height
                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                             border = "gray10",
                                             border_gp = gpar(lwd = 0.5)))
@@ -728,7 +738,7 @@ hm_500_bait <- grid.grabExpr(
     hm1b2 <- draw(hm1b2, merge_legend = TRUE,
                   heatmap_legend_side = "right",
                   annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 2.2
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
 )
 
 plot_grid(hm_500_bait)
@@ -908,8 +918,9 @@ lowhighsub1 <- lowhigh |>
 lowhighsub2 <- lowhigh |> 
     dplyr::filter(splitvar %in% c("Atf1", "Pcr1", "Moc3", 
                                   "Dal2", "Ntu1", "Ntu2")) |>
-    dplyr::mutate(splitvar = factor(splitvar, levels = c("Atf1", "Pcr1", "Moc3", 
-                                                         "Dal2", "Ntu1", "Ntu2"))) |>
+    dplyr::mutate(splitvar = factor(splitvar, levels = c("Ntu1", "Ntu2", 
+                                                         "Atf1", "Pcr1", 
+                                                         "Moc3", "Dal2"))) |>
     dplyr::mutate(significant = (adjp_high < adjp150vs500 & logfc_high > logfc150vs500))
     
 (gg_retain1 <- ggplot(lowhighsub1, 
@@ -1023,10 +1034,10 @@ df <- as.data.frame(rowData(sce150)) |>
 
 cowplot::plot_grid(
     cowplot::plot_grid(
-        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
-        gg_retain2,
         hm_150_bait, hm_500_bait,
-        rel_heights = c(7, 4),
+        gg_retain2,
+        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
+        rel_heights = c(4, 7),
         labels = c("A", "B", "C", "D")
     ),
     cowplot::plot_grid(
