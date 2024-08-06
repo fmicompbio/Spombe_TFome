@@ -226,6 +226,9 @@ txannot |>
 # Total number of identified DNA-binding motifs
 nrow(motifs)
 
+# Number of unique motifs (based on manual classification)
+sum(motifs$unique_version_of_motif)
+
 # Number of TFs for which at least one motif was identified
 length(unique(motifs$tf_name))
 
