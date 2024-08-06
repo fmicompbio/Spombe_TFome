@@ -120,7 +120,7 @@ createNetwork <- function(adjmatrix, chippedTFs = colnames(mprom), settings = "i
 
     # set attributes for vertices
     V(gr)$vertexclass <- ifelse(adjmatrix[cbind(names(V(gr)), names(V(gr)))] > 0,
-                                "Auto-regulated TF",
+                                "Autoregulated TF",
                                 ifelse(names(V(gr)) %in% chippedTFs,
                                        "ChIP'ed TF", "Other TF"))
     if (settings == "visNetwork") {
@@ -412,9 +412,9 @@ their gene locus.
 #| warning: false
 
 gnmtracks1 <- plottracks(df = chip_genome_tab,
-                         gns = c("atf1", "pcr1", "cdc10", "zas1", "reb1", "toe3"),
+                         gns = c("atf1", "pcr1", "cdc10", "thi5", "reb1", "toe3"),
                          cols = c(atf1 = main_colors[3], pcr1 = main_colors[2],
-                                  cdc10 = main_colors[1], zas1 = "#66A61E",
+                                  cdc10 = main_colors[1], thi5 = "#66A61E",
                                   reb1 = main_colors[5], toe3 = main_colors[4]))
 gnmtracks1
 ```
@@ -426,12 +426,12 @@ gnmtracks1
 #| warning: false
 
 gnmtracks2 <- plottracks(df = chip_genome_tab,
-                         gns = c("atf1", "pcr1", "cdc10", "zas1", "reb1", "toe3",
-                                 "fkh2", "thi5", "SPCC320.03", "SPCC777.02", "prz1"),
+                         gns = c("atf1", "pcr1", "cdc10", "thi5", "reb1", "toe3",
+                                 "fkh2", "zas1", "SPCC320.03", "SPCC777.02", "prz1"),
                          cols = c(atf1 = main_colors[3], pcr1 = main_colors[2],
-                                  cdc10 = main_colors[1], zas1 = "#66A61E",
+                                  cdc10 = main_colors[1], thi5 = "#66A61E",
                                   reb1 = main_colors[5], toe3 = main_colors[4],
-                                  fkh2 = main_colors[3], thi5 = main_colors[2],
+                                  fkh2 = main_colors[3], zas1 = main_colors[2],
                                   prz1 = main_colors[5], `SPCC320.03` = "#66A61E",
                                   `SPCC777.02` = main_colors[1]),
                          font_size = 9)
@@ -911,7 +911,7 @@ We exclude the `untagged` experiment, TFs without targets and for the overall
 network also the TFs `zas1` and `SPCC320.03`. `zas1` has
 `r sum(mprom["zas1", ] > 0)` bound TFs in its promoter, and `SPCC320.03` has
 `r sum(mprom["SPCC320.03", ] > 0)`, and if these were included, the network
-would be hard to clearly visualize.
+would be hard to visualize clearly.
 
 ```{r make-network}
 #| fig.width: 10
@@ -949,10 +949,10 @@ ggr <- ggraph(as_tbl_graph(gr),
     geom_node_point(size = 4, aes(fill = vertexclass, shape = vertexclass), 
                     color = "black", stroke = 0.1) + 
     scale_shape_manual(values = c("Other TF" = 21, "ChIP'ed TF" = 21,
-                                  "Auto-regulated TF" = 22), name = "") +
+                                  "Autoregulated TF" = 22), name = "") +
     scale_fill_manual(values = c("Other TF" = gplots::col2hex(bg_color),
                                  "ChIP'ed TF" = gplots::col2hex(main_colors[1]),
-                                 "Auto-regulated TF" = gplots::col2hex(binary_heatmap_colors["TRUE"])),
+                                 "Autoregulated TF" = gplots::col2hex(binary_heatmap_colors["TRUE"])),
                       name = "") + 
     geom_node_text(aes(label = name), size = 3.5, repel = TRUE, vjust = 1.8) + 
     theme_graph(base_family = "sans", plot_margin = margin(30, 10, 40, 10)) + 
@@ -1021,10 +1021,10 @@ ggr2 <- ggr2 +
     geom_node_point(size = 4, aes(fill = vertexclass, shape = vertexclass), 
                     color = "black", stroke = 0.1) + 
     scale_shape_manual(values = c("Other TF" = 21, "ChIP'ed TF" = 21,
-                                  "Auto-regulated TF" = 22), name = "") +
+                                  "Autoregulated TF" = 22), name = "") +
     scale_fill_manual(values = c("Other TF" = gplots::col2hex(bg_color),
                                  "ChIP'ed TF" = gplots::col2hex(main_colors[1]),
-                                 "Auto-regulated TF" = gplots::col2hex(binary_heatmap_colors["TRUE"])),
+                                 "Autoregulated TF" = gplots::col2hex(binary_heatmap_colors["TRUE"])),
                       name = "") + 
     geom_node_text(aes(label = name), size = 3.5, repel = TRUE, vjust = 1.8) + 
     theme_graph(base_family = "sans", plot_margin = margin(30, 10, 40, 10)) +
