@@ -340,8 +340,11 @@ maplots <- lapply(structure(names(resList), names = names(resList)), function(nm
     ggplot(as.data.frame(resList[[nm]]), 
            aes(x = log10(baseMean), y = log2FoldChange)) + 
         geom_point(mapping = aes(color = abs(log2FoldChange) > 3 & 
-                                     padj < 0.001), alpha = 0.25) + 
+                                     padj < 0.001, 
+                                 alpha = abs(log2FoldChange) > 3 & 
+                                     padj < 0.001)) + 
         scale_color_manual(values = c(`TRUE` = main_colors[4], `FALSE` = pt_color)) + 
+        scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25)) + 
         coord_cartesian(xlim = rngX, ylim = rngY) + 
         geom_text_repel(data = as.data.frame(resList[[nm]]) |>
                             tibble::rownames_to_column("gene") |>
@@ -622,7 +625,7 @@ fig7e <- ggdraw() +
 fig7f <- ggdraw() + 
     draw_image("schematics/Fig7F_Nattou_lacR_microscopy_images_Arial.png")
 
-fig7c <- wrap_plots(maplots, ncol = 2)
+fig7c <- wrap_plots(maplots[c(2, 1)], ncol = 2)
 
 cowplot::plot_grid(
     cowplot::plot_grid(
