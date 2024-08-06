@@ -103,11 +103,11 @@ transcription factor.
 
 ```{r load-dbd, class.source="fold-show"}
 dbd <- read.delim(params$dbdtxt) |>
-    dplyr::group_by(DBD_class, Conserved_human) |>
+    dplyr::group_by(DBD_class_name, Conserved_human) |>
     dplyr::tally() |>
     dplyr::mutate(cons = ifelse(Conserved_human, "Conserved in human",
                                 "Not conserved in human")) |>
-    dplyr::group_by(DBD_class) |>
+    dplyr::group_by(DBD_class_name) |>
     dplyr::mutate(totn = sum(n)) |>
     dplyr::ungroup()
 ```
@@ -234,7 +234,7 @@ summary(rowSums(peakenr[peaks$peaktype == "specific peaks", is_TF]))
 
 ```{r numbers-ipms, class.source="fold-show"}
 ## Number of NCBI Conserved Domains shown in the figure (excluding "Other")
-length(setdiff(unique(dbd$DBD_class), "Other"))
+length(setdiff(unique(dbd$DBD_class_name), "Other"))
 
 ## Percentage of domains conserved in human
 round(100 * sum(dbd$n[dbd$Conserved_human]) / sum(dbd$n), 2)
@@ -259,7 +259,7 @@ human ortholog.
 #| fig.width: 6
 #| fig.height: 4
 
-(gg_dbd <- ggplot(dbd, aes(x = fct_reorder(DBD_class, totn, .desc = TRUE), y = n, 
+(gg_dbd <- ggplot(dbd, aes(x = fct_reorder(DBD_class_name, totn, .desc = TRUE), y = n, 
                            fill = cons)) + 
      geom_col() + 
      scale_fill_manual(values = c("Conserved in human" = lighten(main_colors[1], 0.3),
@@ -308,15 +308,16 @@ gg_tpm <- ggplot(ave_tpm, aes(x = fct_reorder(bait, tpm, .desc = TRUE), y = tpm,
                                   "Bait not pulled down (150 mM NaCl IP-MS)" = 16,
                                   "Meiosis-specific transcription factors" = 15),
                        drop = FALSE, name = "") + 
-    scale_x_discrete(breaks = c("mei4", "atf31", "atf21", "cuf2", "rsv1")) + 
     guides(color = guide_legend(nrow = 3, byrow = TRUE,
                                 override.aes = list(size = 3))) + 
     labs(x = "Transcription factors",
          y = "Transcription factor\ngene expression (TPM)")
-(gg_tpm + theme(axis.text.x = element_blank(),
-                axis.ticks.length.x = unit(2, "mm"),
-                axis.ticks.x = element_line(color = main_colors[1],
-                                            linewidth = 1.25)))
+(gg_tpm + 
+        geom_segment(data = ave_tpm |> filter(bait %in% c("mei4", "atf31", "atf21", "cuf2", "rsv1")),
+                     aes(x = bait, xend = bait, y = -6, yend = -20), color = main_colors[1], 
+                     linewidth = 1.25) + 
+        scale_y_continuous(expand = expansion(mult = c(0, 0.025))) + 
+        theme(axis.text.x = element_blank()))
 ```
 
 ## Number of interactors in IP-MS for each TF
@@ -543,10 +544,11 @@ cowplot::plot_grid(
     fig1c,
     cowplot::plot_grid(
         gg_dbd, 
-        gg_tpm + theme(axis.text.x = element_blank(),
-                       axis.ticks.length.x = unit(2, "mm"),
-                       axis.ticks.x = element_line(color = main_colors[1],
-                                                   linewidth = 1.25)),
+        gg_tpm + geom_segment(data = ave_tpm |> filter(bait %in% c("mei4", "atf31", "atf21", "cuf2", "rsv1")),
+                              aes(x = bait, xend = bait, y = -6, yend = -20), color = main_colors[1], 
+                              linewidth = 1.25) + 
+            scale_y_continuous(expand = expansion(mult = c(0, 0.025))) + 
+            theme(axis.text.x = element_blank()),
         nrow = 1,
         labels = c("B", "C"),
         align = "vh",
@@ -577,11 +579,12 @@ cowplot::plot_grid(
 #| message: false
 
 cowplot::plot_grid(
-    gg_tpm + theme(axis.text.x = element_blank(),
-                   axis.ticks.length.x = unit(4, "mm"),
-                   axis.ticks.x = element_line(color = main_colors[1],
-                                               linewidth = 2.25)) +
-        labs(x = "") + geom_point(size = 3), 
+    gg_tpm + geom_segment(data = ave_tpm |> filter(bait %in% c("mei4", "atf31", "atf21", "cuf2", "rsv1")),
+                          aes(x = bait, xend = bait, y = -9, yend = -30), color = main_colors[1], 
+                          linewidth = 3) + 
+        scale_y_continuous(expand = expansion(mult = c(0, 0.025))) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+        labs(x = "") + geom_point(size = 3),
     gg_nbrint_all,
     gg_nbrpeaks_all_wide,
     ncol = 1, 
