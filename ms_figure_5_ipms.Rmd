@@ -443,7 +443,7 @@ hm1b <- Heatmap(baitdata_150$mat,
                                                   c("Ntu1_plate", "Ntu2_plate", 
                                                     "Esc1_tube", "SPAC3F10.12c_plate"), fl),
                       width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                heatmap_height = unit(h_ipmsHm / 1.7, "mm"),
+                heatmap_height = unit(h_ipmsHm / 1.6, "mm"),
                 heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                             border = "gray10",
                                             border_gp = gpar(lwd = 0.5)))
@@ -453,7 +453,7 @@ hm_150_bait <- grid.grabExpr(
     hm1b <- draw(hm1b, merge_legend = TRUE,
                  heatmap_legend_side = "right",
                  annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.6
 )
 
 plot_grid(hm_150_bait)
@@ -474,7 +474,7 @@ lgd_complex <- Legend(labels = use_complexes,
 dbd_colors <- c(`KilA-N` = main_colors[5], 
                 `Zn(II)2Cys6` = main_colors[4],
                 bZIP = main_colors[3], 
-                bHLH_SF = main_colors[2],
+                bHLH = main_colors[2],
                 `Other (combined)` = bg_color)
 lgd_dbd <- Legend(labels = names(dbd_colors), 
                   legend_gp = gpar(fill = dbd_colors), 
@@ -529,7 +529,7 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                                                   c("Ntu1_plate", "Ntu2_plate", 
                                                     "Esc1_tube", "SPAC3F10.12c_plate"), fl),
                       width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                      heatmap_height = unit(h_ipmsHm / 1.7, "mm"), 
+                      heatmap_height = unit(h_ipmsHm / 1.6, "mm"), 
                       heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                                   border = "gray10",
                                                   border_gp = gpar(lwd = 0.5)))
@@ -538,7 +538,7 @@ hm_150_0.05_bait <- grid.grabExpr(
     hm1b <- draw(hm1b_loose, merge_legend = TRUE,
                  heatmap_legend_side = "right",
                  annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.6
 )
 
 plot_grid(hm_150_0.05_bait)
@@ -729,7 +729,7 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                                                   c("Ntu1_plate", "Ntu2_plate",
                                                     "Esc1_plate", "SPAC3F10.12c_plate"), fl),
                  width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
-                 heatmap_height = unit(h_ipmsHm / 1.7, "mm"), # whole heatmap height
+                 heatmap_height = unit(h_ipmsHm / 1.6, "mm"), # whole heatmap height
                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                             border = "gray10",
                                             border_gp = gpar(lwd = 0.5)))
@@ -738,7 +738,7 @@ hm_500_bait <- grid.grabExpr(
     hm1b2 <- draw(hm1b2, merge_legend = TRUE,
                   heatmap_legend_side = "right",
                   annotation_legend_side = "right"),
-    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.7
+    width = w_ipmsHm / 1.05, height = h_ipmsHm / 1.6
 )
 
 plot_grid(hm_500_bait)
@@ -1117,10 +1117,7 @@ plot_grid(hm_histones)
 cowplot::plot_grid(
     cowplot::plot_grid(
         hm_150_bait, hm_500_bait,
-        gg_retain2,
-        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
-        rel_heights = c(4, 7),
-        labels = c("A", "B", "C", "D")
+        nrow = 1, labels = c("A", "B")
     ),
     cowplot::plot_grid(
         NULL,
@@ -1130,8 +1127,13 @@ cowplot::plot_grid(
         nrow = 1,
         rel_widths = c(1, 2, 2, 1)
     ),
-    nrow = 2,
-    rel_heights = c(12, 1)
+    cowplot::plot_grid(
+        gg_retain2,
+        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
+        nrow = 1, labels = c("C", "D")
+    ),
+    ncol = 1,
+    rel_heights = c(4, 1, 7)
 )
 ```
 

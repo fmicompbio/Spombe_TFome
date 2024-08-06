@@ -52,16 +52,16 @@ makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
                              complexes[[cmplx]]$pombase_ids] <- cmplx
         rowcols$Complex[cmplx] <- complexes[[cmplx]]$color
     }
-    rowannot$`DBD fam.` <- dbd$DBD_class[match(
+    rowannot$`DBD fam.` <- dbd$DBD_class_name[match(
         .getPomBaseIdFromProtein(rownames(tstatmat), idmap = idmap),
         dbd$PomBaseID)]
-    setfam <- c("KilA-N", "Zn(II)2Cys6", "bZIP", "bHLH_SF")
-    unsetfam <- setdiff(unique(dbd$DBD_class), setfam)
+    setfam <- c("KilA-N", "Zn(II)2Cys6", "bZIP", "bHLH")
+    unsetfam <- setdiff(unique(dbd$DBD_class_name), setfam)
     rowannot$`DBD fam.`[rowannot$`DBD fam.` %in% unsetfam] <- "Other (combined)"
     rowcols <- c(rowcols, list(`DBD fam.` = c(`KilA-N` = main_colors[5],
                                               `Zn(II)2Cys6` = main_colors[4],
                                               bZIP = main_colors[3],
-                                              bHLH_SF = main_colors[2],
+                                              bHLH = main_colors[2],
                                               `Other (combined)` = bg_color)))
     rowAnnotation(df = rowannot,
                   col = rowcols,
@@ -152,19 +152,19 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
     dbdtf <- data.frame(PomBaseID = .getPomBaseIdFromComparison(colnames(tstats$tstatsfilt),
                                                                 idmap = idmap),
                         bait = .getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
-                        DBD_class = NA)
+                        DBD_class_name = NA)
     for (i in seq_len(nrow(dbdtf))) {
         lookfor <- dbdtf$PomBaseID[i]
         if (!(lookfor %in% c("untagged", "Untagged"))) {
-            dbdtf$DBD_class[i] <- dbd$DBD_class[match(lookfor, dbd$PomBaseID)]
+            dbdtf$DBD_class_name[i] <- dbd$DBD_class_name[match(lookfor, dbd$PomBaseID)]
         } else {
-            dbdtf$DBD_class[i] <- "no_class"
+            dbdtf$DBD_class_name[i] <- "no_class"
         }
     }
     stopifnot(dbdtf$bait == .getProteinNameFromComparison(colnames(tmptf)))
     nbrIntMat <- do.call(dplyr::bind_rows, lapply(seq_along(colnames(tmptf)), function(i) {
         expr <- colnames(tmptf)[i]
-        fam <- dbdtf$DBD_class[i]
+        fam <- dbdtf$DBD_class_name[i]
         data.frame(experiment = expr,
                    bait = dbdtf$bait[i],
                    dbdfam = fam,
@@ -173,12 +173,12 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
                    nbrTFs = sum(tmptf[, expr] > 0, na.rm = TRUE),
                    nbrTFs_wobait = sum(tmptf[-i, expr] > 0, na.rm = TRUE),
                    nbrTFs_samefam = sum(tmptf[-i, expr] > 0 &
-                                            dbdtf$DBD_class[-i] == fam &
-                                            dbdtf$DBD_class[-i] != "Other",
+                                            dbdtf$DBD_class_name[-i] == fam &
+                                            dbdtf$DBD_class_name[-i] != "Other",
                                         na.rm = TRUE),
                    nbrTFs_difffam = sum(tmptf[-i, expr] > 0 &
-                                            (dbdtf$DBD_class[-i] != fam |
-                                                 dbdtf$DBD_class[-i] == "Other"),
+                                            (dbdtf$DBD_class_name[-i] != fam |
+                                                 dbdtf$DBD_class_name[-i] == "Other"),
                                         na.rm = TRUE)
         )
     }))
