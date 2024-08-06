@@ -376,8 +376,7 @@ pd <- motifs |>
            `Common (ubiquitous)` = bound_hits_common.peaks.ubiquitous / total_hits,
            `Common (frequent)` = bound_hits_common.peaks.frequent / total_hits,
            `Specific` = bound_hits_specific.peaks / total_hits) |>
-    # arrange(desc(frac_bound_hits_any)) |>
-    arrange(frac_bound_hits_any) |>
+    arrange(desc(frac_bound_hits_any)) |>
     mutate(name = factor(name, levels = name)) |>
     pivot_longer(cols = c("Common (ubiquitous)", "Common (frequent)",
                           "Specific"), names_to = "peak_set", values_to = "fraction_bound") |>
@@ -394,8 +393,8 @@ pd <- motifs |>
              fill = element_blank()) +
         theme_cowplot(12) +
         theme(legend.position = "inside",
-              legend.position.inside = c(0.05, 0.95),
-              legend.justification.inside = c(0, 1),
+              legend.position.inside = c(0.95, 0.75),
+              legend.justification.inside = c(1, 1),
               axis.text.x = element_text(angle = 90, hjust = 1, size = 8)) +
         guides(fill = guide_legend(ncol = 1)))
 ```
@@ -1203,24 +1202,23 @@ cowplot::plot_grid(
 Assemble the panels into Supplementary Figure 3:
 
 ```{r suppFig3}
-#| fig.width: 11
-#| fig.height: 9
+#| fig.width: 8.5
+#| fig.height: 12.5
 #| warning: false
 
 cowplot::plot_grid(
-    cowplot::plot_grid(NULL, NULL, NULL, # space for labels
-                       nrow = 1, labels = c("A", "B", "C"),
-                       rel_widths = c(100, 100, 100)),
+    cowplot::plot_grid(NULL, NULL, # space for labels
+                       nrow = 1, labels = c("A", "B"),
+                       rel_widths = c(1, 1)),
     cowplot::plot_grid(
         cowplot::plot_grid(gnmtracks2, NULL, ncol = 1, rel_heights = c(20, 1)),
         hm_motifs_long,
-        p_fracbound,
-        nrow = 1,
-        labels = c("", "", "")
+        nrow = 1
     ),
-    nrow = 2,
-    rel_widths = c(1),
-    rel_heights = c(0.25, 9.75)
+    p_fracbound,
+    nrow = 3,
+    labels = c("", "", "C"),
+    rel_heights = c(0.3, 9.7, 5.0)
 )
 ```
 
