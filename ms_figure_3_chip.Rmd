@@ -366,8 +366,8 @@ transcription factor (overlap with an enriched peak of that transcription
 factor). Fractions are shown separately for each peak class.
 
 ```{r plot-fracBound}
-#| fig.width: 8
-#| fig.height: 5
+#| fig.width: 5
+#| fig.height: 8
 
 pd <- motifs |>
     select(name, total_hits, starts_with("bound_hits")) |>
@@ -384,19 +384,19 @@ pd <- motifs |>
     mutate(peak_set = factor(peak_set, levels = c("Common (ubiquitous)", "Common (frequent)",
                           "Specific")))
 
-(p_fracbound <- ggplot(pd, aes(fraction_bound, name, fill = peak_set)) +
+(p_fracbound <- ggplot(pd, aes(name, fraction_bound, fill = peak_set)) +
         geom_col() +
-        scale_x_continuous(expand = expansion(mult = 0),
+        scale_y_continuous(expand = expansion(mult = 0),
                            labels = scales::label_percent()) +
         scale_fill_manual(values = peakset_colors) +
-        labs(x = "Percent of motif sites",
-             y = element_blank(),
+        labs(x = element_blank(),
+             y = "Percent of motif sites",
              fill = element_blank()) +
         theme_cowplot(12) +
         theme(legend.position = "inside",
-              legend.position.inside = c(0.95, 0.05),
-              legend.justification.inside = c(1, 0),
-              axis.text.y = element_text(angle = 0, hjust = 1, size = 8)) +
+              legend.position.inside = c(0.05, 0.95),
+              legend.justification.inside = c(0, 1),
+              axis.text.x = element_text(angle = 90, hjust = 1, size = 8)) +
         guides(fill = guide_legend(ncol = 1)))
 ```
 
