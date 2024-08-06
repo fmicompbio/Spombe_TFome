@@ -366,8 +366,8 @@ transcription factor (overlap with an enriched peak of that transcription
 factor). Fractions are shown separately for each peak class.
 
 ```{r plot-fracBound}
-#| fig.width: 5
-#| fig.height: 8
+#| fig.width: 8
+#| fig.height: 5
 
 pd <- motifs |>
     select(name, total_hits, starts_with("bound_hits")) |>
