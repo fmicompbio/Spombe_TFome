@@ -444,7 +444,7 @@ mode(m) <- "numeric"
 colnames(m) <- sub("is_enr_in.", "", colnames(m))
 
 # specify ChIP-seq experiments for which to show labels
-selLabels <- c("Untagged")
+selLabels <- c(hot_tfs, "Untagged")
 stopifnot(all(selLabels %in% colnames(m)))
 
 # only show peaks that are enriched in at least one ChIP-seq experiment
@@ -886,10 +886,10 @@ pcvar500 <- attr(reducedDim(sce500_pca, paste0("PCA_", metadata(sce150)$aNames$a
 #| fig.height: 15.5
 
 cowplot::plot_grid(
-    hm_peaksEnr,
-    hm_peaksBin,
     hm_150,
     hm_500,
+    hm_peaksEnr,
+    hm_peaksBin,
     nrow = 2,
     labels = c("A", "B", "C", "D"),
     align = "v",
