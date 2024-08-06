@@ -9,7 +9,6 @@ output:
         toc_float: true
         code_folding: hide
 params:
-    dbdtxt: "data/TF_DBD_annotation.txt"
     motifrds: "data/motifs_annotated.rds"
     peakcsv: "data/fused_peaks_filtered.csv.gz"
     genomefasta: "reference/Schizosaccharomyces_pombe.ASM294v2.dna.toplevel.fa"
@@ -71,14 +70,6 @@ file [`data/motifs.meme`](data/motifs.meme), which is a plain text file with the
 motifs in the MEME format: https://meme-suite.org/meme/doc/meme-format.html.
 
 ```{r load-data}
-# `dbd`: Transcription factor DNA binding domain information
-dbd <- read.delim(params$dbdtxt) |>
-    dplyr::mutate(cons = factor(ifelse(Conserved_human, "yes", "no"),
-                                levels = c("yes", "no")),
-                  DBD_class_simple = factor(
-                      ifelse(DBD_class == "Zn(II)2Cys6", "Zn(II)2Cys6", "other"),
-                      levels = c("other", "Zn(II)2Cys6")))
-
 # `motifs`: table with annotated motif
 motifs <- readRDS(params$motifrds)
 motifs$altname <- motifs$name
