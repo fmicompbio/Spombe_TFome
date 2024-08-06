@@ -764,13 +764,13 @@ fraction of within-DBD family interactions expected by chance.
 #| fig.width: 10
 #| fig.height: 3
 
-cowplot::plot_grid(
+pies <- cowplot::plot_grid(
     cowplot::plot_grid(pie_bait_150 + theme(legend.position = "none"), 
                        pie_bait_150_loose + theme(legend.position = "none"), 
                        pie_bait_500 + theme(legend.position = "none"),
-                       pie_bait_500_loose + theme(legend.position = "none"), nrow = 1),
-    get_legend(pie_bait_150 + theme(legend.position = "bottom")),
-    ncol = 1, rel_heights = c(1, 0.25)
+                       pie_bait_500_loose + theme(legend.position = "none"), nrow = 2),
+    get_legend(pie_bait_150 + theme_cowplot(ft) + theme(legend.position = "bottom")),
+    ncol = 1, rel_heights = c(2, 0.25)
 )
 ```
 
@@ -1025,6 +1025,88 @@ df <- as.data.frame(rowData(sce150)) |>
     theme(legend.position = "none"))
 ```
 
+## Supplementary plot - Adn2 vs complement volcano plot
+
+# Pho7 volcano plot
+
+```{r}
+#| warning: false
+
+md <- metadata(sce500)
+volc <- md$testres$tests$Adn2_500_plate_vs_compl_Adn2_500_plate |>
+    mutate(signif = adj.P.Val < adjpThreshold & logFC > log2fcThreshold)
+(adn2volc <- ggplot(volc, aes(x = logFC, y = mlog10p)) + 
+        geom_text_repel(data = volc |> filter(signif),
+                        aes(label = pid), min.segment.length = 0,
+                        max.overlaps = Inf) + 
+        geom_point(aes(alpha = signif, color = signif), 
+                   show.legend = c(alpha = FALSE, color = TRUE)) + 
+        scale_color_manual(values = c(`TRUE` = main_colors[5], `FALSE` = na_color), 
+                           labels = c(`TRUE` = paste0("adj. p < ", adjpThreshold, 
+                                                      " and logFC > ", log2fcThreshold)),
+                           na.value = "black", breaks = "TRUE") + 
+        scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.5)) + 
+        geom_point(data = volc |> dplyr::filter(pid == "Adn2") |>
+                       dplyr::mutate(type = "Bait"), 
+                   mapping = aes(fill = type), color = main_colors[3], 
+                   shape = 21, alpha = 1, size = 2) + 
+        scale_fill_manual(values = c(Bait = main_colors[3])) + 
+        labs(x = "log2(fold-change)", y = "-log10(p-value)", 
+             title = "Adn2 vs complement (500 mM NaCl IP-MS)") + 
+        theme_cowplot(ft) + 
+        theme(legend.position = "bottom") + 
+        guides(color = guide_legend(nrow = 1, byrow = TRUE, title = ""),
+               fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
+```
+
+
+## Supplementary plot - histone proteins t-stats
+
+```{r histone-prots-500}
+#| fig.width: 6
+#| fig.height: 13
+
+## Get all t-statistics and visualize
+res500 <- .getTestCols(sce500, adjp_cutoff = 0.01, logfc_cutoff = 1)
+histones <- res500$tstat[c("Hta1", "Htb1", "Hht2", "Hhf2"), ]
+colnames(histones) <- .getProteinNameFromComparison(colnames(histones))
+histones <- histones[, colnames(histones) != "Untagged"]
+histones <- t(histones)
+hmhistones <- Heatmap(histones, 
+                      cluster_rows = TRUE, 
+                      cluster_columns = FALSE, 
+                      col = circlize::colorRamp2(
+                          breaks = seq(1.5, 13.0, length.out = 64),
+                          colors = colorRampPalette(
+                              binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+                      border = TRUE, 
+                      border_gp = gpar(lwd = 0.5),
+                      name = "Mod.\nt-stat.",
+                      na_col = binary_heatmap_colors["FALSE"],
+                      column_names_gp = gpar(fontsize = fl),
+                      row_names_gp = gpar(fontsize = fs),
+                      show_row_names = TRUE, 
+                      show_column_names = TRUE, 
+                      use_raster = FALSE,
+                      show_heatmap_legend = TRUE, 
+                      width = unit(w_ipmsHm / 1.5, "mm"), 
+                      heatmap_height = unit(1.3 * h_ipmsHm, "mm"),
+                      column_title_gp = gpar(fontsize = ft),
+                      heatmap_legend_param = list(
+                          title_gp = gpar(fontsize = fl),
+                          border = "gray10",
+                          border_gp = gpar(lwd = 0.5)
+                      ))
+set.seed(42L)
+hm_histones <- grid.grabExpr(
+    hmrad <- draw(hmhistones, merge_legend = TRUE,
+                 heatmap_legend_side = "right",
+                 annotation_legend_side = "right"),
+    width = w_ipmsHm / 1.5, height = 1.3 * h_ipmsHm
+)
+plot_grid(hm_histones)
+```
+
 
 ## Put together
 
@@ -1050,6 +1132,25 @@ cowplot::plot_grid(
     ),
     nrow = 2,
     rel_heights = c(12, 1)
+)
+```
+
+## Supplementary Figure 5
+
+```{r}
+#| label: SuppFig5
+#| fig.width: 10
+#| fig.height: 10
+#| warning: false
+
+cowplot::plot_grid(
+    cowplot::plot_grid(
+        pies, 
+        adn2volc, 
+        ncol = 1
+    ),
+    hm_histones,
+    nrow = 1
 )
 ```
 
