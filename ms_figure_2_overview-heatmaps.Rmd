@@ -907,17 +907,19 @@ Assemble the panels into Supplementary Figure 2:
 #| warning: false
 
 cowplot::plot_grid(
-    gg_enrpairs,
     cowplot::plot_grid(
-        hm_ipms_hot,
-        gg_rnaviolin,
         ggpca2,
         ggpca3,
+        cowplot::plot_grid(NULL, gg_rnaviolin, ncol = 1,
+                           rel_heights = c(0.1, 0.9)),
+        cowplot::plot_grid(NULL, hm_ipms_hot, ncol = 1,
+                           rel_heights = c(0.1, 0.9)),
         ncol = 1,
-        rel_heights = c(1.25, 0.75, 1.1, 0.9),
-        labels = c("", "C", "D", "E")
+        rel_heights = c(1.1, 0.9, 0.8, 1.2),
+        labels = c("", "", "C", "D")
     ),
-    rel_widths = c(1, 0.65), 
+    gg_enrpairs,
+    rel_widths = c(0.65, 1), 
     scale = 0.9, nrow = 1,
     labels = c("A", "B")
 )
