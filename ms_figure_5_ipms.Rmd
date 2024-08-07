@@ -194,27 +194,39 @@ DT::datatable(dbd, extensions = "FixedColumns", rownames = FALSE,
 
 ```{r extract-heatmap-data}
 hmdata_150 <- makeHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
-                              log2fcthr = log2fcThreshold, conc = 150)
+                              log2fcthr = log2fcThreshold, conc = 150,
+                              idmap = idmap, baitclass = baitclass)
 hmdata_150_loose <- makeHeatmapData(sce = sce150, adjpthr = adjpThresholdLoose, 
-                                    log2fcthr = log2fcThreshold, conc = 150)
+                                    log2fcthr = log2fcThreshold, conc = 150,
+                                    idmap = idmap, baitclass = baitclass)
 hmdata_500 <- makeHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
-                              log2fcthr = log2fcThreshold, conc = 500)
+                              log2fcthr = log2fcThreshold, conc = 500,
+                              idmap = idmap, baitclass = baitclass)
 hmdata_500_loose <- makeHeatmapData(sce = sce500, adjpthr = adjpThresholdLoose, 
-                                    log2fcthr = log2fcThreshold, conc = 500)
+                                    log2fcthr = log2fcThreshold, conc = 500,
+                                    idmap = idmap, baitclass = baitclass)
 
 
 baitdata_150 <- makeBaitHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
                                     log2fcthr = log2fcThreshold, 
-                                    nbrIntMat = hmdata_150$nbrIntMat)
+                                    nbrIntMat = hmdata_150$nbrIntMat, 
+                                    nobait = nobait_150, idmap = idmap, 
+                                    complexes = complexes)
 baitdata_150_loose <- makeBaitHeatmapData(sce = sce150, adjpthr = adjpThresholdLoose, 
                                           log2fcthr = log2fcThreshold, 
-                                          nbrIntMat = hmdata_150_loose$nbrIntMat)
+                                          nbrIntMat = hmdata_150_loose$nbrIntMat, 
+                                          nobait = nobait_150, idmap = idmap, 
+                                          complexes = complexes)
 baitdata_500 <- makeBaitHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
                                     log2fcthr = log2fcThreshold, 
-                                    nbrIntMat = hmdata_500$nbrIntMat)
+                                    nbrIntMat = hmdata_500$nbrIntMat, 
+                                    nobait = nobait_150, idmap = idmap, 
+                                    complexes = complexes)
 baitdata_500_loose <- makeBaitHeatmapData(sce = sce500, adjpthr = adjpThresholdLoose, 
                                           log2fcthr = log2fcThreshold, 
-                                          nbrIntMat = hmdata_500_loose$nbrIntMat)
+                                          nbrIntMat = hmdata_500_loose$nbrIntMat, 
+                                          nobait = nobait_150, idmap = idmap, 
+                                          complexes = complexes)
 ```
 
 # Export data for TFexplorer
@@ -439,9 +451,12 @@ hm1b <- Heatmap(baitdata_150$mat,
                     complexes[c("MBF transcription complex", 
                                 "CCAAT-binding factor complex",
                                 "Atf1-Pcr1")],
-                    dbd = dbd, 
-                    idmap = idmap),
-                top_annotation = makeTFIntAnnotation(baitdata_150), 
+                    dbd = dbd, idmap = idmap, 
+                    main_colors = main_colors, bg_color = bg_color, 
+                    fontsize = fl),
+                top_annotation = makeTFIntAnnotation(
+                    baitdata_150, na_color = na_color,
+                    fontsize_small = fs, fontsize_large = fl), 
                 bottom_annotation = makeColLabels(baitdata_150$mat, 
                                                   c("Ntu1_plate", "Ntu2_plate", 
                                                     "Esc1_tube", "SPAC3F10.12c_plate"), fl),
@@ -520,9 +535,12 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                           complexes[c("MBF transcription complex", 
                                       "CCAAT-binding factor complex",
                                       "Atf1-Pcr1")],
-                          dbd = dbd, 
-                          idmap = idmap),
-                      top_annotation = makeTFIntAnnotation(baitdata_150_loose), 
+                          dbd = dbd, idmap = idmap, 
+                          main_colors = main_colors, bg_color = bg_color, 
+                          fontsize = fl),
+                      top_annotation = makeTFIntAnnotation(
+                          baitdata_150_loose, na_color = na_color,
+                          fontsize_small = fs, fontsize_large = fl), 
                       bottom_annotation = makeColLabels(baitdata_150_loose$mat, 
                                                         c("Ntu1_plate", "Ntu2_plate", 
                                                           "Esc1_tube", "SPAC3F10.12c_plate"), fl),
@@ -716,8 +734,12 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                      baitdata_500$mat, 
                      complexes[c("MBF transcription complex", 
                                  "CCAAT-binding factor complex", "Atf1-Pcr1")], 
-                     dbd = dbd, idmap = idmap),
-                 top_annotation = makeTFIntAnnotation(baitdata_500), 
+                     dbd = dbd, idmap = idmap, 
+                     main_colors = main_colors, bg_color = bg_color, 
+                     fontsize = fl),
+                 top_annotation = makeTFIntAnnotation(
+                     baitdata_500, na_color = na_color,
+                     fontsize_small = fs, fontsize_large = fl), 
                  bottom_annotation = makeColLabels(baitdata_500$mat, 
                                                    c("Ntu1_plate", "Ntu2_plate",
                                                      "Esc1_plate", "SPAC3F10.12c_plate"), fl),
@@ -764,17 +786,17 @@ pie_bait_500_loose <- makePie(baitdata = baitdata_500_loose,
 
 ```{r}
 #| label: pie-bait-summary
-#| fig.width: 10
-#| fig.height: 3
+#| fig.width: 7
+#| fig.height: 7
 
-pies <- cowplot::plot_grid(
+(pies <- cowplot::plot_grid(
     cowplot::plot_grid(pie_bait_150 + theme(legend.position = "none"), 
                        pie_bait_150_loose + theme(legend.position = "none"), 
                        pie_bait_500 + theme(legend.position = "none"),
                        pie_bait_500_loose + theme(legend.position = "none"), nrow = 2),
     get_legend(pie_bait_150 + theme_cowplot(ft) + theme(legend.position = "bottom")),
     ncol = 1, rel_heights = c(2, 0.25)
-)
+))
 ```
 
 

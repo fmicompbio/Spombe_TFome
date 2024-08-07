@@ -218,9 +218,11 @@ calcDistanceToNearest <- function(from, to) {
 
 ```{r extract-heatmap-data-ipms}
 hmdata_150 <- makeHeatmapData(sce = sce150, adjpthr = adjpThreshold, 
-                              log2fcthr = log2fcThreshold, conc = 150)
+                              log2fcthr = log2fcThreshold, conc = 150,
+                              idmap = idmap, baitclass = baitclass)
 hmdata_500 <- makeHeatmapData(sce = sce500, adjpthr = adjpThreshold, 
-                              log2fcthr = log2fcThreshold, conc = 500)
+                              log2fcthr = log2fcThreshold, conc = 500,
+                              idmap = idmap, baitclass = baitclass)
 ```
 
 # Calculate peak distances to tRNA or rRNA genes
@@ -311,7 +313,7 @@ hm1a <- Heatmap(hmdata_150$tstat,
                 use_raster = FALSE, show_heatmap_legend = TRUE,
                 right_annotation = makeComplexAnnotation(
                     hmdata_150$tstat, complexes[complexLabel], 
-                    idmap = idmap),
+                    idmap = idmap, show_legend = TRUE, fontsize = fl, bg_color = bg_color),
                 bottom_annotation = makeColLabels(hmdata_150$tstat, colLabel_150, fl),
                 width = unit(w_ipmsHm, "mm"), # heatmap body width
                 heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height
@@ -356,8 +358,9 @@ hm2a <- Heatmap(hmdata_500$tstat,
                 row_title_gp = gpar(fontsize = fl),
                 show_row_names = FALSE, show_column_names = FALSE,
                 use_raster = FALSE, show_heatmap_legend = TRUE,
-                right_annotation = makeComplexAnnotation(hmdata_500$tstat, complexes[complexLabel],
-                                                         idmap = idmap, show_legend = FALSE),
+                right_annotation = makeComplexAnnotation(
+                    hmdata_500$tstat, complexes[complexLabel],
+                    idmap = idmap, show_legend = FALSE, fontsize = fl, bg_color = bg_color),
                 bottom_annotation = makeColLabels(hmdata_500$tstat, colLabel_500, fl),
                 width = unit(w_ipmsHm, "mm"), # heatmap body width
                 heatmap_height = unit(h_ipmsHm, "mm"), # whole heatmap height

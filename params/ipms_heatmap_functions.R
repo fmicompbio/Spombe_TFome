@@ -21,7 +21,8 @@ filterForHeatmap <- function(tstatmat, adjpmat, logfcmat, adjpThreshold,
 }
 
 makeComplexAnnotation <- function(tstatmat, complexes, idmap,
-                                  show_legend = TRUE) {
+                                  show_legend = TRUE, fontsize,
+                                  bg_color) {
     rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
                            row.names = rownames(tstatmat))
     rowcols <- list(Complex = c())
@@ -33,16 +34,17 @@ makeComplexAnnotation <- function(tstatmat, complexes, idmap,
     }
     rowAnnotation(df = rowannot,
                   col = rowcols,
-                  annotation_name_gp = gpar(fontsize = fl),
+                  annotation_name_gp = gpar(fontsize = fontsize),
                   simple_anno_size_adjust = TRUE,
                   na_col = bg_color,
                   show_annotation_name = FALSE,
                   show_legend = show_legend,
-                  annotation_legend_param = list(title_gp = gpar(fontsize = fl),
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fontsize),
                                                  legend_direction = "horizontal"))
 }
 
-makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
+makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap,
+                                        main_colors, bg_color, fontsize) {
     rowannot <- data.frame(Complex = rep(NA, nrow(tstatmat)),
                            row.names = rownames(tstatmat))
     rowcols <- list(Complex = c())
@@ -65,15 +67,15 @@ makeComplexAndDBDAnnotation <- function(tstatmat, complexes, dbd, idmap) {
                                               `Other (combined)` = bg_color)))
     rowAnnotation(df = rowannot,
                   col = rowcols,
-                  annotation_name_gp = gpar(fontsize = fl),
+                  annotation_name_gp = gpar(fontsize = fontsize),
                   simple_anno_size_adjust = TRUE,
                   na_col = bg_color,
                   show_annotation_name = TRUE,
                   show_legend = FALSE,
-                  annotation_legend_param = list(title_gp = gpar(fontsize = fl)))
+                  annotation_legend_param = list(title_gp = gpar(fontsize = fontsize)))
 }
 
-makeTFIntAnnotation <- function(baitdata) {
+makeTFIntAnnotation <- function(baitdata, na_color, fontsize_small, fontsize_large) {
     HeatmapAnnotation(
         which = "column",
         `Number of\ninteractors` =
@@ -83,11 +85,11 @@ makeTFIntAnnotation <- function(baitdata) {
                          gp = gpar(fill = na_color,
                                    col = na_color),
                          border = FALSE, bar_width = 1.0,
-                         axis_param = list(gp = gpar(fontsize = fs)),
+                         axis_param = list(gp = gpar(fontsize = fontsize_small)),
                          width = unit(10, "mm")),
         annotation_name_side = "left",
         annotation_name_rot = 0,
-        annotation_name_gp = gpar(fontsize = fl))
+        annotation_name_gp = gpar(fontsize = fontsize_large))
 }
 
 makeColLabels <- function(tstatmat, colLabel, fontsize) {
@@ -126,7 +128,7 @@ reorderColsByRows <- function(tstat) {
     tstat[, ord]
 }
 
-makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
+makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc, idmap, baitclass) {
     tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)
 
     tstats <- filterForHeatmap(tstatmat = tc$tstat, adjpmat = tc$adjp,
@@ -136,11 +138,11 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
 
     ## tstats$tstatsfile: protein x experiment
     ## Number of TFs that are pulled down by each bait
-    all_tfs <- setdiff(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
-                       c("Untagged", "untagged", NA))
-    nbrInt <- colSums(tstats$tstatsfilt[rownames(tstats$tstatsfilt) %in% all_tfs, ] > 0,
-                      na.rm = TRUE)
-    names(nbrInt) <- .getSimplifiedComparison(names(nbrInt))
+    # all_tfs <- setdiff(.getProteinNameFromComparison(colnames(tstats$tstatsfilt)),
+    #                    c("Untagged", "untagged", NA))
+    # nbrInt <- colSums(tstats$tstatsfilt[rownames(tstats$tstatsfilt) %in% all_tfs, ] > 0,
+    #                   na.rm = TRUE)
+    # names(nbrInt) <- .getSimplifiedComparison(names(nbrInt))
 
     ## Split by family - return a matrix with several columns:
     ## #pulled down TFs (including itself), #pulled down TFs (excluding itself),
@@ -276,12 +278,13 @@ makeHeatmapData <- function(sce, adjpthr, log2fcthr, conc) {
     return(list(tstat = tstat, colsplit = colsplit, nbrIntMat = nbrIntMat))
 }
 
-makeBaitHeatmapData <- function(sce, adjpthr, log2fcthr, nbrIntMat) {
+makeBaitHeatmapData <- function(sce, adjpthr, log2fcthr, nbrIntMat, nobait,
+                                idmap, complexes) {
     tc <- .getTestCols(sce, adjp_cutoff = adjpthr, logfc_cutoff = log2fcthr)$tstat
     colnames(tc) <- .getSimplifiedComparison(colnames(tc))
     shared_names <- intersect(rownames(tc),
                               .getProteinNameFromSimplifiedComparison(colnames(tc)))
-    shared_names <- setdiff(shared_names, .getProteinFromOrigBait(nobait_150, idmap = idmap))
+    shared_names <- setdiff(shared_names, .getProteinFromOrigBait(nobait, idmap = idmap))
     stopifnot(all(shared_names %in% nbrIntMat$bait))
     nbrIntMat$complex <- NA
     for (cplx in c("MBF transcription complex", "CCAAT-binding factor complex", "Atf1-Pcr1")) {
