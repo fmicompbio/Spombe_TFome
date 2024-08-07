@@ -387,19 +387,22 @@ makeInteractorSummary(sce = sce150, baitdata = baitdata_150, adjp_cutoff = adjpT
         makeInteractorSummary(sce = sce500, baitdata = baitdata_500, adjp_cutoff = adjpThreshold,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "500 mM, strict cutoff")
+                              tbl_title = "500 mM, strict cutoff"),
+        by = join_by(Aspect)
     ) |> 
     dplyr::full_join(
         makeInteractorSummary(sce = sce150, baitdata = baitdata_150_loose, adjp_cutoff = adjpThresholdLoose,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "150 mM, lenient cutoff")
+                              tbl_title = "150 mM, lenient cutoff"),
+        by = join_by(Aspect)
     ) |>
     dplyr::full_join(
         makeInteractorSummary(sce = sce500, baitdata = baitdata_500_loose, adjp_cutoff = adjpThresholdLoose,
                               logfc_cutoff = log2fcThreshold, idmap = idmap, 
                               baits_to_keep = baitclass$Gene_name[baitclass$class != "nobait"],
-                              tbl_title = "500 mM, lenient cutoff")
+                              tbl_title = "500 mM, lenient cutoff"),
+        by = join_by(Aspect)
     ) |>
     kbl() |>
     kable_styling()
@@ -439,10 +442,10 @@ hm1b <- Heatmap(baitdata_150$mat,
                     dbd = dbd, 
                     idmap = idmap),
                 top_annotation = makeTFIntAnnotation(baitdata_150), 
-                bottom_annotation = makeColLabels(baitdata_150_loose$mat, 
+                bottom_annotation = makeColLabels(baitdata_150$mat, 
                                                   c("Ntu1_plate", "Ntu2_plate", 
                                                     "Esc1_tube", "SPAC3F10.12c_plate"), fl),
-                      width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
+                width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                 heatmap_height = unit(h_ipmsHm / 1.6, "mm"),
                 heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
                                             border = "gray10",
@@ -481,18 +484,13 @@ lgd_dbd <- Legend(labels = names(dbd_colors),
                   title = "DBD family", nrow = 2)
 
 legend_bait_1 <- grid.grabExpr(
-    hm1b <- ComplexHeatmap::draw(lgd_complex),
+    hm1bl1 <- ComplexHeatmap::draw(lgd_complex),
     width = w_ipmsHm, height = h_ipmsHm / 8
 )
 legend_bait_2 <- grid.grabExpr(
-    hm1b <- ComplexHeatmap::draw(lgd_dbd),
+    hm1bl2 <- ComplexHeatmap::draw(lgd_dbd),
     width = w_ipmsHm, height = h_ipmsHm / 8
 )
-```
-
-```{r}
-pie_bait_150 <- makePie(baitdata = baitdata_150,
-                        title = "150 mM NaCl\nstrict cutoff")
 ```
 
 ### Bait-vs-bait, less stringent adjusted p-value threshold
@@ -526,8 +524,8 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                           idmap = idmap),
                       top_annotation = makeTFIntAnnotation(baitdata_150_loose), 
                       bottom_annotation = makeColLabels(baitdata_150_loose$mat, 
-                                                  c("Ntu1_plate", "Ntu2_plate", 
-                                                    "Esc1_tube", "SPAC3F10.12c_plate"), fl),
+                                                        c("Ntu1_plate", "Ntu2_plate", 
+                                                          "Esc1_tube", "SPAC3F10.12c_plate"), fl),
                       width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                       heatmap_height = unit(h_ipmsHm / 1.6, "mm"), 
                       heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
@@ -542,11 +540,6 @@ hm_150_0.05_bait <- grid.grabExpr(
 )
 
 plot_grid(hm_150_0.05_bait)
-```
-
-```{r}
-pie_bait_150_loose <- makePie(baitdata = baitdata_150_loose, 
-                              title = "150 mM NaCl\nlenient cutoff")
 ```
 
 ### SAGA/NuA4 heatmap
@@ -726,8 +719,8 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                      dbd = dbd, idmap = idmap),
                  top_annotation = makeTFIntAnnotation(baitdata_500), 
                  bottom_annotation = makeColLabels(baitdata_500$mat, 
-                                                  c("Ntu1_plate", "Ntu2_plate",
-                                                    "Esc1_plate", "SPAC3F10.12c_plate"), fl),
+                                                   c("Ntu1_plate", "Ntu2_plate",
+                                                     "Esc1_plate", "SPAC3F10.12c_plate"), fl),
                  width = unit(w_ipmsHm, "mm") / 1.05, # heatmap body width
                  heatmap_height = unit(h_ipmsHm / 1.6, "mm"), # whole heatmap height
                  heatmap_legend_param = list(title_gp = gpar(fontsize = fl), 
@@ -744,20 +737,30 @@ hm_500_bait <- grid.grabExpr(
 plot_grid(hm_500_bait)
 ```
 
-```{r}
-pie_bait_500 <- makePie(baitdata = baitdata_500, 
-                        title = "500 mM NaCl\nstrict cutoff")
-
-pie_bait_500_loose <- makePie(baitdata = baitdata_500_loose, 
-                              title = "500 mM NaCl\nlenient cutoff")
-```
 
 ## Pie charts for bait-vs-bait interactions (within/between DBD families)
 
 The pie charts below display the number of observed within- and between-DBD 
 family interactions under different salt conditions and using different 
 thresholds for identifying interactions. The black arc indicate the  
-fraction of within-DBD family interactions expected by chance. 
+fraction of within-DBD family interactions expected by chance, given the 
+observed number of elements in each of the families. 
+
+```{r}
+#| label: make-pies
+
+pie_bait_150 <- makePie(baitdata = baitdata_150,
+                        title = "150 mM NaCl\nstrict cutoff")
+
+pie_bait_150_loose <- makePie(baitdata = baitdata_150_loose, 
+                              title = "150 mM NaCl\nlenient cutoff")
+
+pie_bait_500 <- makePie(baitdata = baitdata_500, 
+                        title = "500 mM NaCl\nstrict cutoff")
+
+pie_bait_500_loose <- makePie(baitdata = baitdata_500_loose, 
+                              title = "500 mM NaCl\nlenient cutoff")
+```
 
 ```{r}
 #| label: pie-bait-summary
@@ -781,7 +784,8 @@ The figures below show scatter plots of moderated t-statistics for selected
 bait pull-downs compared to their complements, in the high-salt vs low-salt 
 conditions. 
 
-```{r tstat-150-vs-500}
+```{r}
+#| label: tstat-150-vs-500
 #| fig.width: 6
 #| fig.height: 7
 #| message: false
@@ -930,8 +934,8 @@ lowhighsub2 <- lowhigh |>
                     aes(slope = tstat_low / tstat_high, intercept = 0), 
                     linetype = "dashed", color = "grey50") + 
         geom_text_repel(data = lowhighsub1 |>
-                                dplyr::mutate(
-                                    einprotId = ifelse(significant, einprotId, "")),
+                            dplyr::mutate(
+                                einprotId = ifelse(significant, einprotId, "")),
                         aes(label = einprotId), min.segment.length = 0,
                         max.overlaps = Inf) + 
         geom_point(aes(alpha = !is.na(complex), color = complex), 
@@ -995,7 +999,7 @@ lowhighsub2 <- lowhigh |>
                fill = guide_legend(nrow = 1, byrow = TRUE, title = "")))
 ```
 
-## Supplementary plot - tube vs plate t-statistics for Atf1 pull-down
+## Tube vs plate t-statistics for Atf1 pull-down
 
 The low-salt experiments were done using two different protocols (`tube` or 
 `plate`). The `Atf1` pull-down was performed with both protocols, and the 
@@ -1010,26 +1014,25 @@ df <- as.data.frame(rowData(sce150)) |>
     dplyr::mutate(col = ifelse(einprotId == "Atf1", "bait", 
                                ifelse(einprotId == "Pcr1", "Pcr1", "other")))
 (ggatf1 <- ggplot(df, aes(x = Atf1_150_tube_vs_compl_Atf1_150_tube.t, 
-                         y = Atf1_150_plate_vs_compl_Atf1_150_plate.t)) + 
-    geom_abline(slope = 1, intercept = 0) + 
-    geom_point(size = 3, aes(color = col, alpha = col)) + 
-    scale_color_manual(values = c(bait = main_colors[3], pcr1 = main_colors[4], 
-                                  other = "black")) + 
-    scale_alpha_manual(values = c(bait = 1, pcr1 = 1, other = 0.5)) + 
-    geom_text_repel(data = df |> filter(einprotId %in% c("Atf1", "Pcr1")), 
-                    aes(label = einprotId)) + 
-    labs(x = "Mod. t-stat. Atf1 vs complement\n(tube, 150 mM NaCl)", 
-         y = "Mod. t-stat. Atf1 vs complement\n(plate, 150 mM NaCl)") + 
-    coord_fixed() + 
-    theme_cowplot() + 
-    theme(legend.position = "none"))
+                          y = Atf1_150_plate_vs_compl_Atf1_150_plate.t)) + 
+        geom_abline(slope = 1, intercept = 0) + 
+        geom_point(size = 3, aes(color = col, alpha = col)) + 
+        scale_color_manual(values = c(bait = main_colors[3], pcr1 = main_colors[4], 
+                                      other = "black")) + 
+        scale_alpha_manual(values = c(bait = 1, pcr1 = 1, other = 0.5)) + 
+        geom_text_repel(data = df |> filter(einprotId %in% c("Atf1", "Pcr1")), 
+                        aes(label = einprotId)) + 
+        labs(x = "Mod. t-stat. Atf1 vs complement\n(tube, 150 mM NaCl)", 
+             y = "Mod. t-stat. Atf1 vs complement\n(plate, 150 mM NaCl)") + 
+        coord_fixed() + 
+        theme_cowplot() + 
+        theme(legend.position = "none"))
 ```
 
-## Supplementary plot - Adn2 vs complement volcano plot
-
-# Pho7 volcano plot
+## Adn2 vs complement volcano plot
 
 ```{r}
+#| label: adn2-volc
 #| warning: false
 
 md <- metadata(sce500)
@@ -1060,7 +1063,7 @@ volc <- md$testres$tests$Adn2_500_plate_vs_compl_Adn2_500_plate |>
 ```
 
 
-## Supplementary plot - histone proteins t-stats
+## Histone proteins t-stats
 
 ```{r histone-prots-500}
 #| fig.width: 6
@@ -1075,10 +1078,7 @@ histones <- t(histones)
 hmhistones <- Heatmap(histones, 
                       cluster_rows = TRUE, 
                       cluster_columns = FALSE, 
-                      col = circlize::colorRamp2(
-                          breaks = seq(1.5, 13.0, length.out = 64),
-                          colors = colorRampPalette(
-                              binary_heatmap_colors[c("FALSE", "TRUE")])(64)),
+                      col = makeHeatmapCol(stringency = "low"), 
                       border = TRUE, 
                       border_gp = gpar(lwd = 0.5),
                       name = "Mod.\nt-stat.",
@@ -1137,10 +1137,10 @@ cowplot::plot_grid(
 )
 ```
 
-## Supplementary Figure 5
+## Supplementary figure
 
 ```{r}
-#| label: SuppFig5
+#| label: suppFig5
 #| fig.width: 10
 #| fig.height: 10
 #| warning: false
@@ -1149,10 +1149,12 @@ cowplot::plot_grid(
     cowplot::plot_grid(
         pies, 
         adn2volc, 
-        ncol = 1
+        ncol = 1,
+        labels = c("A", "B")
     ),
     hm_histones,
-    nrow = 1
+    nrow = 1,
+    labels = c("", "C")
 )
 ```
 
