@@ -189,8 +189,7 @@ p_ntu2 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu2\U141
                     y = c(1.05, 1.15),
                     tip_length = 0, step_increase = 0.1, parse = TRUE) + 
         geom_boxplot(width = 0.1, fill = "white") +
-        labs(title = "Relative distance from nuclear envelope",
-             x = "", y = "Distance from NE relative to radius") + 
+        labs(x = "", y = "Distance from NE relative to radius") + 
         scale_fill_manual(values = c(na_color, main_colors[5], main_colors[1]),
                           name = "Condition") + 
         scale_x_discrete(labels = get_xlabs) +
@@ -215,8 +214,7 @@ get_xlabs_bar <- function(x) {
      geom_bar(position = "stack", stat = "identity") +
      geom_text(aes(label = paste0(round(100 * avg_fraction_by_zone, 2), "%")), 
                    position = position_stack(vjust = 0.5), size = 4) +
-     labs(title = "Relative zone distribution incl. both replicates", 
-          x = "", y = "Relative distribution [%]") +
+     labs(x = "", y = "Relative zone distribution [%]") +
      scale_fill_manual(values = c(main_colors[1], main_colors[3], main_colors[5]),
                        name = "") + 
      scale_x_discrete(labels = get_xlabs_bar) + 
@@ -636,22 +634,24 @@ cowplot::plot_grid(
         labels = c("A", "C"),
         align = "h", axis = "bt"
     ),
+    NULL,
     cowplot::plot_grid(
         fig7b, 
         gcov,
         rel_widths = c(1, 1),
         labels = c("B", "D")
     ),
+    NULL,
     cowplot::plot_grid(
         fig7e,
         NULL,
         fig7f,
         NULL,
         p_zone + theme(legend.position = "top"), 
-        labels = c("E", "", "F", "", "G"),
+        labels = c("E", "", "F", "", "G"), vjust = 2,
         rel_widths = c(6, 0.75, 1.2, 0.75, 10.4), nrow = 1
     ), 
-    ncol = 1
+    ncol = 1, rel_heights = c(1, 0.1, 1, 0.1, 1)
 )
 ```
 
@@ -714,22 +714,27 @@ figs7a <- ggdraw() +
 
 cowplot::plot_grid(
     figs7a,
+    NULL,
     cowplot::plot_grid(
         p_rel_dis,
-        genomeplot_tpm,
+        cowplot::plot_grid(genomeplot_tpm, NULL,
+                           ncol = 1, rel_heights = c(1, 0.075)),
         nrow = 1, 
         rel_widths = c(1, 1), 
-        labels = c("B", "C")
+        labels = c("B", "C"),
+        vjust = 0.5
     ),
+    NULL,
     cowplot::plot_grid(
         genomeplot,
         gcovdel,
         nrow = 1, 
         rel_widths = c(1, 1),
-        labels = c("D", "E")
+        labels = c("D", "E"),
+        vjust = 0.5
     ),
     labels = c("A", "", ""), 
-    ncol = 1, rel_heights = c(1, 1, 1)
+    ncol = 1, rel_heights = c(1, 0.1, 1, 0.05, 1)
 )
 ```
 
