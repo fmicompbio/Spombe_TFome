@@ -538,7 +538,7 @@ plot_grid(hm_taggedTFs)
 #| warning: false
 
 fig1c <- ggdraw() + 
-    draw_image("schematics/Fig1C_placeholder_screen_overview_Arial.png")
+    draw_image("schematics/Fig1A_placeholder_screen_overview_Arial.png")
 
 cowplot::plot_grid(
     fig1c,
@@ -548,7 +548,8 @@ cowplot::plot_grid(
                               aes(x = bait, xend = bait, y = -6, yend = -20), color = main_colors[1], 
                               linewidth = 1.25) + 
             scale_y_continuous(expand = expansion(mult = c(0, 0.025))) + 
-            theme(axis.text.x = element_blank()),
+            theme(axis.text.x = element_blank(),
+                  axis.ticks.length.x = unit(0, "mm")),
         nrow = 1,
         labels = c("B", "C"),
         align = "vh",
