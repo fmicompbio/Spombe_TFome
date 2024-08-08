@@ -4,6 +4,7 @@ subtitle: "Analysis code for figures"
 date: today
 author:
   - name: Merle Skribbe
+    orcid: 0009-0004-4486-2654
     email: merle.skribbe@gmail.com
     affiliations:
       - ref: fmi
@@ -22,10 +23,12 @@ author:
       - ref: unibas
       - ref: sib
   - name: Michaela Schwaiger
+    orcid: 0000-0002-4522-7810
     affiliations:
       - ref: fmi
       - ref: sib
   - name: Vishnu Narayanan Suma Sreechakram
+    orcid: 0000-0002-7341-3354
     affiliations:
       - ref: giessen
   - name: Vytautas Iesmantavicius
@@ -40,6 +43,7 @@ author:
     affiliations:
       - ref: fmi
   - name: Sigurd Braun
+    orcid: 0000-0001-6399-8574
     affiliations:
       - ref: giessen
   - name: Jan Seebacher
@@ -47,6 +51,7 @@ author:
     affiliations:
       - ref: fmi
   - name: Sebastien Smallwood
+    orcid: 0009-0006-8466-2459
     affiliations:
       - ref: fmi
   - name: Marc Bühler
@@ -104,9 +109,9 @@ You can interactively explore IP-MS and ChIP-seq data using `TFexplorer` at:
 
 Raw and processed data generated as part of this study is available from:
 
-- **IP-MS data (PRIDE)**: [https://www.ebi.ac.uk/pride/archive/projects/PXD054070](https://www.ebi.ac.uk/pride/archive/projects/PXD054070)
-- **RNA-seq data (GEO)**: [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238)
-- **ChIP-seq data (GEO)**: [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240)
+- **IP-MS data (PRIDE)**: [PXD054070](https://www.ebi.ac.uk/pride/archive/projects/PXD054070)
+- **RNA-seq data (GEO)**: [GSE274238](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238)
+- **ChIP-seq data (GEO)**: [GSE274240](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240)
 
 ## Links to publication
 
