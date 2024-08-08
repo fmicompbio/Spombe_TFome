@@ -723,7 +723,7 @@ figs6c <- cowplot::plot_grid(
         similplot + theme(legend.position = "bottom"), 
         ggr150example + theme(legend.position = "none"), 
         align = "v", axis = "t", 
-        labels = c("C", "", "", ""), nrow = 1, 
+        labels = c("C", "", "", ""), nrow = 1, vjust = -0.5,
         rel_widths = c(1.1, 0.9, 1, 0.5)
     ),
     ggeqn2, ncol = 1, labels = "", 
@@ -735,11 +735,11 @@ figs6c <- cowplot::plot_grid(
 
 ```{r Fig6}
 #| fig.width: 10
-#| fig.height: 12
+#| fig.height: 11
 #| warning: false
 
-fig6c <- ggdraw() + 
-    draw_image("schematics/Fig6C_Pho7_protein_domains_cartoon_Arial_RGB.png")
+fig6b <- ggdraw() + 
+    draw_image("schematics/Fig6B_Pho7_protein_domains_cartoon_Arial_RGB.png")
 
 coords150 <- read.csv(params$coords150)
 coords500 <- read.csv(params$coords500)
@@ -776,13 +776,14 @@ cowplot::plot_grid(
     cowplot::plot_grid(
         pho7volc, 
         cowplot::plot_grid(
-            cowplot::plot_grid(NULL, fig6c, NULL, nrow = 1,
+            cowplot::plot_grid(NULL, fig6b, NULL, nrow = 1,
                                rel_widths = c(0.25, 1, 0.1)),  
             ggrad_upset,
             ncol = 1, labels = c("B", "C"),
             rel_heights = c(1, 1.75)), 
         nrow = 1, labels = c("A", "")
     ),
+    NULL,
     cowplot::plot_grid(
         cowplot::plot_grid(
             ggr150 + theme(legend.position = "none") + 
@@ -791,12 +792,12 @@ cowplot::plot_grid(
             ggr500 + theme(legend.position = "none") + 
                 ggtitle("500 mM NaCl IP-MS") +
                 theme(plot.title = element_text(hjust = 0.075, size = ft)), 
-            nrow = 1, labels = c("D", "E")
+            nrow = 1, labels = c("D", "E"), vjust = 1.8
         ),
         get_legend(ggr150 + theme(legend.position = "bottom"), "bottom"),
-        nrow = 2, labels = c("", ""), rel_heights = c(1, 0.25)
+        nrow = 2, labels = c("", ""), rel_heights = c(1, 0.1)
     ),
-    rel_heights = c(3.5, 5), 
+    rel_heights = c(3.5, 0.3, 4.25), 
     ncol = 1
 )
 ```
