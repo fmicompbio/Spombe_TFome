@@ -97,9 +97,23 @@ format:
 
 ## Interactive data exploration with `TFexplorer`
 
+You can interactively explore IP-MS and ChIP-seq data using `TFexplorer` at:
+[https://data.fmi.ch/TFexplorer/](https://data.fmi.ch/TFexplorer/)
+
 ## Links to raw data
 
+Raw and processed data generated as part of this study is available from:
+
+- **IP-MS data (PRIDE)**: [https://www.ebi.ac.uk/pride/archive/projects/PXD054070](https://www.ebi.ac.uk/pride/archive/projects/PXD054070)
+- **RNA-seq data (GEO)**: [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238)
+- **ChIP-seq data (GEO)**: [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240)
+
 ## Links to publication
+
+The accompanying manuscript is available at:
+
+- bioRxiv
+- ...
 
 ## Links to code for generating figures
 
