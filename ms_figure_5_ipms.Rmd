@@ -438,7 +438,7 @@ hm1b <- Heatmap(baitdata_150$mat,
                 border_gp = gpar(lwd = 0.5),
                 name = "Mod.\nt-stat.", 
                 na_col = binary_heatmap_colors["FALSE"],
-                column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
+                column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 25)), collapse = ""),
                 row_title = "Transcription factors",
                 column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                 row_title_gp = gpar(fontsize = fl),
@@ -522,7 +522,7 @@ hm1b_loose <- Heatmap(baitdata_150_loose$mat,
                       border_gp = gpar(lwd = 0.5),
                       name = "Mod.\nt-stat.", 
                       na_col = binary_heatmap_colors["FALSE"],
-                      column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
+                      column_title = paste(c("150 mM NaCl IP-MS", rep(" ", 25)), collapse = ""),
                       row_title = "Transcription factors",
                       column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                       row_title_gp = gpar(fontsize = fl),
@@ -592,7 +592,7 @@ hm1saga_nua4 <- Heatmap(
     binary_mat, 
     cluster_rows = FALSE, 
     cluster_columns = FALSE, 
-    col = binary_heatmap_colors, 
+    col = c(`FALSE` = "#11111100", `TRUE` = binary_heatmap_colors[["TRUE"]]), 
     border = TRUE, 
     border_gp = gpar(lwd = 0.5),
     name = " ", 
@@ -600,8 +600,9 @@ hm1saga_nua4 <- Heatmap(
     column_names_gp = gpar(fontsize = ft),
     row_names_gp = gpar(fontsize = fl),
     show_row_names = TRUE, show_column_names = TRUE, 
+    row_names_side = "left",
     use_raster = FALSE, show_heatmap_legend = TRUE,
-    right_annotation = rowAnnotation(
+    left_annotation = rowAnnotation(
         df = binary_annot, 
         col = list(SAGA = c(`TRUE` = complex_colors[["SAGA"]],
                             `FALSE` = binary_heatmap_colors[["FALSE"]]),
@@ -613,6 +614,7 @@ hm1saga_nua4 <- Heatmap(
     heatmap_legend_param = list(title_gp = gpar(fontsize = ft),
                                 at = c("FALSE", "TRUE"),
                                 labels = c("", "adj. p < 0.05 &\nlog2FC > 1"), 
+                                border = "#11111100",
                                 legend_gap = unit(0, "mm"))
 )
 
@@ -722,7 +724,7 @@ hm1b2 <- Heatmap(baitdata_500$mat,
                  border_gp = gpar(lwd = 0.5),
                  name = "Mod.\nt-stat.", 
                  na_col = binary_heatmap_colors["FALSE"],
-                 column_title = paste(c("500 mM NaCl IP-MS", rep(" ", 45)), collapse = ""),
+                 column_title = paste(c("500 mM NaCl IP-MS", rep(" ", 25)), collapse = ""),
                  row_title = "Transcription factors",
                  column_title_gp = gpar(fontsize = fl + 3, fontface = "bold"),
                  row_title_gp = gpar(fontsize = fl),
@@ -794,7 +796,8 @@ pie_bait_500_loose <- makePie(baitdata = baitdata_500_loose,
                        pie_bait_150_loose + theme(legend.position = "none"), 
                        pie_bait_500 + theme(legend.position = "none"),
                        pie_bait_500_loose + theme(legend.position = "none"), nrow = 2),
-    get_legend(pie_bait_150 + theme_cowplot(ft) + theme(legend.position = "bottom")),
+    get_legend(pie_bait_150 + theme_cowplot(ft) + theme(legend.position = "bottom",
+                                                        legend.justification = "center")),
     ncol = 1, rel_heights = c(2, 0.25)
 ))
 ```
@@ -996,10 +999,10 @@ lowhighsub2 <- lowhigh |>
                    show.legend = c(alpha = FALSE, color = TRUE, size = FALSE)) + 
         scale_color_manual(
             values = c(`TRUE` = lighten(main_colors[4], 0.2), `FALSE` = "black"), 
-            labels = c(`TRUE` = paste0("adj. p < ", adjp150vs500, 
-                                       " and logFC > ", logfc150vs500, " (500 mM NaCl)"),
-                       `FALSE` = paste0("adj. p >= ", adjp150vs500, 
-                                        " or logFC <= ", logfc150vs500, " (500 mM NaCl)"))) + 
+            labels = c(`TRUE` = paste0("adj. p<", adjp150vs500, 
+                                       " and logFC>", logfc150vs500, " (500 mM NaCl)"),
+                       `FALSE` = paste0("adj. p\U2265", adjp150vs500, 
+                                        " or logFC\U2264", logfc150vs500, " (500 mM NaCl)"))) + 
         scale_size_manual(values = c(`TRUE` = 2, `FALSE` = 1)) +
         scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25)) + 
         geom_point(data = lowhighsub2 |> 
@@ -1149,13 +1152,15 @@ cowplot::plot_grid(
         nrow = 1,
         rel_widths = c(1, 2, 2, 1)
     ),
+    NULL,
     cowplot::plot_grid(
         gg_retain2,
-        plot_grid(gg_retain1, NULL, hm_150_saga_nua4, nrow = 1, rel_widths = c(1, 0.05, 0.75)),
-        nrow = 1, labels = c("C", "D")
+        plot_grid(NULL, hm_150_saga_nua4, gg_retain1,
+                  nrow = 1, rel_widths = c(0.05, 0.75, 1)),
+        nrow = 1, labels = c("C", "D"), vjust = -0.5
     ),
     ncol = 1,
-    rel_heights = c(4, 1, 7)
+    rel_heights = c(3.5, 0.5, 0.2, 5.88)
 )
 ```
 
