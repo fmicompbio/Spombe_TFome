@@ -381,15 +381,21 @@ gr500 <- createNetwork(similList = simil500, threshold = 6,
                        known_interactors = interactors, settings = "igraph")
 ```
 
-We export the generated networks for use by TFexplorer.
+We export networks (with a lower similarity threshold, to allow for 
+interactive exploration) for use by TFexplorer.
 
 ```{r}
+gr150tfx <- createNetwork(similList = simil150, threshold = 3, 
+                          known_interactors = interactors, settings = "igraph")
+gr500tfx <- createNetwork(similList = simil500, threshold = 3, 
+                          known_interactors = interactors, settings = "igraph")
+
 ## 150 mM NaCl
-n150 <- as_tbl_graph(gr150) |>
+n150 <- as_tbl_graph(gr150tfx) |>
     activate(nodes) |>
     data.frame() |>
     mutate(idx = seq_along(name))
-e150 <- as_tbl_graph(gr150) |>
+e150 <- as_tbl_graph(gr150tfx) |>
     activate(edges) |>
     data.frame() |>
     left_join(n150 |> select(name, idx) |> rename(from = idx, from_name = name), 
@@ -414,11 +420,11 @@ exp150 <- toJSON(exp150,
 write(exp150, file = "data/networkData_150mMSalt.json")
 
 ## 500 mM NaCl
-n500 <- as_tbl_graph(gr500) |>
+n500 <- as_tbl_graph(gr500tfx) |>
     activate(nodes) |>
     data.frame() |>
     mutate(idx = seq_along(name))
-e500 <- as_tbl_graph(gr500) |>
+e500 <- as_tbl_graph(gr500tfx) |>
     activate(edges) |>
     data.frame() |>
     left_join(n500 |> select(name, idx) |> rename(from = idx, from_name = name), 

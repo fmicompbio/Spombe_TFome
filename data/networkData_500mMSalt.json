@@ -6,8 +6,33 @@
       "value": 1
     },
     {
+      "id": "SPAC1039.01",
+      "label": "SPAC1039.01",
+      "value": 1
+    },
+    {
       "id": "Dal81",
       "label": "Dal81",
+      "value": 1
+    },
+    {
+      "id": "Rps1502",
+      "label": "Rps1502",
+      "value": 1
+    },
+    {
+      "id": "Rpp203",
+      "label": "Rpp203",
+      "value": 1
+    },
+    {
+      "id": "Vip1",
+      "label": "Vip1",
+      "value": 1
+    },
+    {
+      "id": "Pss1",
+      "label": "Pss1",
       "value": 1
     },
     {
@@ -26,6 +51,21 @@
       "value": 1
     },
     {
+      "id": "Mcp60",
+      "label": "Mcp60",
+      "value": 1
+    },
+    {
+      "id": "Fur4",
+      "label": "Fur4",
+      "value": 1
+    },
+    {
+      "id": "Erg11",
+      "label": "Erg11",
+      "value": 1
+    },
+    {
       "id": "Ssa1",
       "label": "Ssa1",
       "value": 1
@@ -36,8 +76,53 @@
       "value": 1
     },
     {
+      "id": "Laf1",
+      "label": "Laf1",
+      "value": 1
+    },
+    {
+      "id": "Atp1",
+      "label": "Atp1",
+      "value": 1
+    },
+    {
+      "id": "Srp2",
+      "label": "Srp2",
+      "value": 1
+    },
+    {
+      "id": "Por1",
+      "label": "Por1",
+      "value": 1
+    },
+    {
+      "id": "Rpl44",
+      "label": "Rpl44",
+      "value": 1
+    },
+    {
+      "id": "Hrp1",
+      "label": "Hrp1",
+      "value": 1
+    },
+    {
       "id": "Pap1",
       "label": "Pap1",
+      "value": 1
+    },
+    {
+      "id": "Rpl1502",
+      "label": "Rpl1502",
+      "value": 1
+    },
+    {
+      "id": "Plb2",
+      "label": "Plb2",
+      "value": 1
+    },
+    {
+      "id": "Vma6",
+      "label": "Vma6",
       "value": 1
     },
     {
@@ -46,8 +131,28 @@
       "value": 1
     },
     {
+      "id": "Gus1",
+      "label": "Gus1",
+      "value": 1
+    },
+    {
+      "id": "Sec62",
+      "label": "Sec62",
+      "value": 1
+    },
+    {
+      "id": "Hhf2",
+      "label": "Hhf2",
+      "value": 1
+    },
+    {
       "id": "Hht2",
       "label": "Hht2",
+      "value": 1
+    },
+    {
+      "id": "Slc1",
+      "label": "Slc1",
       "value": 1
     },
     {
@@ -58,6 +163,16 @@
     {
       "id": "Mce1",
       "label": "Mce1",
+      "value": 1
+    },
+    {
+      "id": "Hta2",
+      "label": "Hta2",
+      "value": 1
+    },
+    {
+      "id": "Deb1",
+      "label": "Deb1",
       "value": 1
     },
     {
@@ -91,8 +206,33 @@
       "value": 1
     },
     {
+      "id": "Atp2",
+      "label": "Atp2",
+      "value": 1
+    },
+    {
+      "id": "Yip5",
+      "label": "Yip5",
+      "value": 1
+    },
+    {
+      "id": "Bip1",
+      "label": "Bip1",
+      "value": 1
+    },
+    {
+      "id": "SPAC22E12.18",
+      "label": "SPAC22E12.18",
+      "value": 1
+    },
+    {
       "id": "Res2",
       "label": "Res2",
+      "value": 1
+    },
+    {
+      "id": "Pet1",
+      "label": "Pet1",
       "value": 1
     },
     {
@@ -101,8 +241,23 @@
       "value": 1
     },
     {
+      "id": "Rps102",
+      "label": "Rps102",
+      "value": 1
+    },
+    {
+      "id": "Rps2302",
+      "label": "Rps2302",
+      "value": 1
+    },
+    {
       "id": "Php3",
       "label": "Php3",
+      "value": 1
+    },
+    {
+      "id": "Shm1",
+      "label": "Shm1",
       "value": 1
     },
     {
@@ -116,6 +271,21 @@
       "value": 1
     },
     {
+      "id": "Tif302",
+      "label": "Tif302",
+      "value": 1
+    },
+    {
+      "id": "Rpl2001",
+      "label": "Rpl2001",
+      "value": 1
+    },
+    {
+      "id": "SPAC26H5.07c",
+      "label": "SPAC26H5.07c",
+      "value": 1
+    },
+    {
       "id": "Ost1",
       "label": "Ost1",
       "value": 1
@@ -126,8 +296,58 @@
       "value": 1
     },
     {
+      "id": "Pgt1",
+      "label": "Pgt1",
+      "value": 1
+    },
+    {
       "id": "Hsf1",
       "label": "Hsf1",
+      "value": 1
+    },
+    {
+      "id": "Rim1",
+      "label": "Rim1",
+      "value": 1
+    },
+    {
+      "id": "Rps1001",
+      "label": "Rps1001",
+      "value": 1
+    },
+    {
+      "id": "Tif212",
+      "label": "Tif212",
+      "value": 1
+    },
+    {
+      "id": "Nde1",
+      "label": "Nde1",
+      "value": 1
+    },
+    {
+      "id": "Rpt5",
+      "label": "Rpt5",
+      "value": 1
+    },
+    {
+      "id": "SPAC3C7.04",
+      "label": "SPAC3C7.04",
+      "value": 1
+    },
+    {
+      "id": "Sak1",
+      "label": "Sak1",
+      "value": 1
+    },
+    {
+      "id": "Fas2",
+      "label": "Fas2",
+      "value": 1
+    },
+    {
+      "id": "Tif303",
+      "label": "Tif303",
       "value": 1
     },
     {
@@ -136,13 +356,103 @@
       "value": 1
     },
     {
+      "id": "Sum1",
+      "label": "Sum1",
+      "value": 1
+    },
+    {
+      "id": "Mnn9",
+      "label": "Mnn9",
+      "value": 1
+    },
+    {
+      "id": "Btf3",
+      "label": "Btf3",
+      "value": 1
+    },
+    {
+      "id": "Cmb1",
+      "label": "Cmb1",
+      "value": 1
+    },
+    {
+      "id": "Eft202",
+      "label": "Eft202",
+      "value": 1
+    },
+    {
       "id": "Ura3",
       "label": "Ura3",
       "value": 1
     },
     {
+      "id": "Ssz1",
+      "label": "Ssz1",
+      "value": 1
+    },
+    {
+      "id": "Snd302",
+      "label": "Snd302",
+      "value": 1
+    },
+    {
+      "id": "Cwh43",
+      "label": "Cwh43",
+      "value": 1
+    },
+    {
       "id": "SPAC644.13c",
       "label": "SPAC644.13c",
+      "value": 1
+    },
+    {
+      "id": "Rps1601",
+      "label": "Rps1601",
+      "value": 1
+    },
+    {
+      "id": "Ssc1",
+      "label": "Ssc1",
+      "value": 1
+    },
+    {
+      "id": "SPAC694.02",
+      "label": "SPAC694.02",
+      "value": 1
+    },
+    {
+      "id": "Rps2502",
+      "label": "Rps2502",
+      "value": 1
+    },
+    {
+      "id": "Tom70",
+      "label": "Tom70",
+      "value": 1
+    },
+    {
+      "id": "Rst2",
+      "label": "Rst2",
+      "value": 1
+    },
+    {
+      "id": "Fsv1",
+      "label": "Fsv1",
+      "value": 1
+    },
+    {
+      "id": "Ace2",
+      "label": "Ace2",
+      "value": 1
+    },
+    {
+      "id": "Pcp1",
+      "label": "Pcp1",
+      "value": 1
+    },
+    {
+      "id": "Rpl2401",
+      "label": "Rpl2401",
       "value": 1
     },
     {
@@ -161,6 +471,16 @@
       "value": 1
     },
     {
+      "id": "Sul2",
+      "label": "Sul2",
+      "value": 1
+    },
+    {
+      "id": "Put4",
+      "label": "Put4",
+      "value": 1
+    },
+    {
       "id": "Prr1",
       "label": "Prr1",
       "value": 1
@@ -171,8 +491,38 @@
       "value": 1
     },
     {
+      "id": "SPAC8F11.04",
+      "label": "SPAC8F11.04",
+      "value": 1
+    },
+    {
       "id": "Pvg1",
       "label": "Pvg1",
+      "value": 1
+    },
+    {
+      "id": "Hsp90",
+      "label": "Hsp90",
+      "value": 1
+    },
+    {
+      "id": "Fas1",
+      "label": "Fas1",
+      "value": 1
+    },
+    {
+      "id": "Sec17",
+      "label": "Sec17",
+      "value": 1
+    },
+    {
+      "id": "Rpl2102",
+      "label": "Rpl2102",
+      "value": 1
+    },
+    {
+      "id": "Rps002",
+      "label": "Rps002",
       "value": 1
     },
     {
@@ -186,13 +536,28 @@
       "value": 1
     },
     {
+      "id": "Rpl2501",
+      "label": "Rpl2501",
+      "value": 1
+    },
+    {
       "id": "Lys4",
       "label": "Lys4",
       "value": 1
     },
     {
+      "id": "Mrt4",
+      "label": "Mrt4",
+      "value": 1
+    },
+    {
       "id": "Stt3",
       "label": "Stt3",
+      "value": 1
+    },
+    {
+      "id": "Spi1",
+      "label": "Spi1",
       "value": 1
     },
     {
@@ -211,13 +576,53 @@
       "value": 1
     },
     {
+      "id": "Klp9",
+      "label": "Klp9",
+      "value": 1
+    },
+    {
+      "id": "Stb3",
+      "label": "Stb3",
+      "value": 1
+    },
+    {
+      "id": "Pho841",
+      "label": "Pho841",
+      "value": 1
+    },
+    {
+      "id": "Pcl1",
+      "label": "Pcl1",
+      "value": 1
+    },
+    {
       "id": "Nrm1",
       "label": "Nrm1",
       "value": 1
     },
     {
+      "id": "Oga1",
+      "label": "Oga1",
+      "value": 1
+    },
+    {
       "id": "Rpt1",
       "label": "Rpt1",
+      "value": 1
+    },
+    {
+      "id": "Rps1802",
+      "label": "Rps1802",
+      "value": 1
+    },
+    {
+      "id": "Scs2",
+      "label": "Scs2",
+      "value": 1
+    },
+    {
+      "id": "Rps3",
+      "label": "Rps3",
       "value": 1
     },
     {
@@ -231,6 +636,16 @@
       "value": 1
     },
     {
+      "id": "Pfk1",
+      "label": "Pfk1",
+      "value": 1
+    },
+    {
+      "id": "Sks2",
+      "label": "Sks2",
+      "value": 1
+    },
+    {
       "id": "Aha1",
       "label": "Aha1",
       "value": 1
@@ -241,13 +656,83 @@
       "value": 1
     },
     {
+      "id": "Rar1",
+      "label": "Rar1",
+      "value": 1
+    },
+    {
+      "id": "SPBC17A3.05c",
+      "label": "SPBC17A3.05c",
+      "value": 1
+    },
+    {
+      "id": "Tif213",
+      "label": "Tif213",
+      "value": 1
+    },
+    {
+      "id": "Rpl1001",
+      "label": "Rpl1001",
+      "value": 1
+    },
+    {
+      "id": "Tif307",
+      "label": "Tif307",
+      "value": 1
+    },
+    {
+      "id": "Prs1",
+      "label": "Prs1",
+      "value": 1
+    },
+    {
+      "id": "SPBC19F5.04",
+      "label": "SPBC19F5.04",
+      "value": 1
+    },
+    {
+      "id": "Rps401",
+      "label": "Rps401",
+      "value": 1
+    },
+    {
+      "id": "Cog5",
+      "label": "Cog5",
+      "value": 1
+    },
+    {
+      "id": "Leu1",
+      "label": "Leu1",
+      "value": 1
+    },
+    {
       "id": "Cct3",
       "label": "Cct3",
       "value": 1
     },
     {
+      "id": "Scr1",
+      "label": "Scr1",
+      "value": 1
+    },
+    {
+      "id": "Rps402",
+      "label": "Rps402",
+      "value": 1
+    },
+    {
       "id": "Yox1",
       "label": "Yox1",
+      "value": 1
+    },
+    {
+      "id": "Rps1901",
+      "label": "Rps1901",
+      "value": 1
+    },
+    {
+      "id": "Grx4",
+      "label": "Grx4",
       "value": 1
     },
     {
@@ -261,8 +746,28 @@
       "value": 1
     },
     {
+      "id": "Cyt1",
+      "label": "Cyt1",
+      "value": 1
+    },
+    {
       "id": "Atf1",
       "label": "Atf1",
+      "value": 1
+    },
+    {
+      "id": "Rpl26",
+      "label": "Rpl26",
+      "value": 1
+    },
+    {
+      "id": "Fib1",
+      "label": "Fib1",
+      "value": 1
+    },
+    {
+      "id": "Hmt2",
+      "label": "Hmt2",
       "value": 1
     },
     {
@@ -276,8 +781,23 @@
       "value": 1
     },
     {
+      "id": "Rtn1",
+      "label": "Rtn1",
+      "value": 1
+    },
+    {
       "id": "Sar1",
       "label": "Sar1",
+      "value": 1
+    },
+    {
+      "id": "Ste11",
+      "label": "Ste11",
+      "value": 1
+    },
+    {
+      "id": "Act1",
+      "label": "Act1",
       "value": 1
     },
     {
@@ -291,8 +811,23 @@
       "value": 1
     },
     {
+      "id": "Def1",
+      "label": "Def1",
+      "value": 1
+    },
+    {
       "id": "Clr6",
       "label": "Clr6",
+      "value": 1
+    },
+    {
+      "id": "SPBC365.16",
+      "label": "SPBC365.16",
+      "value": 1
+    },
+    {
+      "id": "Tlg1",
+      "label": "Tlg1",
       "value": 1
     },
     {
@@ -301,13 +836,78 @@
       "value": 1
     },
     {
+      "id": "SPBC3B8.06",
+      "label": "SPBC3B8.06",
+      "value": 1
+    },
+    {
+      "id": "But2",
+      "label": "But2",
+      "value": 1
+    },
+    {
+      "id": "Lac1",
+      "label": "Lac1",
+      "value": 1
+    },
+    {
+      "id": "Rpt2",
+      "label": "Rpt2",
+      "value": 1
+    },
+    {
+      "id": "Rpl3601",
+      "label": "Rpl3601",
+      "value": 1
+    },
+    {
+      "id": "Rpl2502",
+      "label": "Rpl2502",
+      "value": 1
+    },
+    {
+      "id": "Prt1",
+      "label": "Prt1",
+      "value": 1
+    },
+    {
+      "id": "Clu1",
+      "label": "Clu1",
+      "value": 1
+    },
+    {
       "id": "Ntu2",
       "label": "Ntu2",
       "value": 1
     },
     {
+      "id": "Yta12",
+      "label": "Yta12",
+      "value": 1
+    },
+    {
+      "id": "Ilv5",
+      "label": "Ilv5",
+      "value": 1
+    },
+    {
+      "id": "Pex11",
+      "label": "Pex11",
+      "value": 1
+    },
+    {
+      "id": "Tsc13",
+      "label": "Tsc13",
+      "value": 1
+    },
+    {
       "id": "Cct6",
       "label": "Cct6",
+      "value": 1
+    },
+    {
+      "id": "Nog1",
+      "label": "Nog1",
       "value": 1
     },
     {
@@ -321,13 +921,103 @@
       "value": 1
     },
     {
+      "id": "Rpl4301",
+      "label": "Rpl4301",
+      "value": 1
+    },
+    {
+      "id": "Rvb2",
+      "label": "Rvb2",
+      "value": 1
+    },
+    {
+      "id": "Mbf1",
+      "label": "Mbf1",
+      "value": 1
+    },
+    {
+      "id": "Its8",
+      "label": "Its8",
+      "value": 1
+    },
+    {
+      "id": "Rpl1601",
+      "label": "Rpl1601",
+      "value": 1
+    },
+    {
+      "id": "Apm1",
+      "label": "Apm1",
+      "value": 1
+    },
+    {
+      "id": "Cki2",
+      "label": "Cki2",
+      "value": 1
+    },
+    {
+      "id": "Ilv1",
+      "label": "Ilv1",
+      "value": 1
+    },
+    {
+      "id": "Pet127",
+      "label": "Pet127",
+      "value": 1
+    },
+    {
+      "id": "Rpl101",
+      "label": "Rpl101",
+      "value": 1
+    },
+    {
+      "id": "Dfr1",
+      "label": "Dfr1",
+      "value": 1
+    },
+    {
+      "id": "Ght5",
+      "label": "Ght5",
+      "value": 1
+    },
+    {
       "id": "Rxt3",
       "label": "Rxt3",
       "value": 1
     },
     {
+      "id": "Ole1",
+      "label": "Ole1",
+      "value": 1
+    },
+    {
+      "id": "Phb2",
+      "label": "Phb2",
+      "value": 1
+    },
+    {
+      "id": "Adh1",
+      "label": "Adh1",
+      "value": 1
+    },
+    {
       "id": "Adn3",
       "label": "Adn3",
+      "value": 1
+    },
+    {
+      "id": "Hmg1",
+      "label": "Hmg1",
+      "value": 1
+    },
+    {
+      "id": "Rpl1902",
+      "label": "Rpl1902",
+      "value": 1
+    },
+    {
+      "id": "Oca8",
+      "label": "Oca8",
       "value": 1
     },
     {
@@ -341,6 +1031,31 @@
       "value": 1
     },
     {
+      "id": "Sum3",
+      "label": "Sum3",
+      "value": 1
+    },
+    {
+      "id": "SPCC18.03",
+      "label": "SPCC18.03",
+      "value": 1
+    },
+    {
+      "id": "Pcs60",
+      "label": "Pcs60",
+      "value": 1
+    },
+    {
+      "id": "Gaf1",
+      "label": "Gaf1",
+      "value": 1
+    },
+    {
+      "id": "Mdh1",
+      "label": "Mdh1",
+      "value": 1
+    },
+    {
       "id": "SPCC320.08",
       "label": "SPCC320.08",
       "value": 1
@@ -351,13 +1066,78 @@
       "value": 1
     },
     {
+      "id": "Tef3",
+      "label": "Tef3",
+      "value": 1
+    },
+    {
+      "id": "Ght8",
+      "label": "Ght8",
+      "value": 1
+    },
+    {
+      "id": "Tpx1",
+      "label": "Tpx1",
+      "value": 1
+    },
+    {
+      "id": "Rps2",
+      "label": "Rps2",
+      "value": 1
+    },
+    {
+      "id": "Rps20",
+      "label": "Rps20",
+      "value": 1
+    },
+    {
+      "id": "Rpt3",
+      "label": "Rpt3",
+      "value": 1
+    },
+    {
+      "id": "Rpl15",
+      "label": "Rpl15",
+      "value": 1
+    },
+    {
       "id": "SPCC584.13",
       "label": "SPCC584.13",
       "value": 1
     },
     {
+      "id": "Rpl2802",
+      "label": "Rpl2802",
+      "value": 1
+    },
+    {
+      "id": "Rpl902",
+      "label": "Rpl902",
+      "value": 1
+    },
+    {
+      "id": "Hta1",
+      "label": "Hta1",
+      "value": 1
+    },
+    {
       "id": "Htb1",
       "label": "Htb1",
+      "value": 1
+    },
+    {
+      "id": "Rpl6",
+      "label": "Rpl6",
+      "value": 1
+    },
+    {
+      "id": "Cbf11",
+      "label": "Cbf11",
+      "value": 1
+    },
+    {
+      "id": "Rpl2702",
+      "label": "Rpl2702",
       "value": 1
     },
     {
@@ -369,13 +1149,138 @@
       "id": "Vma8",
       "label": "Vma8",
       "value": 1
+    },
+    {
+      "id": "SPCC965.10",
+      "label": "SPCC965.10",
+      "value": 1
+    },
+    {
+      "id": "SPCC965.13",
+      "label": "SPCC965.13",
+      "value": 1
+    },
+    {
+      "id": "Cbr1",
+      "label": "Cbr1",
+      "value": 1
+    },
+    {
+      "id": "Amt1",
+      "label": "Amt1",
+      "value": 1
     }
   ],
   "edges": [
     {
+      "source": "SPAC1039.01",
+      "target": "Map1",
+      "value": 5.5472
+    },
+    {
+      "source": "Rpp203",
+      "target": "Map1",
+      "value": 4.7637
+    },
+    {
+      "source": "Tif1",
+      "target": "Idh1",
+      "value": 5.8077
+    },
+    {
+      "source": "Map1",
+      "target": "Fur4",
+      "value": 3.9157
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Erg11",
+      "value": 4.2294
+    },
+    {
+      "source": "Vip1",
+      "target": "Ssa1",
+      "value": 3.8057
+    },
+    {
+      "source": "Tif1",
+      "target": "Por1",
+      "value": 3.6344
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Por1",
+      "value": 3.1278
+    },
+    {
+      "source": "Map1",
+      "target": "Por1",
+      "value": 3.0911
+    },
+    {
+      "source": "Map1",
+      "target": "Hrp1",
+      "value": 3.2838
+    },
+    {
+      "source": "Pss1",
+      "target": "Pap1",
+      "value": 3.3063
+    },
+    {
+      "source": "Vip1",
+      "target": "Rpl1502",
+      "value": 3.8057
+    },
+    {
+      "source": "Ssa1",
+      "target": "Rpl1502",
+      "value": 5.4208
+    },
+    {
+      "source": "Map1",
+      "target": "Plb2",
+      "value": 3.5288
+    },
+    {
+      "source": "Spe1",
+      "target": "Plb2",
+      "value": 3.2155
+    },
+    {
+      "source": "Spe1",
+      "target": "Vma6",
+      "value": 4.4552
+    },
+    {
+      "source": "Map1",
+      "target": "Rad25",
+      "value": 3.1179
+    },
+    {
+      "source": "Tif1",
+      "target": "Gus1",
+      "value": 3.033
+    },
+    {
+      "source": "Idh1",
+      "target": "Gus1",
+      "value": 4.007
+    },
+    {
       "source": "Pap1",
       "target": "Hht2",
       "value": 6.0785
+    },
+    {
+      "source": "Hhf2",
+      "target": "Hht2",
+      "value": 3.2215
+    },
+    {
+      "source": "Tif1",
+      "target": "Erg5",
+      "value": 3.4528
     },
     {
       "source": "SPAC11D3.17",
@@ -383,9 +1288,49 @@
       "value": 6.1467
     },
     {
+      "source": "Erg11",
+      "target": "Erg5",
+      "value": 3.6075
+    },
+    {
+      "source": "Por1",
+      "target": "Erg5",
+      "value": 3.5782
+    },
+    {
+      "source": "Tif1",
+      "target": "Mce1",
+      "value": 5.3765
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Mce1",
+      "value": 5.2063
+    },
+    {
+      "source": "Idh1",
+      "target": "Mce1",
+      "value": 3.9274
+    },
+    {
+      "source": "Por1",
+      "target": "Mce1",
+      "value": 3.9551
+    },
+    {
       "source": "Erg5",
       "target": "Mce1",
       "value": 6.323
+    },
+    {
+      "source": "Hhf2",
+      "target": "Hta2",
+      "value": 3.6418
+    },
+    {
+      "source": "Rpl44",
+      "target": "Deb1",
+      "value": 3.5223
     },
     {
       "source": "SPAC11D3.17",
@@ -393,9 +1338,34 @@
       "value": 8.4812
     },
     {
+      "source": "Erg11",
+      "target": "Elo2",
+      "value": 5.6216
+    },
+    {
+      "source": "Por1",
+      "target": "Elo2",
+      "value": 3.2226
+    },
+    {
+      "source": "Slc1",
+      "target": "Elo2",
+      "value": 3.043
+    },
+    {
       "source": "Erg5",
       "target": "Elo2",
       "value": 7.2341
+    },
+    {
+      "source": "Mce1",
+      "target": "Elo2",
+      "value": 5.5027
+    },
+    {
+      "source": "Vip1",
+      "target": "Lsh1",
+      "value": 3.8057
     },
     {
       "source": "Ssa1",
@@ -403,14 +1373,119 @@
       "value": 9.2842
     },
     {
+      "source": "Rpl1502",
+      "target": "Lsh1",
+      "value": 5.4208
+    },
+    {
+      "source": "Tif1",
+      "target": "Has1",
+      "value": 5.6402
+    },
+    {
       "source": "Idh1",
       "target": "Has1",
       "value": 7.4513
     },
     {
+      "source": "Gus1",
+      "target": "Has1",
+      "value": 4.007
+    },
+    {
+      "source": "Mce1",
+      "target": "Has1",
+      "value": 3.8141
+    },
+    {
       "source": "Tif1",
       "target": "Pdc101",
       "value": 6.8549
+    },
+    {
+      "source": "Idh1",
+      "target": "Pdc101",
+      "value": 4.7428
+    },
+    {
+      "source": "Por1",
+      "target": "Pdc101",
+      "value": 3.1285
+    },
+    {
+      "source": "Mce1",
+      "target": "Pdc101",
+      "value": 3.8682
+    },
+    {
+      "source": "Has1",
+      "target": "Pdc101",
+      "value": 4.606
+    },
+    {
+      "source": "Hhf2",
+      "target": "Pcr1",
+      "value": 4.7366
+    },
+    {
+      "source": "Hht2",
+      "target": "Pcr1",
+      "value": 5.8327
+    },
+    {
+      "source": "Hta2",
+      "target": "Pcr1",
+      "value": 3.617
+    },
+    {
+      "source": "Vip1",
+      "target": "Atp2",
+      "value": 3.8057
+    },
+    {
+      "source": "Ssa1",
+      "target": "Atp2",
+      "value": 5.4034
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Atp2",
+      "value": 5.4034
+    },
+    {
+      "source": "Lsh1",
+      "target": "Atp2",
+      "value": 5.4034
+    },
+    {
+      "source": "Map1",
+      "target": "Yip5",
+      "value": 4.3118
+    },
+    {
+      "source": "Ssa1",
+      "target": "Bip1",
+      "value": 3.0922
+    },
+    {
+      "source": "Lsh1",
+      "target": "Bip1",
+      "value": 3.4895
+    },
+    {
+      "source": "Rps1502",
+      "target": "SPAC22E12.18",
+      "value": 3.043
+    },
+    {
+      "source": "Map1",
+      "target": "Pet1",
+      "value": 3.5579
+    },
+    {
+      "source": "Yip5",
+      "target": "Pet1",
+      "value": 3.5579
     },
     {
       "source": "Tif1",
@@ -423,6 +1498,26 @@
       "value": 7.6726
     },
     {
+      "source": "Por1",
+      "target": "Ura1",
+      "value": 3.065
+    },
+    {
+      "source": "Gus1",
+      "target": "Ura1",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Ura1",
+      "value": 4.031
+    },
+    {
+      "source": "Mce1",
+      "target": "Ura1",
+      "value": 5.759
+    },
+    {
       "source": "Has1",
       "target": "Ura1",
       "value": 7.4513
@@ -433,9 +1528,84 @@
       "value": 6.9547
     },
     {
+      "source": "Rps1502",
+      "target": "Shm1",
+      "value": 4.0134
+    },
+    {
+      "source": "SPAC22E12.18",
+      "target": "Shm1",
+      "value": 3.043
+    },
+    {
+      "source": "Laf1",
+      "target": "Sds3",
+      "value": 4.1715
+    },
+    {
       "source": "Spe1",
       "target": "SPAC25B8.11",
       "value": 21.8426
+    },
+    {
+      "source": "Plb2",
+      "target": "SPAC25B8.11",
+      "value": 3.2155
+    },
+    {
+      "source": "Vma6",
+      "target": "SPAC25B8.11",
+      "value": 4.4552
+    },
+    {
+      "source": "Ssa1",
+      "target": "Tif302",
+      "value": 4.3199
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Tif302",
+      "value": 3.4719
+    },
+    {
+      "source": "Lsh1",
+      "target": "Tif302",
+      "value": 4.3199
+    },
+    {
+      "source": "Atp2",
+      "target": "Tif302",
+      "value": 3.4608
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl2001",
+      "value": 3.8906
+    },
+    {
+      "source": "Map1",
+      "target": "SPAC26H5.07c",
+      "value": 4.0553
+    },
+    {
+      "source": "Mcp60",
+      "target": "Ost1",
+      "value": 5.7123
+    },
+    {
+      "source": "Srp2",
+      "target": "Ost1",
+      "value": 3.2352
+    },
+    {
+      "source": "Sec62",
+      "target": "Ost1",
+      "value": 3.9339
+    },
+    {
+      "source": "Laf1",
+      "target": "Prw1",
+      "value": 4.1715
     },
     {
       "source": "Sds3",
@@ -443,9 +1613,44 @@
       "value": 8.9777
     },
     {
+      "source": "Spe1",
+      "target": "Pgt1",
+      "value": 3.5717
+    },
+    {
+      "source": "SPAC25B8.11",
+      "target": "Pgt1",
+      "value": 3.5717
+    },
+    {
+      "source": "SPAC1039.01",
+      "target": "Hsf1",
+      "value": 3.8568
+    },
+    {
+      "source": "Rpp203",
+      "target": "Hsf1",
+      "value": 4.2261
+    },
+    {
+      "source": "Vip1",
+      "target": "Hsf1",
+      "value": 3.8057
+    },
+    {
+      "source": "Pss1",
+      "target": "Hsf1",
+      "value": 5.1009
+    },
+    {
       "source": "Ssa1",
       "target": "Hsf1",
       "value": 9.2842
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Hsf1",
+      "value": 5.4208
     },
     {
       "source": "Lsh1",
@@ -453,9 +1658,314 @@
       "value": 10.477
     },
     {
+      "source": "Atp2",
+      "target": "Hsf1",
+      "value": 5.4034
+    },
+    {
+      "source": "Bip1",
+      "target": "Hsf1",
+      "value": 4.7036
+    },
+    {
+      "source": "Tif302",
+      "target": "Hsf1",
+      "value": 4.3199
+    },
+    {
+      "source": "Idh1",
+      "target": "Tif212",
+      "value": 3.6364
+    },
+    {
+      "source": "Gus1",
+      "target": "Tif212",
+      "value": 3.6364
+    },
+    {
+      "source": "Has1",
+      "target": "Tif212",
+      "value": 3.6364
+    },
+    {
+      "source": "Ura1",
+      "target": "Tif212",
+      "value": 3.6364
+    },
+    {
+      "source": "Vip1",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Ssa1",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Lsh1",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Atp2",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Hsf1",
+      "target": "Nde1",
+      "value": 3.7232
+    },
+    {
+      "source": "Idh1",
+      "target": "Rpt5",
+      "value": 3.8469
+    },
+    {
+      "source": "Gus1",
+      "target": "Rpt5",
+      "value": 3.8469
+    },
+    {
+      "source": "Has1",
+      "target": "Rpt5",
+      "value": 3.8469
+    },
+    {
+      "source": "Ura1",
+      "target": "Rpt5",
+      "value": 3.8469
+    },
+    {
+      "source": "Tif212",
+      "target": "Rpt5",
+      "value": 3.6364
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "SPAC3C7.04",
+      "value": 5.9112
+    },
+    {
+      "source": "Vma6",
+      "target": "Sak1",
+      "value": 4.1529
+    },
+    {
+      "source": "Ssa1",
+      "target": "Fas2",
+      "value": 3.3334
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Fas2",
+      "value": 3.0889
+    },
+    {
+      "source": "Lsh1",
+      "target": "Fas2",
+      "value": 3.3334
+    },
+    {
+      "source": "Atp2",
+      "target": "Fas2",
+      "value": 3.079
+    },
+    {
+      "source": "Tif302",
+      "target": "Fas2",
+      "value": 3.0397
+    },
+    {
+      "source": "Hsf1",
+      "target": "Fas2",
+      "value": 3.3334
+    },
+    {
+      "source": "Slc1",
+      "target": "Tif303",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Tif303",
+      "value": 3.4682
+    },
+    {
+      "source": "Rps1502",
+      "target": "Rer2",
+      "value": 4.0134
+    },
+    {
+      "source": "Fur4",
+      "target": "Rer2",
+      "value": 3.7057
+    },
+    {
+      "source": "Erg11",
+      "target": "Rer2",
+      "value": 3.4436
+    },
+    {
+      "source": "Hhf2",
+      "target": "Rer2",
+      "value": 3.2651
+    },
+    {
+      "source": "Hta2",
+      "target": "Rer2",
+      "value": 3.4823
+    },
+    {
+      "source": "Pcr1",
+      "target": "Rer2",
+      "value": 3.8882
+    },
+    {
+      "source": "SPAC22E12.18",
+      "target": "Rer2",
+      "value": 3.043
+    },
+    {
+      "source": "Rps2302",
+      "target": "Rer2",
+      "value": 3.0749
+    },
+    {
+      "source": "Shm1",
+      "target": "Rer2",
+      "value": 5.1653
+    },
+    {
+      "source": "Rim1",
+      "target": "Rer2",
+      "value": 4.0744
+    },
+    {
+      "source": "Map1",
+      "target": "Sum1",
+      "value": 3.2247
+    },
+    {
+      "source": "Hrp1",
+      "target": "Sum1",
+      "value": 3.0262
+    },
+    {
+      "source": "Map1",
+      "target": "Mnn9",
+      "value": 4.5913
+    },
+    {
+      "source": "Yip5",
+      "target": "Mnn9",
+      "value": 4.3118
+    },
+    {
+      "source": "Pet1",
+      "target": "Mnn9",
+      "value": 3.5579
+    },
+    {
+      "source": "Elo2",
+      "target": "Btf3",
+      "value": 3.2994
+    },
+    {
+      "source": "Ost1",
+      "target": "Btf3",
+      "value": 3.3026
+    },
+    {
+      "source": "Tif1",
+      "target": "Eft202",
+      "value": 3.7742
+    },
+    {
+      "source": "Idh1",
+      "target": "Eft202",
+      "value": 4.4124
+    },
+    {
+      "source": "Has1",
+      "target": "Eft202",
+      "value": 4.2852
+    },
+    {
+      "source": "Pdc101",
+      "target": "Eft202",
+      "value": 3.0822
+    },
+    {
+      "source": "Ura1",
+      "target": "Eft202",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Ura3",
+      "value": 4.6996
+    },
+    {
+      "source": "Erg11",
+      "target": "Ura3",
+      "value": 4.5783
+    },
+    {
+      "source": "Erg5",
+      "target": "Ura3",
+      "value": 4.0085
+    },
+    {
+      "source": "Mce1",
+      "target": "Ura3",
+      "value": 3.0491
+    },
+    {
       "source": "Elo2",
       "target": "Ura3",
       "value": 6.2465
+    },
+    {
+      "source": "Slc1",
+      "target": "Snd302",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Snd302",
+      "value": 3.9215
+    },
+    {
+      "source": "Tif303",
+      "target": "Snd302",
+      "value": 3.4682
+    },
+    {
+      "source": "Slc1",
+      "target": "Cwh43",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Cwh43",
+      "value": 3.8194
+    },
+    {
+      "source": "Tif303",
+      "target": "Cwh43",
+      "value": 3.4682
+    },
+    {
+      "source": "Snd302",
+      "target": "Cwh43",
+      "value": 3.8194
     },
     {
       "source": "Map1",
@@ -463,9 +1973,154 @@
       "value": 6.5428
     },
     {
+      "source": "Hrp1",
+      "target": "SPAC644.13c",
+      "value": 3.3349
+    },
+    {
+      "source": "Yip5",
+      "target": "SPAC644.13c",
+      "value": 3.0274
+    },
+    {
+      "source": "Sum1",
+      "target": "SPAC644.13c",
+      "value": 3.1093
+    },
+    {
+      "source": "Mnn9",
+      "target": "SPAC644.13c",
+      "value": 3.2237
+    },
+    {
+      "source": "Rps102",
+      "target": "Rps1601",
+      "value": 3.5565
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rps1601",
+      "value": 3.5565
+    },
+    {
+      "source": "Laf1",
+      "target": "Ssc1",
+      "value": 3.0536
+    },
+    {
+      "source": "Sds3",
+      "target": "Ssc1",
+      "value": 3.0536
+    },
+    {
+      "source": "Prw1",
+      "target": "Ssc1",
+      "value": 3.0536
+    },
+    {
+      "source": "Idh1",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Gus1",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Has1",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Ura1",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Tif212",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Rpt5",
+      "target": "SPAC694.02",
+      "value": 3.5688
+    },
+    {
+      "source": "Map1",
+      "target": "Rps2502",
+      "value": 3.0034
+    },
+    {
+      "source": "Slc1",
+      "target": "Tom70",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Tom70",
+      "value": 3.5189
+    },
+    {
+      "source": "Tif303",
+      "target": "Tom70",
+      "value": 3.4682
+    },
+    {
+      "source": "Snd302",
+      "target": "Tom70",
+      "value": 3.5189
+    },
+    {
+      "source": "Cwh43",
+      "target": "Tom70",
+      "value": 3.5189
+    },
+    {
+      "source": "Mcp60",
+      "target": "Rst2",
+      "value": 4.0271
+    },
+    {
+      "source": "Map1",
+      "target": "Fsv1",
+      "value": 3.975
+    },
+    {
+      "source": "Ura1",
+      "target": "Fsv1",
+      "value": 3.1446
+    },
+    {
+      "source": "Deb1",
+      "target": "Pcp1",
+      "value": 3.3298
+    },
+    {
+      "source": "Sak1",
+      "target": "Pcp1",
+      "value": 5.08
+    },
+    {
+      "source": "Dal2",
+      "target": "Rpl2401",
+      "value": 4.6438
+    },
+    {
       "source": "Spe1",
       "target": "Puf4",
       "value": 12.7841
+    },
+    {
+      "source": "Plb2",
+      "target": "Puf4",
+      "value": 3.2155
+    },
+    {
+      "source": "Vma6",
+      "target": "Puf4",
+      "value": 4.4552
     },
     {
       "source": "SPAC25B8.11",
@@ -473,14 +2128,64 @@
       "value": 12.7841
     },
     {
+      "source": "Pgt1",
+      "target": "Puf4",
+      "value": 3.5717
+    },
+    {
+      "source": "Tif1",
+      "target": "Tif308",
+      "value": 4.1642
+    },
+    {
       "source": "Dal81",
       "target": "Tif308",
       "value": 8.749
     },
     {
+      "source": "Idh1",
+      "target": "Tif308",
+      "value": 3.0418
+    },
+    {
+      "source": "Ura1",
+      "target": "Tif308",
+      "value": 4.4604
+    },
+    {
       "source": "Dal2",
       "target": "Moc3",
       "value": 21.7107
+    },
+    {
+      "source": "Rpl2401",
+      "target": "Moc3",
+      "value": 4.6438
+    },
+    {
+      "source": "Map1",
+      "target": "Sul2",
+      "value": 3.3918
+    },
+    {
+      "source": "Hrp1",
+      "target": "Sul2",
+      "value": 3.0271
+    },
+    {
+      "source": "Sum1",
+      "target": "Sul2",
+      "value": 3.0538
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Sul2",
+      "value": 3.1799
+    },
+    {
+      "source": "Map1",
+      "target": "Put4",
+      "value": 3.3876
     },
     {
       "source": "Tif1",
@@ -491,6 +2196,21 @@
       "source": "Idh1",
       "target": "Prr1",
       "value": 7.6726
+    },
+    {
+      "source": "Por1",
+      "target": "Prr1",
+      "value": 3.9619
+    },
+    {
+      "source": "Gus1",
+      "target": "Prr1",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Prr1",
+      "value": 4.5615
     },
     {
       "source": "Mce1",
@@ -513,9 +2233,194 @@
       "value": 11.2509
     },
     {
+      "source": "Tif212",
+      "target": "Prr1",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Prr1",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Prr1",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Prr1",
+      "value": 3.5688
+    },
+    {
+      "source": "Fsv1",
+      "target": "Prr1",
+      "value": 3.1446
+    },
+    {
+      "source": "Tif308",
+      "target": "Prr1",
+      "value": 5.7468
+    },
+    {
+      "source": "Rad25",
+      "target": "Rad24",
+      "value": 4.5916
+    },
+    {
+      "source": "Rst2",
+      "target": "Rad24",
+      "value": 3.1672
+    },
+    {
+      "source": "Rps1502",
+      "target": "Pvg1",
+      "value": 4.0134
+    },
+    {
+      "source": "Fur4",
+      "target": "Pvg1",
+      "value": 3.8757
+    },
+    {
+      "source": "Erg11",
+      "target": "Pvg1",
+      "value": 3.6016
+    },
+    {
+      "source": "Hhf2",
+      "target": "Pvg1",
+      "value": 3.4149
+    },
+    {
+      "source": "Hta2",
+      "target": "Pvg1",
+      "value": 3.4823
+    },
+    {
+      "source": "Pcr1",
+      "target": "Pvg1",
+      "value": 4.0666
+    },
+    {
+      "source": "SPAC22E12.18",
+      "target": "Pvg1",
+      "value": 3.043
+    },
+    {
+      "source": "Rps2302",
+      "target": "Pvg1",
+      "value": 3.0749
+    },
+    {
+      "source": "Shm1",
+      "target": "Pvg1",
+      "value": 5.1653
+    },
+    {
+      "source": "Rim1",
+      "target": "Pvg1",
+      "value": 4.1847
+    },
+    {
       "source": "Rer2",
       "target": "Pvg1",
       "value": 7.283
+    },
+    {
+      "source": "Tif1",
+      "target": "Hsp90",
+      "value": 4.2965
+    },
+    {
+      "source": "Pdc101",
+      "target": "Hsp90",
+      "value": 4.2211
+    },
+    {
+      "source": "Ura1",
+      "target": "Hsp90",
+      "value": 4.3819
+    },
+    {
+      "source": "Prr1",
+      "target": "Hsp90",
+      "value": 4.4284
+    },
+    {
+      "source": "Ssa1",
+      "target": "Fas1",
+      "value": 4.7026
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Fas1",
+      "value": 3.3709
+    },
+    {
+      "source": "Lsh1",
+      "target": "Fas1",
+      "value": 4.7026
+    },
+    {
+      "source": "Atp2",
+      "target": "Fas1",
+      "value": 3.3601
+    },
+    {
+      "source": "Tif302",
+      "target": "Fas1",
+      "value": 3.6033
+    },
+    {
+      "source": "Hsf1",
+      "target": "Fas1",
+      "value": 4.7026
+    },
+    {
+      "source": "Fas2",
+      "target": "Fas1",
+      "value": 3.0245
+    },
+    {
+      "source": "Spe1",
+      "target": "Sec17",
+      "value": 3.1995
+    },
+    {
+      "source": "SPAC25B8.11",
+      "target": "Sec17",
+      "value": 3.1995
+    },
+    {
+      "source": "Puf4",
+      "target": "Sec17",
+      "value": 3.1995
+    },
+    {
+      "source": "Rpp203",
+      "target": "Rpl2102",
+      "value": 3.1828
+    },
+    {
+      "source": "Map1",
+      "target": "Rpl2102",
+      "value": 3.1621
+    },
+    {
+      "source": "Rps102",
+      "target": "Rps002",
+      "value": 4.4566
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rps002",
+      "value": 3.8906
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rps002",
+      "value": 3.5565
     },
     {
       "source": "SPAC11D3.17",
@@ -523,9 +2428,59 @@
       "value": 6.3856
     },
     {
+      "source": "Erg11",
+      "target": "SPBC106.03",
+      "value": 4.4744
+    },
+    {
+      "source": "Slc1",
+      "target": "SPBC106.03",
+      "value": 3.043
+    },
+    {
+      "source": "Erg5",
+      "target": "SPBC106.03",
+      "value": 5.4466
+    },
+    {
+      "source": "Mce1",
+      "target": "SPBC106.03",
+      "value": 4.1431
+    },
+    {
       "source": "Elo2",
       "target": "SPBC106.03",
       "value": 8.4876
+    },
+    {
+      "source": "Tif303",
+      "target": "SPBC106.03",
+      "value": 3.4682
+    },
+    {
+      "source": "Btf3",
+      "target": "SPBC106.03",
+      "value": 3.2994
+    },
+    {
+      "source": "Ura3",
+      "target": "SPBC106.03",
+      "value": 5.914
+    },
+    {
+      "source": "Snd302",
+      "target": "SPBC106.03",
+      "value": 3.9215
+    },
+    {
+      "source": "Cwh43",
+      "target": "SPBC106.03",
+      "value": 3.8194
+    },
+    {
+      "source": "Tom70",
+      "target": "SPBC106.03",
+      "value": 3.5189
     },
     {
       "source": "Tif1",
@@ -538,9 +2493,29 @@
       "value": 7.6726
     },
     {
+      "source": "Gus1",
+      "target": "Cct4",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Cct4",
+      "value": 3.3978
+    },
+    {
+      "source": "Mce1",
+      "target": "Cct4",
+      "value": 4.8544
+    },
+    {
       "source": "Has1",
       "target": "Cct4",
       "value": 7.4513
+    },
+    {
+      "source": "Pdc101",
+      "target": "Cct4",
+      "value": 5.8622
     },
     {
       "source": "Ura1",
@@ -548,9 +2523,84 @@
       "value": 9.4836
     },
     {
+      "source": "Tif212",
+      "target": "Cct4",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Cct4",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Cct4",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Cct4",
+      "value": 3.5688
+    },
+    {
+      "source": "Tif308",
+      "target": "Cct4",
+      "value": 3.7598
+    },
+    {
       "source": "Prr1",
       "target": "Cct4",
       "value": 9.4836
+    },
+    {
+      "source": "Hsp90",
+      "target": "Cct4",
+      "value": 3.6936
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl2501",
+      "value": 3.409
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl2501",
+      "value": 3.409
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl2501",
+      "value": 3.409
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl2501",
+      "value": 3.409
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Lys4",
+      "value": 5.6061
+    },
+    {
+      "source": "Erg11",
+      "target": "Lys4",
+      "value": 3.9282
+    },
+    {
+      "source": "Slc1",
+      "target": "Lys4",
+      "value": 3.043
+    },
+    {
+      "source": "Erg5",
+      "target": "Lys4",
+      "value": 4.7818
+    },
+    {
+      "source": "Mce1",
+      "target": "Lys4",
+      "value": 3.6373
     },
     {
       "source": "Elo2",
@@ -558,14 +2608,114 @@
       "value": 7.4515
     },
     {
+      "source": "Tif303",
+      "target": "Lys4",
+      "value": 3.4682
+    },
+    {
+      "source": "Btf3",
+      "target": "Lys4",
+      "value": 3.2994
+    },
+    {
+      "source": "Ura3",
+      "target": "Lys4",
+      "value": 5.1921
+    },
+    {
+      "source": "Snd302",
+      "target": "Lys4",
+      "value": 3.9215
+    },
+    {
+      "source": "Cwh43",
+      "target": "Lys4",
+      "value": 3.8194
+    },
+    {
+      "source": "Tom70",
+      "target": "Lys4",
+      "value": 3.5189
+    },
+    {
       "source": "SPBC106.03",
       "target": "Lys4",
       "value": 7.4515
     },
     {
+      "source": "Rps1001",
+      "target": "Mrt4",
+      "value": 3.018
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Mrt4",
+      "value": 3.0165
+    },
+    {
+      "source": "Mcp60",
+      "target": "Stt3",
+      "value": 4.7291
+    },
+    {
+      "source": "Srp2",
+      "target": "Stt3",
+      "value": 3.2352
+    },
+    {
+      "source": "Sec62",
+      "target": "Stt3",
+      "value": 3.9339
+    },
+    {
       "source": "Ost1",
       "target": "Stt3",
       "value": 11.3705
+    },
+    {
+      "source": "Btf3",
+      "target": "Stt3",
+      "value": 3.3026
+    },
+    {
+      "source": "Tif1",
+      "target": "Spi1",
+      "value": 3.3541
+    },
+    {
+      "source": "Idh1",
+      "target": "Spi1",
+      "value": 4.4311
+    },
+    {
+      "source": "Has1",
+      "target": "Spi1",
+      "value": 4.34
+    },
+    {
+      "source": "Ura1",
+      "target": "Spi1",
+      "value": 4.4311
+    },
+    {
+      "source": "Ace2",
+      "target": "Spi1",
+      "value": 3.1767
+    },
+    {
+      "source": "Prr1",
+      "target": "Spi1",
+      "value": 4.4311
+    },
+    {
+      "source": "Cct4",
+      "target": "Spi1",
+      "value": 4.4311
+    },
+    {
+      "source": "Laf1",
+      "target": "Pst1",
+      "value": 4.1715
     },
     {
       "source": "Sds3",
@@ -578,9 +2728,29 @@
       "value": 13.0212
     },
     {
+      "source": "Ssc1",
+      "target": "Pst1",
+      "value": 3.0536
+    },
+    {
+      "source": "Tif1",
+      "target": "Fma2",
+      "value": 5.1189
+    },
+    {
       "source": "Idh1",
       "target": "Fma2",
       "value": 6.7627
+    },
+    {
+      "source": "Gus1",
+      "target": "Fma2",
+      "value": 4.007
+    },
+    {
+      "source": "Mce1",
+      "target": "Fma2",
+      "value": 3.4616
     },
     {
       "source": "Has1",
@@ -588,9 +2758,34 @@
       "value": 6.7627
     },
     {
+      "source": "Pdc101",
+      "target": "Fma2",
+      "value": 4.1803
+    },
+    {
       "source": "Ura1",
       "target": "Fma2",
       "value": 6.7627
+    },
+    {
+      "source": "Tif212",
+      "target": "Fma2",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Fma2",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Fma2",
+      "value": 3.8892
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Fma2",
+      "value": 3.5688
     },
     {
       "source": "Prr1",
@@ -603,9 +2798,84 @@
       "value": 6.7627
     },
     {
+      "source": "Spi1",
+      "target": "Fma2",
+      "value": 3.9389
+    },
+    {
+      "source": "Cmb1",
+      "target": "Stb3",
+      "value": 3.7929
+    },
+    {
+      "source": "Sec17",
+      "target": "Stb3",
+      "value": 4.1331
+    },
+    {
+      "source": "Map1",
+      "target": "Pho841",
+      "value": 4.4825
+    },
+    {
+      "source": "Rst2",
+      "target": "Pho841",
+      "value": 3.2312
+    },
+    {
+      "source": "Slc1",
+      "target": "Pcl1",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "Tif303",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "Snd302",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "Cwh43",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "Tom70",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
+      "source": "Lys4",
+      "target": "Pcl1",
+      "value": 3.2225
+    },
+    {
       "source": "Res2",
       "target": "Nrm1",
       "value": 7.7968
+    },
+    {
+      "source": "Rpl44",
+      "target": "Oga1",
+      "value": 3.1994
+    },
+    {
+      "source": "Deb1",
+      "target": "Oga1",
+      "value": 3.1994
     },
     {
       "source": "Tif1",
@@ -618,9 +2888,29 @@
       "value": 7.6726
     },
     {
+      "source": "Gus1",
+      "target": "Rpt1",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Rpt1",
+      "value": 3.2263
+    },
+    {
+      "source": "Mce1",
+      "target": "Rpt1",
+      "value": 4.6093
+    },
+    {
       "source": "Has1",
       "target": "Rpt1",
       "value": 7.4513
+    },
+    {
+      "source": "Pdc101",
+      "target": "Rpt1",
+      "value": 5.5663
     },
     {
       "source": "Ura1",
@@ -628,9 +2918,39 @@
       "value": 9.0048
     },
     {
+      "source": "Tif212",
+      "target": "Rpt1",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Rpt1",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Rpt1",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Rpt1",
+      "value": 3.5688
+    },
+    {
+      "source": "Tif308",
+      "target": "Rpt1",
+      "value": 3.57
+    },
+    {
       "source": "Prr1",
       "target": "Rpt1",
       "value": 9.0048
+    },
+    {
+      "source": "Hsp90",
+      "target": "Rpt1",
+      "value": 3.5071
     },
     {
       "source": "Cct4",
@@ -638,9 +2958,74 @@
       "value": 9.0048
     },
     {
+      "source": "Spi1",
+      "target": "Rpt1",
+      "value": 4.4311
+    },
+    {
       "source": "Fma2",
       "target": "Rpt1",
       "value": 6.7627
+    },
+    {
+      "source": "Rps102",
+      "target": "Rps1802",
+      "value": 4.4566
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rps1802",
+      "value": 3.8906
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rps1802",
+      "value": 3.5565
+    },
+    {
+      "source": "Rps002",
+      "target": "Rps1802",
+      "value": 4.499
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rps1802",
+      "value": 3.409
+    },
+    {
+      "source": "Map1",
+      "target": "Scs2",
+      "value": 3.6026
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Scs2",
+      "value": 3.3664
+    },
+    {
+      "source": "Mrt4",
+      "target": "Scs2",
+      "value": 3.2168
+    },
+    {
+      "source": "Srp2",
+      "target": "Rps3",
+      "value": 3.2352
+    },
+    {
+      "source": "Ost1",
+      "target": "Rps3",
+      "value": 3.4032
+    },
+    {
+      "source": "Stt3",
+      "target": "Rps3",
+      "value": 3.4032
+    },
+    {
+      "source": "Laf1",
+      "target": "Fkh2",
+      "value": 4.1715
     },
     {
       "source": "Sds3",
@@ -653,14 +3038,74 @@
       "value": 17.6803
     },
     {
+      "source": "Ssc1",
+      "target": "Fkh2",
+      "value": 3.0536
+    },
+    {
       "source": "Pst1",
       "target": "Fkh2",
       "value": 13.0212
     },
     {
+      "source": "Mcp60",
+      "target": "Ntu1",
+      "value": 3.5931
+    },
+    {
       "source": "Ost1",
       "target": "Ntu1",
       "value": 6.4434
+    },
+    {
+      "source": "Stt3",
+      "target": "Ntu1",
+      "value": 5.3344
+    },
+    {
+      "source": "Tif1",
+      "target": "Pfk1",
+      "value": 3.3751
+    },
+    {
+      "source": "Rad25",
+      "target": "Pfk1",
+      "value": 3.1562
+    },
+    {
+      "source": "Mce1",
+      "target": "Pfk1",
+      "value": 3.0734
+    },
+    {
+      "source": "Ura1",
+      "target": "Pfk1",
+      "value": 3.146
+    },
+    {
+      "source": "Prr1",
+      "target": "Pfk1",
+      "value": 5.8152
+    },
+    {
+      "source": "Pss1",
+      "target": "Sks2",
+      "value": 4.2527
+    },
+    {
+      "source": "Pap1",
+      "target": "Sks2",
+      "value": 5.5
+    },
+    {
+      "source": "Php3",
+      "target": "Sks2",
+      "value": 3.1511
+    },
+    {
+      "source": "Hsf1",
+      "target": "Sks2",
+      "value": 3.2373
     },
     {
       "source": "Tif1",
@@ -673,6 +3118,31 @@
       "value": 6.1193
     },
     {
+      "source": "Por1",
+      "target": "Aha1",
+      "value": 3.8345
+    },
+    {
+      "source": "Gus1",
+      "target": "Aha1",
+      "value": 3.1957
+    },
+    {
+      "source": "Erg5",
+      "target": "Aha1",
+      "value": 3.638
+    },
+    {
+      "source": "Mce1",
+      "target": "Aha1",
+      "value": 5.7875
+    },
+    {
+      "source": "Has1",
+      "target": "Aha1",
+      "value": 5.9428
+    },
+    {
       "source": "Pdc101",
       "target": "Aha1",
       "value": 6.9722
@@ -683,9 +3153,29 @@
       "value": 8.9731
     },
     {
+      "source": "Rpt5",
+      "target": "Aha1",
+      "value": 3.0681
+    },
+    {
+      "source": "Eft202",
+      "target": "Aha1",
+      "value": 3.9767
+    },
+    {
+      "source": "Tif308",
+      "target": "Aha1",
+      "value": 4.5834
+    },
+    {
       "source": "Prr1",
       "target": "Aha1",
       "value": 13.4733
+    },
+    {
+      "source": "Hsp90",
+      "target": "Aha1",
+      "value": 4.3185
     },
     {
       "source": "Cct4",
@@ -693,9 +3183,29 @@
       "value": 7.5636
     },
     {
+      "source": "Spi1",
+      "target": "Aha1",
+      "value": 3.534
+    },
+    {
+      "source": "Fma2",
+      "target": "Aha1",
+      "value": 5.3936
+    },
+    {
       "source": "Rpt1",
       "target": "Aha1",
       "value": 7.1818
+    },
+    {
+      "source": "Pfk1",
+      "target": "Aha1",
+      "value": 4.2116
+    },
+    {
+      "source": "Laf1",
+      "target": "Pst3",
+      "value": 4.1715
     },
     {
       "source": "Sds3",
@@ -708,6 +3218,11 @@
       "value": 8.8406
     },
     {
+      "source": "Ssc1",
+      "target": "Pst3",
+      "value": 3.0536
+    },
+    {
       "source": "Pst1",
       "target": "Pst3",
       "value": 8.8406
@@ -718,6 +3233,256 @@
       "value": 8.8406
     },
     {
+      "source": "Ace2",
+      "target": "Rar1",
+      "value": 3.4123
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "SPBC17A3.05c",
+      "value": 3.4505
+    },
+    {
+      "source": "Slc1",
+      "target": "SPBC17A3.05c",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "SPBC17A3.05c",
+      "value": 4.5863
+    },
+    {
+      "source": "Tif303",
+      "target": "SPBC17A3.05c",
+      "value": 3.4682
+    },
+    {
+      "source": "Ura3",
+      "target": "SPBC17A3.05c",
+      "value": 3.1957
+    },
+    {
+      "source": "Snd302",
+      "target": "SPBC17A3.05c",
+      "value": 3.9215
+    },
+    {
+      "source": "Cwh43",
+      "target": "SPBC17A3.05c",
+      "value": 3.8194
+    },
+    {
+      "source": "Tom70",
+      "target": "SPBC17A3.05c",
+      "value": 3.5189
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "SPBC17A3.05c",
+      "value": 4.5863
+    },
+    {
+      "source": "Lys4",
+      "target": "SPBC17A3.05c",
+      "value": 4.5863
+    },
+    {
+      "source": "Pcl1",
+      "target": "SPBC17A3.05c",
+      "value": 3.2225
+    },
+    {
+      "source": "Tif1",
+      "target": "Tif213",
+      "value": 3.5737
+    },
+    {
+      "source": "Ura1",
+      "target": "Tif213",
+      "value": 3.1813
+    },
+    {
+      "source": "Prr1",
+      "target": "Tif213",
+      "value": 4.1116
+    },
+    {
+      "source": "Aha1",
+      "target": "Tif213",
+      "value": 3.8061
+    },
+    {
+      "source": "Rim1",
+      "target": "Tif307",
+      "value": 3.3999
+    },
+    {
+      "source": "Rer2",
+      "target": "Tif307",
+      "value": 3.5138
+    },
+    {
+      "source": "Pvg1",
+      "target": "Tif307",
+      "value": 3.5138
+    },
+    {
+      "source": "SPAC8F11.04",
+      "target": "Prs1",
+      "value": 4.147
+    },
+    {
+      "source": "Nrm1",
+      "target": "Prs1",
+      "value": 3.1906
+    },
+    {
+      "source": "Tif1",
+      "target": "SPBC19F5.04",
+      "value": 4.2416
+    },
+    {
+      "source": "Idh1",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Gus1",
+      "target": "SPBC19F5.04",
+      "value": 4.007
+    },
+    {
+      "source": "Has1",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Pdc101",
+      "target": "SPBC19F5.04",
+      "value": 3.4639
+    },
+    {
+      "source": "Ura1",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Tif212",
+      "target": "SPBC19F5.04",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "SPBC19F5.04",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "SPBC19F5.04",
+      "value": 3.2226
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "SPBC19F5.04",
+      "value": 3.5688
+    },
+    {
+      "source": "Prr1",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Cct4",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Spi1",
+      "target": "SPBC19F5.04",
+      "value": 3.2639
+    },
+    {
+      "source": "Fma2",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Rpt1",
+      "target": "SPBC19F5.04",
+      "value": 5.6037
+    },
+    {
+      "source": "Aha1",
+      "target": "SPBC19F5.04",
+      "value": 4.4692
+    },
+    {
+      "source": "Rim1",
+      "target": "Rps401",
+      "value": 3.7922
+    },
+    {
+      "source": "Rer2",
+      "target": "Rps401",
+      "value": 4.068
+    },
+    {
+      "source": "Pvg1",
+      "target": "Rps401",
+      "value": 4.2545
+    },
+    {
+      "source": "Tif307",
+      "target": "Rps401",
+      "value": 3.3997
+    },
+    {
+      "source": "Rps1502",
+      "target": "Cog5",
+      "value": 4.0134
+    },
+    {
+      "source": "SPAC22E12.18",
+      "target": "Cog5",
+      "value": 3.043
+    },
+    {
+      "source": "Shm1",
+      "target": "Cog5",
+      "value": 4.4017
+    },
+    {
+      "source": "Rer2",
+      "target": "Cog5",
+      "value": 4.4017
+    },
+    {
+      "source": "Pvg1",
+      "target": "Cog5",
+      "value": 4.4017
+    },
+    {
+      "source": "Tif1",
+      "target": "Leu1",
+      "value": 3.1761
+    },
+    {
+      "source": "Rst2",
+      "target": "Leu1",
+      "value": 3.4084
+    },
+    {
+      "source": "Prr1",
+      "target": "Leu1",
+      "value": 3.3936
+    },
+    {
+      "source": "Aha1",
+      "target": "Leu1",
+      "value": 3.4663
+    },
+    {
       "source": "Tif1",
       "target": "Cct3",
       "value": 8.5112
@@ -726,6 +3491,26 @@
       "source": "Idh1",
       "target": "Cct3",
       "value": 7.6726
+    },
+    {
+      "source": "Por1",
+      "target": "Cct3",
+      "value": 3.0632
+    },
+    {
+      "source": "Gus1",
+      "target": "Cct3",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Cct3",
+      "value": 4.0287
+    },
+    {
+      "source": "Mce1",
+      "target": "Cct3",
+      "value": 5.7556
     },
     {
       "source": "Has1",
@@ -743,14 +3528,54 @@
       "value": 11.2443
     },
     {
+      "source": "Tif212",
+      "target": "Cct3",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Cct3",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Cct3",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Cct3",
+      "value": 3.5688
+    },
+    {
+      "source": "Fsv1",
+      "target": "Cct3",
+      "value": 3.1446
+    },
+    {
+      "source": "Tif308",
+      "target": "Cct3",
+      "value": 4.4578
+    },
+    {
       "source": "Prr1",
       "target": "Cct3",
       "value": 11.2443
     },
     {
+      "source": "Hsp90",
+      "target": "Cct3",
+      "value": 4.3794
+    },
+    {
       "source": "Cct4",
       "target": "Cct3",
       "value": 9.4836
+    },
+    {
+      "source": "Spi1",
+      "target": "Cct3",
+      "value": 4.4311
     },
     {
       "source": "Fma2",
@@ -763,9 +3588,34 @@
       "value": 9.0048
     },
     {
+      "source": "Pfk1",
+      "target": "Cct3",
+      "value": 3.1441
+    },
+    {
       "source": "Aha1",
       "target": "Cct3",
       "value": 8.9678
+    },
+    {
+      "source": "Tif213",
+      "target": "Cct3",
+      "value": 3.1795
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Cct3",
+      "value": 5.6037
+    },
+    {
+      "source": "Bip1",
+      "target": "Scr1",
+      "value": 3.409
+    },
+    {
+      "source": "Sks2",
+      "target": "Scr1",
+      "value": 3.1707
     },
     {
       "source": "Res2",
@@ -778,9 +3628,139 @@
       "value": 7.7974
     },
     {
+      "source": "Prs1",
+      "target": "Yox1",
+      "value": 3.1394
+    },
+    {
+      "source": "Rps102",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Rps002",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rps1901",
+      "value": 3.3938
+    },
+    {
+      "source": "Tif1",
+      "target": "Grx4",
+      "value": 4.1663
+    },
+    {
+      "source": "Idh1",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Gus1",
+      "target": "Grx4",
+      "value": 4.007
+    },
+    {
+      "source": "Has1",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Pdc101",
+      "target": "Grx4",
+      "value": 3.4023
+    },
+    {
+      "source": "Ura1",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Tif212",
+      "target": "Grx4",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Grx4",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Grx4",
+      "value": 3.1654
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Grx4",
+      "value": 3.5688
+    },
+    {
+      "source": "Prr1",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Cct4",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Spi1",
+      "target": "Grx4",
+      "value": 3.2059
+    },
+    {
+      "source": "Fma2",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Rpt1",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Aha1",
+      "target": "Grx4",
+      "value": 4.3898
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
+      "source": "Cct3",
+      "target": "Grx4",
+      "value": 5.5041
+    },
+    {
       "source": "Rad25",
       "target": "Pho7",
       "value": 12.4655
+    },
+    {
+      "source": "Eft202",
+      "target": "Pho7",
+      "value": 3.6841
     },
     {
       "source": "Rad24",
@@ -788,9 +3768,39 @@
       "value": 6.5034
     },
     {
+      "source": "Pfk1",
+      "target": "Pho7",
+      "value": 5.2657
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Cyb502",
+      "value": 5.3967
+    },
+    {
+      "source": "Erg11",
+      "target": "Cyb502",
+      "value": 4.9463
+    },
+    {
+      "source": "Erg5",
+      "target": "Cyb502",
+      "value": 4.6031
+    },
+    {
+      "source": "Mce1",
+      "target": "Cyb502",
+      "value": 3.5015
+    },
+    {
       "source": "Elo2",
       "target": "Cyb502",
       "value": 7.1732
+    },
+    {
+      "source": "Ura3",
+      "target": "Cyb502",
+      "value": 5.3446
     },
     {
       "source": "SPBC106.03",
@@ -798,9 +3808,64 @@
       "value": 6.3179
     },
     {
+      "source": "Lys4",
+      "target": "Cyb502",
+      "value": 5.5467
+    },
+    {
+      "source": "SPBC17A3.05c",
+      "target": "Cyb502",
+      "value": 3.4139
+    },
+    {
+      "source": "Vip1",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Ssa1",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Lsh1",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Atp2",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Hsf1",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Nde1",
+      "target": "Cyt1",
+      "value": 3.0928
+    },
+    {
+      "source": "Hhf2",
+      "target": "Atf1",
+      "value": 4.8453
+    },
+    {
       "source": "Hht2",
       "target": "Atf1",
       "value": 6.1126
+    },
+    {
+      "source": "Hta2",
+      "target": "Atf1",
+      "value": 3.6489
     },
     {
       "source": "Pcr1",
@@ -808,9 +3873,144 @@
       "value": 9.7292
     },
     {
+      "source": "Rer2",
+      "target": "Atf1",
+      "value": 3.0853
+    },
+    {
+      "source": "Pvg1",
+      "target": "Atf1",
+      "value": 3.2268
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl26",
+      "value": 3.8239
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl26",
+      "value": 3.8239
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl26",
+      "value": 3.5565
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl26",
+      "value": 3.8239
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rpl26",
+      "value": 3.409
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rpl26",
+      "value": 3.8239
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rpl26",
+      "value": 3.3938
+    },
+    {
+      "source": "Idh1",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Has1",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Ura1",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Prr1",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Cct4",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Fma2",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Rpt1",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Fib1",
+      "value": 3.0279
+    },
+    {
+      "source": "Cct3",
+      "target": "Fib1",
+      "value": 3.085
+    },
+    {
+      "source": "Vip1",
+      "target": "Hmt2",
+      "value": 3.8057
+    },
+    {
+      "source": "Ssa1",
+      "target": "Hmt2",
+      "value": 4.5217
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Hmt2",
+      "value": 4.5217
+    },
+    {
+      "source": "Lsh1",
+      "target": "Hmt2",
+      "value": 4.5217
+    },
+    {
+      "source": "Atp2",
+      "target": "Hmt2",
+      "value": 4.5217
+    },
+    {
+      "source": "Hsf1",
+      "target": "Hmt2",
+      "value": 4.5217
+    },
+    {
+      "source": "Nde1",
+      "target": "Hmt2",
+      "value": 3.7232
+    },
+    {
+      "source": "Cyt1",
+      "target": "Hmt2",
+      "value": 3.0928
+    },
+    {
       "source": "Adn2",
       "target": "Ldb1",
       "value": 24.4321
+    },
+    {
+      "source": "Pss1",
+      "target": "Ncb2",
+      "value": 4.4859
     },
     {
       "source": "Php3",
@@ -818,9 +4018,189 @@
       "value": 12.5791
     },
     {
+      "source": "Sks2",
+      "target": "Ncb2",
+      "value": 5.0779
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Rtn1",
+      "value": 3.31
+    },
+    {
+      "source": "Map1",
+      "target": "Rtn1",
+      "value": 4.145
+    },
+    {
+      "source": "Erg11",
+      "target": "Rtn1",
+      "value": 3.5193
+    },
+    {
+      "source": "Elo2",
+      "target": "Rtn1",
+      "value": 4.1158
+    },
+    {
+      "source": "Ura3",
+      "target": "Rtn1",
+      "value": 3.0715
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Rtn1",
+      "value": 3.0989
+    },
+    {
+      "source": "Cyb502",
+      "target": "Rtn1",
+      "value": 3.3356
+    },
+    {
       "source": "Map1",
       "target": "Sar1",
       "value": 6.3494
+    },
+    {
+      "source": "Fur4",
+      "target": "Sar1",
+      "value": 3.1187
+    },
+    {
+      "source": "Hrp1",
+      "target": "Sar1",
+      "value": 3.0939
+    },
+    {
+      "source": "Plb2",
+      "target": "Sar1",
+      "value": 3.3221
+    },
+    {
+      "source": "Yip5",
+      "target": "Sar1",
+      "value": 4.3118
+    },
+    {
+      "source": "Pet1",
+      "target": "Sar1",
+      "value": 3.5579
+    },
+    {
+      "source": "Sum1",
+      "target": "Sar1",
+      "value": 3.2247
+    },
+    {
+      "source": "Mnn9",
+      "target": "Sar1",
+      "value": 4.5913
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Sar1",
+      "value": 4.458
+    },
+    {
+      "source": "Sul2",
+      "target": "Sar1",
+      "value": 3.3918
+    },
+    {
+      "source": "Pfk1",
+      "target": "Ste11",
+      "value": 3.8764
+    },
+    {
+      "source": "Tif213",
+      "target": "Ste11",
+      "value": 4.5176
+    },
+    {
+      "source": "Leu1",
+      "target": "Ste11",
+      "value": 4.6536
+    },
+    {
+      "source": "Tif1",
+      "target": "Act1",
+      "value": 3.3184
+    },
+    {
+      "source": "Idh1",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Gus1",
+      "target": "Act1",
+      "value": 4.007
+    },
+    {
+      "source": "Has1",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Ura1",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Tif212",
+      "target": "Act1",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Act1",
+      "value": 3.8469
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Act1",
+      "value": 3.5688
+    },
+    {
+      "source": "Prr1",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Cct4",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Fma2",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Rpt1",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Aha1",
+      "target": "Act1",
+      "value": 3.4965
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Cct3",
+      "target": "Act1",
+      "value": 4.384
+    },
+    {
+      "source": "Grx4",
+      "target": "Act1",
+      "value": 4.384
     },
     {
       "source": "Res2",
@@ -848,6 +4228,21 @@
       "value": 7.6726
     },
     {
+      "source": "Gus1",
+      "target": "Cct8",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Cct8",
+      "value": 3.7089
+    },
+    {
+      "source": "Mce1",
+      "target": "Cct8",
+      "value": 5.2988
+    },
+    {
       "source": "Has1",
       "target": "Cct8",
       "value": 7.4513
@@ -863,14 +4258,54 @@
       "value": 10.3519
     },
     {
+      "source": "Tif212",
+      "target": "Cct8",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Cct8",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Cct8",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Cct8",
+      "value": 3.5688
+    },
+    {
+      "source": "Fsv1",
+      "target": "Cct8",
+      "value": 3.1437
+    },
+    {
+      "source": "Tif308",
+      "target": "Cct8",
+      "value": 4.104
+    },
+    {
       "source": "Prr1",
       "target": "Cct8",
       "value": 10.3519
     },
     {
+      "source": "Hsp90",
+      "target": "Cct8",
+      "value": 4.0318
+    },
+    {
       "source": "Cct4",
       "target": "Cct8",
       "value": 9.4836
+    },
+    {
+      "source": "Spi1",
+      "target": "Cct8",
+      "value": 4.4311
     },
     {
       "source": "Fma2",
@@ -888,9 +4323,74 @@
       "value": 8.2562
     },
     {
+      "source": "SPBC19F5.04",
+      "target": "Cct8",
+      "value": 5.6037
+    },
+    {
       "source": "Cct3",
       "target": "Cct8",
       "value": 10.3519
+    },
+    {
+      "source": "Grx4",
+      "target": "Cct8",
+      "value": 5.5041
+    },
+    {
+      "source": "Fib1",
+      "target": "Cct8",
+      "value": 3.085
+    },
+    {
+      "source": "Act1",
+      "target": "Cct8",
+      "value": 4.384
+    },
+    {
+      "source": "Rps102",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Rps1601",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Rps002",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Def1",
+      "value": 3.409
+    },
+    {
+      "source": "Rps1802",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Rps1901",
+      "target": "Def1",
+      "value": 3.3938
+    },
+    {
+      "source": "Rpl26",
+      "target": "Def1",
+      "value": 3.4813
+    },
+    {
+      "source": "Laf1",
+      "target": "Clr6",
+      "value": 4.1715
     },
     {
       "source": "Sds3",
@@ -901,6 +4401,11 @@
       "source": "Prw1",
       "target": "Clr6",
       "value": 13.4315
+    },
+    {
+      "source": "Ssc1",
+      "target": "Clr6",
+      "value": 3.0536
     },
     {
       "source": "Pst1",
@@ -918,6 +4423,81 @@
       "value": 8.8406
     },
     {
+      "source": "SPAC11D3.17",
+      "target": "SPBC365.16",
+      "value": 4.0754
+    },
+    {
+      "source": "Slc1",
+      "target": "SPBC365.16",
+      "value": 3.043
+    },
+    {
+      "source": "Erg5",
+      "target": "SPBC365.16",
+      "value": 3.4761
+    },
+    {
+      "source": "Elo2",
+      "target": "SPBC365.16",
+      "value": 5.4169
+    },
+    {
+      "source": "Tif303",
+      "target": "SPBC365.16",
+      "value": 3.4682
+    },
+    {
+      "source": "Ura3",
+      "target": "SPBC365.16",
+      "value": 3.7744
+    },
+    {
+      "source": "Snd302",
+      "target": "SPBC365.16",
+      "value": 3.9215
+    },
+    {
+      "source": "Cwh43",
+      "target": "SPBC365.16",
+      "value": 3.8194
+    },
+    {
+      "source": "Tom70",
+      "target": "SPBC365.16",
+      "value": 3.5189
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "SPBC365.16",
+      "value": 5.4169
+    },
+    {
+      "source": "Lys4",
+      "target": "SPBC365.16",
+      "value": 5.4169
+    },
+    {
+      "source": "Pcl1",
+      "target": "SPBC365.16",
+      "value": 3.2225
+    },
+    {
+      "source": "SPBC17A3.05c",
+      "target": "SPBC365.16",
+      "value": 4.5863
+    },
+    {
+      "source": "Cyb502",
+      "target": "SPBC365.16",
+      "value": 4.0322
+    },
+    {
+      "source": "Sak1",
+      "target": "Tlg1",
+      "value": 4.3753
+    },
+    {
       "source": "Php3",
       "target": "Php5",
       "value": 9.3075
@@ -926,6 +4506,301 @@
       "source": "Ncb2",
       "target": "Php5",
       "value": 10.2537
+    },
+    {
+      "source": "Map1",
+      "target": "SPBC3B8.06",
+      "value": 5.0138
+    },
+    {
+      "source": "Yip5",
+      "target": "SPBC3B8.06",
+      "value": 4.3118
+    },
+    {
+      "source": "Pet1",
+      "target": "SPBC3B8.06",
+      "value": 3.5579
+    },
+    {
+      "source": "Mnn9",
+      "target": "SPBC3B8.06",
+      "value": 4.5913
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "SPBC3B8.06",
+      "value": 3.5203
+    },
+    {
+      "source": "Sar1",
+      "target": "SPBC3B8.06",
+      "value": 5.0138
+    },
+    {
+      "source": "Map1",
+      "target": "But2",
+      "value": 5.8005
+    },
+    {
+      "source": "Plb2",
+      "target": "But2",
+      "value": 3.035
+    },
+    {
+      "source": "Yip5",
+      "target": "But2",
+      "value": 4.3118
+    },
+    {
+      "source": "Pet1",
+      "target": "But2",
+      "value": 3.5579
+    },
+    {
+      "source": "Sum1",
+      "target": "But2",
+      "value": 3.0855
+    },
+    {
+      "source": "Mnn9",
+      "target": "But2",
+      "value": 4.5913
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "But2",
+      "value": 4.0726
+    },
+    {
+      "source": "Sul2",
+      "target": "But2",
+      "value": 3.24
+    },
+    {
+      "source": "Sar1",
+      "target": "But2",
+      "value": 5.8005
+    },
+    {
+      "source": "SPBC3B8.06",
+      "target": "But2",
+      "value": 5.0138
+    },
+    {
+      "source": "Map1",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "Yip5",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "Pet1",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "Mnn9",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "Sar1",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "SPBC3B8.06",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "But2",
+      "target": "Lac1",
+      "value": 3.1348
+    },
+    {
+      "source": "Tif1",
+      "target": "Rpt2",
+      "value": 3.9023
+    },
+    {
+      "source": "Idh1",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Gus1",
+      "target": "Rpt2",
+      "value": 4.007
+    },
+    {
+      "source": "Has1",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Pdc101",
+      "target": "Rpt2",
+      "value": 3.1868
+    },
+    {
+      "source": "Ura1",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Tif212",
+      "target": "Rpt2",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Rpt2",
+      "value": 3.8469
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Rpt2",
+      "value": 3.5688
+    },
+    {
+      "source": "Prr1",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Cct4",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Spi1",
+      "target": "Rpt2",
+      "value": 3.0027
+    },
+    {
+      "source": "Fma2",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Rpt1",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Aha1",
+      "target": "Rpt2",
+      "value": 4.1117
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Cct3",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Grx4",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Act1",
+      "target": "Rpt2",
+      "value": 4.384
+    },
+    {
+      "source": "Cct8",
+      "target": "Rpt2",
+      "value": 5.1554
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rpl26",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Def1",
+      "target": "Rpl3601",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps1001",
+      "target": "Rpl2502",
+      "value": 3.0063
+    },
+    {
+      "source": "Mrt4",
+      "target": "Rpl2502",
+      "value": 3.8966
+    },
+    {
+      "source": "Scs2",
+      "target": "Rpl2502",
+      "value": 3.2055
+    },
+    {
+      "source": "Atp1",
+      "target": "Prt1",
+      "value": 3.1224
+    },
+    {
+      "source": "Hsp90",
+      "target": "Prt1",
+      "value": 3.0563
+    },
+    {
+      "source": "Rpl1001",
+      "target": "Clu1",
+      "value": 3.4734
+    },
+    {
+      "source": "Mcp60",
+      "target": "Ntu2",
+      "value": 4.1631
     },
     {
       "source": "Ost1",
@@ -943,9 +4818,124 @@
       "value": 10.7427
     },
     {
+      "source": "SPAC11D3.17",
+      "target": "Yta12",
+      "value": 3.173
+    },
+    {
+      "source": "Map1",
+      "target": "Yta12",
+      "value": 4.2267
+    },
+    {
+      "source": "Elo2",
+      "target": "Yta12",
+      "value": 3.5686
+    },
+    {
+      "source": "Ncb2",
+      "target": "Ilv5",
+      "value": 3.3076
+    },
+    {
+      "source": "Map1",
+      "target": "Pex11",
+      "value": 3.6768
+    },
+    {
+      "source": "Fur4",
+      "target": "Pex11",
+      "value": 3.1208
+    },
+    {
+      "source": "Sar1",
+      "target": "Pex11",
+      "value": 3.6768
+    },
+    {
+      "source": "But2",
+      "target": "Pex11",
+      "value": 3.4065
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Tsc13",
+      "value": 3.7256
+    },
+    {
+      "source": "Erg5",
+      "target": "Tsc13",
+      "value": 3.1777
+    },
+    {
+      "source": "Elo2",
+      "target": "Tsc13",
+      "value": 4.9519
+    },
+    {
+      "source": "Ura3",
+      "target": "Tsc13",
+      "value": 3.4504
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Tsc13",
+      "value": 4.9519
+    },
+    {
+      "source": "Lys4",
+      "target": "Tsc13",
+      "value": 4.9075
+    },
+    {
+      "source": "SPBC17A3.05c",
+      "target": "Tsc13",
+      "value": 3.0205
+    },
+    {
+      "source": "Cyb502",
+      "target": "Tsc13",
+      "value": 3.6861
+    },
+    {
+      "source": "SPBC365.16",
+      "target": "Tsc13",
+      "value": 3.5675
+    },
+    {
+      "source": "Tif1",
+      "target": "Cct6",
+      "value": 5.7874
+    },
+    {
+      "source": "Idh1",
+      "target": "Cct6",
+      "value": 5.528
+    },
+    {
+      "source": "Mce1",
+      "target": "Cct6",
+      "value": 3.4801
+    },
+    {
+      "source": "Has1",
+      "target": "Cct6",
+      "value": 5.3686
+    },
+    {
+      "source": "Pdc101",
+      "target": "Cct6",
+      "value": 5.2098
+    },
+    {
       "source": "Ura1",
       "target": "Cct6",
       "value": 6.7988
+    },
+    {
+      "source": "Eft202",
+      "target": "Cct6",
+      "value": 3.5925
     },
     {
       "source": "Prr1",
@@ -953,9 +4943,24 @@
       "value": 6.7988
     },
     {
+      "source": "Hsp90",
+      "target": "Cct6",
+      "value": 3.5493
+    },
+    {
       "source": "Cct4",
       "target": "Cct6",
       "value": 6.7988
+    },
+    {
+      "source": "Spi1",
+      "target": "Cct6",
+      "value": 3.1926
+    },
+    {
+      "source": "Fma2",
+      "target": "Cct6",
+      "value": 4.8724
     },
     {
       "source": "Rpt1",
@@ -963,14 +4968,109 @@
       "value": 6.4879
     },
     {
+      "source": "Aha1",
+      "target": "Cct6",
+      "value": 5.9564
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Cct6",
+      "value": 4.0374
+    },
+    {
       "source": "Cct3",
       "target": "Cct6",
       "value": 6.7988
     },
     {
+      "source": "Grx4",
+      "target": "Cct6",
+      "value": 3.9657
+    },
+    {
+      "source": "Act1",
+      "target": "Cct6",
+      "value": 3.1586
+    },
+    {
       "source": "Cct8",
       "target": "Cct6",
       "value": 6.7988
+    },
+    {
+      "source": "Rpt2",
+      "target": "Cct6",
+      "value": 3.7144
+    },
+    {
+      "source": "Tif1",
+      "target": "Nog1",
+      "value": 4.0457
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Nog1",
+      "value": 3.9734
+    },
+    {
+      "source": "Por1",
+      "target": "Nog1",
+      "value": 3.0785
+    },
+    {
+      "source": "Erg5",
+      "target": "Nog1",
+      "value": 3.9339
+    },
+    {
+      "source": "Mce1",
+      "target": "Nog1",
+      "value": 4.4662
+    },
+    {
+      "source": "Elo2",
+      "target": "Nog1",
+      "value": 3.324
+    },
+    {
+      "source": "Pdc101",
+      "target": "Nog1",
+      "value": 3.266
+    },
+    {
+      "source": "Ura1",
+      "target": "Nog1",
+      "value": 3.7609
+    },
+    {
+      "source": "Prr1",
+      "target": "Nog1",
+      "value": 5.9873
+    },
+    {
+      "source": "Cct4",
+      "target": "Nog1",
+      "value": 3.1701
+    },
+    {
+      "source": "Rpt1",
+      "target": "Nog1",
+      "value": 3.0101
+    },
+    {
+      "source": "Aha1",
+      "target": "Nog1",
+      "value": 5.0459
+    },
+    {
+      "source": "Cct3",
+      "target": "Nog1",
+      "value": 3.7587
+    },
+    {
+      "source": "Cct8",
+      "target": "Nog1",
+      "value": 3.4604
     },
     {
       "source": "Php3",
@@ -998,6 +5098,11 @@
       "value": 7.8083
     },
     {
+      "source": "Prs1",
+      "target": "Res1",
+      "value": 3.3079
+    },
+    {
       "source": "Yox1",
       "target": "Res1",
       "value": 7.8413
@@ -1008,6 +5113,286 @@
       "value": 7.6569
     },
     {
+      "source": "Map1",
+      "target": "Rpl4301",
+      "value": 3.4009
+    },
+    {
+      "source": "Hsf1",
+      "target": "Rpl4301",
+      "value": 3.0575
+    },
+    {
+      "source": "Rst2",
+      "target": "Rvb2",
+      "value": 5.3644
+    },
+    {
+      "source": "Ste11",
+      "target": "Rvb2",
+      "value": 4.5883
+    },
+    {
+      "source": "Rpl44",
+      "target": "Mbf1",
+      "value": 3.5223
+    },
+    {
+      "source": "Deb1",
+      "target": "Mbf1",
+      "value": 3.598
+    },
+    {
+      "source": "Oga1",
+      "target": "Mbf1",
+      "value": 3.1994
+    },
+    {
+      "source": "Dal81",
+      "target": "Its8",
+      "value": 3.1224
+    },
+    {
+      "source": "Mrt4",
+      "target": "Rpl1601",
+      "value": 3.3714
+    },
+    {
+      "source": "Scs2",
+      "target": "Rpl1601",
+      "value": 3.1822
+    },
+    {
+      "source": "Rpl2502",
+      "target": "Rpl1601",
+      "value": 3.3676
+    },
+    {
+      "source": "Sds3",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Prw1",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Pst1",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Fkh2",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Pst3",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Clr6",
+      "target": "Apm1",
+      "value": 3.7932
+    },
+    {
+      "source": "Spe1",
+      "target": "Cki2",
+      "value": 3.7627
+    },
+    {
+      "source": "SPAC25B8.11",
+      "target": "Cki2",
+      "value": 3.7627
+    },
+    {
+      "source": "Puf4",
+      "target": "Cki2",
+      "value": 3.7627
+    },
+    {
+      "source": "Ncb2",
+      "target": "Cki2",
+      "value": 4.0719
+    },
+    {
+      "source": "Tif1",
+      "target": "Ilv1",
+      "value": 3.0254
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Ilv1",
+      "value": 3.8618
+    },
+    {
+      "source": "Mce1",
+      "target": "Ilv1",
+      "value": 3.2945
+    },
+    {
+      "source": "Rst2",
+      "target": "Ilv1",
+      "value": 3.5967
+    },
+    {
+      "source": "Prr1",
+      "target": "Ilv1",
+      "value": 4.7599
+    },
+    {
+      "source": "Pfk1",
+      "target": "Ilv1",
+      "value": 3.2416
+    },
+    {
+      "source": "Aha1",
+      "target": "Ilv1",
+      "value": 3.6995
+    },
+    {
+      "source": "Ste11",
+      "target": "Ilv1",
+      "value": 3.5243
+    },
+    {
+      "source": "Nog1",
+      "target": "Ilv1",
+      "value": 3.1825
+    },
+    {
+      "source": "Map1",
+      "target": "Pet127",
+      "value": 3.192
+    },
+    {
+      "source": "Hrp1",
+      "target": "Pet127",
+      "value": 3.387
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Pet127",
+      "value": 3.6769
+    },
+    {
+      "source": "Mrt4",
+      "target": "Pet127",
+      "value": 3.1491
+    },
+    {
+      "source": "Rpl2502",
+      "target": "Pet127",
+      "value": 3.0348
+    },
+    {
+      "source": "Tif1",
+      "target": "Dfr1",
+      "value": 4.2003
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Dfr1",
+      "value": 4.3175
+    },
+    {
+      "source": "Erg11",
+      "target": "Dfr1",
+      "value": 3.7405
+    },
+    {
+      "source": "Por1",
+      "target": "Dfr1",
+      "value": 3.829
+    },
+    {
+      "source": "Erg5",
+      "target": "Dfr1",
+      "value": 4.6282
+    },
+    {
+      "source": "Mce1",
+      "target": "Dfr1",
+      "value": 4.9508
+    },
+    {
+      "source": "Elo2",
+      "target": "Dfr1",
+      "value": 4.4741
+    },
+    {
+      "source": "Pdc101",
+      "target": "Dfr1",
+      "value": 3.693
+    },
+    {
+      "source": "Ura1",
+      "target": "Dfr1",
+      "value": 3.4176
+    },
+    {
+      "source": "Ura3",
+      "target": "Dfr1",
+      "value": 3.2929
+    },
+    {
+      "source": "Prr1",
+      "target": "Dfr1",
+      "value": 4.3922
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Dfr1",
+      "value": 3.3686
+    },
+    {
+      "source": "Aha1",
+      "target": "Dfr1",
+      "value": 4.3793
+    },
+    {
+      "source": "Cct3",
+      "target": "Dfr1",
+      "value": 3.4156
+    },
+    {
+      "source": "Cyb502",
+      "target": "Dfr1",
+      "value": 3.5844
+    },
+    {
+      "source": "Cct8",
+      "target": "Dfr1",
+      "value": 3.1445
+    },
+    {
+      "source": "Nog1",
+      "target": "Dfr1",
+      "value": 3.8464
+    },
+    {
+      "source": "Ilv1",
+      "target": "Dfr1",
+      "value": 3.2337
+    },
+    {
+      "source": "Rpl1001",
+      "target": "Ght5",
+      "value": 3.4734
+    },
+    {
+      "source": "Clu1",
+      "target": "Ght5",
+      "value": 3.599
+    },
+    {
+      "source": "Laf1",
+      "target": "Rxt3",
+      "value": 4.1715
+    },
+    {
       "source": "Sds3",
       "target": "Rxt3",
       "value": 8.9777
@@ -1016,6 +5401,11 @@
       "source": "Prw1",
       "target": "Rxt3",
       "value": 17.6803
+    },
+    {
+      "source": "Ssc1",
+      "target": "Rxt3",
+      "value": 3.0536
     },
     {
       "source": "Pst1",
@@ -1038,6 +5428,136 @@
       "value": 13.4315
     },
     {
+      "source": "Apm1",
+      "target": "Rxt3",
+      "value": 3.7932
+    },
+    {
+      "source": "Slc1",
+      "target": "Ole1",
+      "value": 3.043
+    },
+    {
+      "source": "Elo2",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Tif303",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Snd302",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Cwh43",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Tom70",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Lys4",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Pcl1",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "SPBC17A3.05c",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "SPBC365.16",
+      "target": "Ole1",
+      "value": 3.1928
+    },
+    {
+      "source": "Rpl44",
+      "target": "Phb2",
+      "value": 3.2166
+    },
+    {
+      "source": "Deb1",
+      "target": "Phb2",
+      "value": 3.2166
+    },
+    {
+      "source": "Oga1",
+      "target": "Phb2",
+      "value": 3.1994
+    },
+    {
+      "source": "Mbf1",
+      "target": "Phb2",
+      "value": 3.2166
+    },
+    {
+      "source": "Tif1",
+      "target": "Adh1",
+      "value": 3.6118
+    },
+    {
+      "source": "Erg5",
+      "target": "Adh1",
+      "value": 3.4648
+    },
+    {
+      "source": "Mce1",
+      "target": "Adh1",
+      "value": 3.758
+    },
+    {
+      "source": "Pdc101",
+      "target": "Adh1",
+      "value": 3.0926
+    },
+    {
+      "source": "Ura1",
+      "target": "Adh1",
+      "value": 3.1983
+    },
+    {
+      "source": "Rst2",
+      "target": "Adh1",
+      "value": 3.3896
+    },
+    {
+      "source": "Prr1",
+      "target": "Adh1",
+      "value": 3.8841
+    },
+    {
+      "source": "Aha1",
+      "target": "Adh1",
+      "value": 3.6573
+    },
+    {
+      "source": "Cct3",
+      "target": "Adh1",
+      "value": 3.1964
+    },
+    {
+      "source": "Dfr1",
+      "target": "Adh1",
+      "value": 3.4462
+    },
+    {
       "source": "Adn2",
       "target": "Adn3",
       "value": 11.5828
@@ -1048,9 +5568,104 @@
       "value": 11.5828
     },
     {
+      "source": "Ost1",
+      "target": "Hmg1",
+      "value": 3.7198
+    },
+    {
+      "source": "Stt3",
+      "target": "Hmg1",
+      "value": 3.7198
+    },
+    {
+      "source": "Map1",
+      "target": "Rpl1902",
+      "value": 3.3545
+    },
+    {
+      "source": "Hsf1",
+      "target": "Rpl1902",
+      "value": 3.1517
+    },
+    {
+      "source": "Rpl4301",
+      "target": "Rpl1902",
+      "value": 3.2121
+    },
+    {
+      "source": "Erg11",
+      "target": "Oca8",
+      "value": 3.7764
+    },
+    {
+      "source": "Elo2",
+      "target": "Oca8",
+      "value": 3.8856
+    },
+    {
+      "source": "Ura3",
+      "target": "Oca8",
+      "value": 3.3614
+    },
+    {
+      "source": "SPBC106.03",
+      "target": "Oca8",
+      "value": 3.2408
+    },
+    {
+      "source": "Cyb502",
+      "target": "Oca8",
+      "value": 3.6236
+    },
+    {
       "source": "Map1",
       "target": "Mug33",
       "value": 7.1423
+    },
+    {
+      "source": "Fur4",
+      "target": "Mug33",
+      "value": 3.5082
+    },
+    {
+      "source": "Hrp1",
+      "target": "Mug33",
+      "value": 3.2838
+    },
+    {
+      "source": "Plb2",
+      "target": "Mug33",
+      "value": 3.5288
+    },
+    {
+      "source": "Yip5",
+      "target": "Mug33",
+      "value": 4.3118
+    },
+    {
+      "source": "Pet1",
+      "target": "Mug33",
+      "value": 3.5579
+    },
+    {
+      "source": "Sum1",
+      "target": "Mug33",
+      "value": 3.2247
+    },
+    {
+      "source": "Mnn9",
+      "target": "Mug33",
+      "value": 4.5913
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "Mug33",
+      "value": 5.0147
+    },
+    {
+      "source": "Sul2",
+      "target": "Mug33",
+      "value": 3.3918
     },
     {
       "source": "Sar1",
@@ -1058,9 +5673,34 @@
       "value": 6.3494
     },
     {
+      "source": "SPBC3B8.06",
+      "target": "Mug33",
+      "value": 5.0138
+    },
+    {
+      "source": "But2",
+      "target": "Mug33",
+      "value": 5.8005
+    },
+    {
+      "source": "Lac1",
+      "target": "Mug33",
+      "value": 3.1348
+    },
+    {
+      "source": "Pex11",
+      "target": "Mug33",
+      "value": 3.6768
+    },
+    {
       "source": "Ssa1",
       "target": "Ssa2",
       "value": 7.0605
+    },
+    {
+      "source": "Rpl1502",
+      "target": "Ssa2",
+      "value": 4.1224
     },
     {
       "source": "Lsh1",
@@ -1068,14 +5708,279 @@
       "value": 7.9676
     },
     {
+      "source": "Atp2",
+      "target": "Ssa2",
+      "value": 4.1092
+    },
+    {
+      "source": "Bip1",
+      "target": "Ssa2",
+      "value": 3.577
+    },
+    {
+      "source": "Tif302",
+      "target": "Ssa2",
+      "value": 3.2852
+    },
+    {
       "source": "Hsf1",
       "target": "Ssa2",
       "value": 10.9488
     },
     {
+      "source": "Fas1",
+      "target": "Ssa2",
+      "value": 3.5762
+    },
+    {
+      "source": "Hmt2",
+      "target": "Ssa2",
+      "value": 3.4386
+    },
+    {
+      "source": "Idh1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Gus1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Has1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Ura1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Tif212",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Rpt5",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Prr1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Cct4",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Fma2",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Rpt1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Cct3",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Grx4",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Act1",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Cct8",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Rpt2",
+      "target": "Sum3",
+      "value": 3.3039
+    },
+    {
+      "source": "Rpl2401",
+      "target": "SPCC18.03",
+      "value": 4.7191
+    },
+    {
+      "source": "Tif213",
+      "target": "SPCC18.03",
+      "value": 3.3093
+    },
+    {
+      "source": "Rpl44",
+      "target": "Pcs60",
+      "value": 3.5223
+    },
+    {
+      "source": "Deb1",
+      "target": "Pcs60",
+      "value": 3.5711
+    },
+    {
+      "source": "Oga1",
+      "target": "Pcs60",
+      "value": 3.1994
+    },
+    {
+      "source": "Mbf1",
+      "target": "Pcs60",
+      "value": 3.5711
+    },
+    {
+      "source": "Phb2",
+      "target": "Pcs60",
+      "value": 3.2166
+    },
+    {
+      "source": "Pss1",
+      "target": "Gaf1",
+      "value": 5.7004
+    },
+    {
+      "source": "Bip1",
+      "target": "Gaf1",
+      "value": 3.4819
+    },
+    {
+      "source": "Ssz1",
+      "target": "Gaf1",
+      "value": 3.5589
+    },
+    {
+      "source": "Sks2",
+      "target": "Gaf1",
+      "value": 3.8547
+    },
+    {
+      "source": "Rps1502",
+      "target": "Mdh1",
+      "value": 3.1374
+    },
+    {
+      "source": "SPAC22E12.18",
+      "target": "Mdh1",
+      "value": 3.043
+    },
+    {
+      "source": "Shm1",
+      "target": "Mdh1",
+      "value": 3.1374
+    },
+    {
+      "source": "Rer2",
+      "target": "Mdh1",
+      "value": 3.1374
+    },
+    {
+      "source": "Pvg1",
+      "target": "Mdh1",
+      "value": 3.1374
+    },
+    {
+      "source": "Cog5",
+      "target": "Mdh1",
+      "value": 3.1374
+    },
+    {
+      "source": "Rpp203",
+      "target": "SPCC320.08",
+      "value": 3.154
+    },
+    {
       "source": "Map1",
       "target": "SPCC320.08",
       "value": 6.4303
+    },
+    {
+      "source": "Hrp1",
+      "target": "SPCC320.08",
+      "value": 3.3545
+    },
+    {
+      "source": "Sum1",
+      "target": "SPCC320.08",
+      "value": 3.0651
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "SPCC320.08",
+      "value": 4.9899
+    },
+    {
+      "source": "Sul2",
+      "target": "SPCC320.08",
+      "value": 3.0985
+    },
+    {
+      "source": "Mrt4",
+      "target": "SPCC320.08",
+      "value": 3.8273
+    },
+    {
+      "source": "Scs2",
+      "target": "SPCC320.08",
+      "value": 3.4442
+    },
+    {
+      "source": "Sar1",
+      "target": "SPCC320.08",
+      "value": 3.7318
+    },
+    {
+      "source": "But2",
+      "target": "SPCC320.08",
+      "value": 3.4092
+    },
+    {
+      "source": "Rpl2502",
+      "target": "SPCC320.08",
+      "value": 3.638
+    },
+    {
+      "source": "Rpl1601",
+      "target": "SPCC320.08",
+      "value": 3.038
+    },
+    {
+      "source": "Pet127",
+      "target": "SPCC320.08",
+      "value": 3.8631
+    },
+    {
+      "source": "Mug33",
+      "target": "SPCC320.08",
+      "value": 4.1979
+    },
+    {
+      "source": "Mcp60",
+      "target": "Wbp1",
+      "value": 3.8654
     },
     {
       "source": "Ost1",
@@ -1088,9 +5993,569 @@
       "value": 7.0516
     },
     {
+      "source": "Ntu1",
+      "target": "Wbp1",
+      "value": 4.3601
+    },
+    {
+      "source": "Ntu2",
+      "target": "Wbp1",
+      "value": 5.0517
+    },
+    {
+      "source": "Tif1",
+      "target": "Tef3",
+      "value": 3.996
+    },
+    {
+      "source": "Idh1",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Has1",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Pdc101",
+      "target": "Tef3",
+      "value": 3.7234
+    },
+    {
+      "source": "Ura1",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Prr1",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Cct4",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Fma2",
+      "target": "Tef3",
+      "value": 4.3323
+    },
+    {
+      "source": "Rpt1",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Aha1",
+      "target": "Tef3",
+      "value": 4.0757
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Tef3",
+      "value": 3.5898
+    },
+    {
+      "source": "Cct3",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Grx4",
+      "target": "Tef3",
+      "value": 3.5261
+    },
+    {
+      "source": "Cct8",
+      "target": "Tef3",
+      "value": 4.4733
+    },
+    {
+      "source": "Rpt2",
+      "target": "Tef3",
+      "value": 3.3026
+    },
+    {
+      "source": "Cct6",
+      "target": "Tef3",
+      "value": 3.9244
+    },
+    {
+      "source": "Map1",
+      "target": "Ght8",
+      "value": 3.4352
+    },
+    {
+      "source": "Fur4",
+      "target": "Ght8",
+      "value": 3.1892
+    },
+    {
+      "source": "Sar1",
+      "target": "Ght8",
+      "value": 3.415
+    },
+    {
+      "source": "But2",
+      "target": "Ght8",
+      "value": 3.1198
+    },
+    {
+      "source": "Pex11",
+      "target": "Ght8",
+      "value": 3.1718
+    },
+    {
+      "source": "Mug33",
+      "target": "Ght8",
+      "value": 3.4352
+    },
+    {
+      "source": "Pap1",
+      "target": "Tpx1",
+      "value": 4.976
+    },
+    {
+      "source": "Hht2",
+      "target": "Tpx1",
+      "value": 3.3421
+    },
+    {
+      "source": "Pcr1",
+      "target": "Tpx1",
+      "value": 3.9798
+    },
+    {
+      "source": "Rst2",
+      "target": "Tpx1",
+      "value": 3.3032
+    },
+    {
+      "source": "Ace2",
+      "target": "Tpx1",
+      "value": 3.2964
+    },
+    {
+      "source": "Atf1",
+      "target": "Tpx1",
+      "value": 3.4734
+    },
+    {
+      "source": "Ste11",
+      "target": "Tpx1",
+      "value": 3.8288
+    },
+    {
+      "source": "Rps102",
+      "target": "Rps2",
+      "value": 3.573
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rps2",
+      "value": 3.573
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rps2",
+      "value": 3.5565
+    },
+    {
+      "source": "Rps002",
+      "target": "Rps2",
+      "value": 3.573
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rps2",
+      "value": 3.409
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rps2",
+      "value": 3.573
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rps2",
+      "value": 3.3938
+    },
+    {
+      "source": "Rpl26",
+      "target": "Rps2",
+      "value": 3.573
+    },
+    {
+      "source": "Def1",
+      "target": "Rps2",
+      "value": 3.4813
+    },
+    {
+      "source": "Rpl3601",
+      "target": "Rps2",
+      "value": 3.2754
+    },
+    {
+      "source": "Rpl44",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Deb1",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Oga1",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Mbf1",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Phb2",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Pcs60",
+      "target": "Rps20",
+      "value": 3.1546
+    },
+    {
+      "source": "Tif1",
+      "target": "Rpt3",
+      "value": 3.9531
+    },
+    {
+      "source": "Idh1",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Gus1",
+      "target": "Rpt3",
+      "value": 4.007
+    },
+    {
+      "source": "Has1",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Pdc101",
+      "target": "Rpt3",
+      "value": 3.2283
+    },
+    {
+      "source": "Ura1",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Tif212",
+      "target": "Rpt3",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Rpt3",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Rpt3",
+      "value": 3.0034
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Rpt3",
+      "value": 3.5688
+    },
+    {
+      "source": "Prr1",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Cct4",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Spi1",
+      "target": "Rpt3",
+      "value": 3.0419
+    },
+    {
+      "source": "Fma2",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Rpt1",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Aha1",
+      "target": "Rpt3",
+      "value": 4.1652
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Cct3",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Grx4",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Act1",
+      "target": "Rpt3",
+      "value": 4.384
+    },
+    {
+      "source": "Cct8",
+      "target": "Rpt3",
+      "value": 5.2226
+    },
+    {
+      "source": "Rpt2",
+      "target": "Rpt3",
+      "value": 5.1554
+    },
+    {
+      "source": "Cct6",
+      "target": "Rpt3",
+      "value": 3.7628
+    },
+    {
+      "source": "Sum3",
+      "target": "Rpt3",
+      "value": 3.3039
+    },
+    {
+      "source": "Tef3",
+      "target": "Rpt3",
+      "value": 3.3457
+    },
+    {
+      "source": "Map1",
+      "target": "Rpl15",
+      "value": 3.1255
+    },
+    {
+      "source": "SPAC1039.01",
+      "target": "SPCC584.13",
+      "value": 3.5354
+    },
+    {
+      "source": "Rpp203",
+      "target": "SPCC584.13",
+      "value": 3.4458
+    },
+    {
       "source": "Map1",
       "target": "SPCC584.13",
       "value": 9.5463
+    },
+    {
+      "source": "Fur4",
+      "target": "SPCC584.13",
+      "value": 3.9575
+    },
+    {
+      "source": "Yip5",
+      "target": "SPCC584.13",
+      "value": 3.031
+    },
+    {
+      "source": "SPAC26H5.07c",
+      "target": "SPCC584.13",
+      "value": 3.6443
+    },
+    {
+      "source": "Mnn9",
+      "target": "SPCC584.13",
+      "value": 3.2275
+    },
+    {
+      "source": "SPAC644.13c",
+      "target": "SPCC584.13",
+      "value": 4.5993
+    },
+    {
+      "source": "Rpl2102",
+      "target": "SPCC584.13",
+      "value": 3.1618
+    },
+    {
+      "source": "Scs2",
+      "target": "SPCC584.13",
+      "value": 3.3745
+    },
+    {
+      "source": "Rtn1",
+      "target": "SPCC584.13",
+      "value": 3.9551
+    },
+    {
+      "source": "Sar1",
+      "target": "SPCC584.13",
+      "value": 4.4633
+    },
+    {
+      "source": "SPBC3B8.06",
+      "target": "SPCC584.13",
+      "value": 3.5245
+    },
+    {
+      "source": "But2",
+      "target": "SPCC584.13",
+      "value": 4.0775
+    },
+    {
+      "source": "Pex11",
+      "target": "SPCC584.13",
+      "value": 3.3522
+    },
+    {
+      "source": "Mug33",
+      "target": "SPCC584.13",
+      "value": 5.0207
+    },
+    {
+      "source": "SPCC320.08",
+      "target": "SPCC584.13",
+      "value": 4.5202
+    },
+    {
+      "source": "Ght8",
+      "target": "SPCC584.13",
+      "value": 3.2916
+    },
+    {
+      "source": "Rpl15",
+      "target": "SPCC584.13",
+      "value": 3.2288
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl26",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Def1",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl3601",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rps2",
+      "target": "Rpl2802",
+      "value": 3.0454
+    },
+    {
+      "source": "Rst2",
+      "target": "Rpl902",
+      "value": 3.2847
+    },
+    {
+      "source": "Hhf2",
+      "target": "Hta1",
+      "value": 3.7109
+    },
+    {
+      "source": "Hta2",
+      "target": "Hta1",
+      "value": 3.4973
+    },
+    {
+      "source": "Pcr1",
+      "target": "Hta1",
+      "value": 3.1354
+    },
+    {
+      "source": "Klp9",
+      "target": "Hta1",
+      "value": 4.7264
+    },
+    {
+      "source": "Atf1",
+      "target": "Hta1",
+      "value": 3.877
+    },
+    {
+      "source": "Pap1",
+      "target": "Htb1",
+      "value": 4.9419
+    },
+    {
+      "source": "Hhf2",
+      "target": "Htb1",
+      "value": 3.5033
+    },
+    {
+      "source": "Hht2",
+      "target": "Htb1",
+      "value": 5.8482
+    },
+    {
+      "source": "Pcr1",
+      "target": "Htb1",
+      "value": 5.4734
     },
     {
       "source": "Atf1",
@@ -1098,9 +6563,154 @@
       "value": 6.1297
     },
     {
+      "source": "Hta1",
+      "target": "Htb1",
+      "value": 3.5722
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rpl26",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Def1",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rpl3601",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rps2",
+      "target": "Rpl6",
+      "value": 3.1826
+    },
+    {
+      "source": "Rpl2802",
+      "target": "Rpl6",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl101",
+      "target": "Cbf11",
+      "value": 3.7723
+    },
+    {
+      "source": "Rps102",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rpl2001",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rps1601",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rps002",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rpl2501",
+      "target": "Rpl2702",
+      "value": 3.409
+    },
+    {
+      "source": "Rps1802",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rps1901",
+      "target": "Rpl2702",
+      "value": 3.3938
+    },
+    {
+      "source": "Rpl26",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Def1",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rpl3601",
+      "target": "Rpl2702",
+      "value": 3.2754
+    },
+    {
+      "source": "Rps2",
+      "target": "Rpl2702",
+      "value": 3.4336
+    },
+    {
+      "source": "Rpl2802",
+      "target": "Rpl2702",
+      "value": 3.0454
+    },
+    {
+      "source": "Rpl6",
+      "target": "Rpl2702",
+      "value": 3.1826
+    },
+    {
       "source": "Spe1",
       "target": "Alp14",
       "value": 21.8426
+    },
+    {
+      "source": "Plb2",
+      "target": "Alp14",
+      "value": 3.2155
+    },
+    {
+      "source": "Vma6",
+      "target": "Alp14",
+      "value": 4.4552
     },
     {
       "source": "SPAC25B8.11",
@@ -1108,9 +6718,24 @@
       "value": 23.433
     },
     {
+      "source": "Pgt1",
+      "target": "Alp14",
+      "value": 3.5717
+    },
+    {
       "source": "Puf4",
       "target": "Alp14",
       "value": 12.7841
+    },
+    {
+      "source": "Sec17",
+      "target": "Alp14",
+      "value": 3.1995
+    },
+    {
+      "source": "Cki2",
+      "target": "Alp14",
+      "value": 3.7627
     },
     {
       "source": "Tif1",
@@ -1121,6 +6746,21 @@
       "source": "Idh1",
       "target": "Vma8",
       "value": 7.6726
+    },
+    {
+      "source": "Por1",
+      "target": "Vma8",
+      "value": 3.9619
+    },
+    {
+      "source": "Gus1",
+      "target": "Vma8",
+      "value": 4.007
+    },
+    {
+      "source": "Erg5",
+      "target": "Vma8",
+      "value": 4.5615
     },
     {
       "source": "Mce1",
@@ -1143,14 +6783,54 @@
       "value": 11.2509
     },
     {
+      "source": "Tif212",
+      "target": "Vma8",
+      "value": 3.6364
+    },
+    {
+      "source": "Rpt5",
+      "target": "Vma8",
+      "value": 3.8469
+    },
+    {
+      "source": "Eft202",
+      "target": "Vma8",
+      "value": 4.9862
+    },
+    {
+      "source": "SPAC694.02",
+      "target": "Vma8",
+      "value": 3.5688
+    },
+    {
+      "source": "Fsv1",
+      "target": "Vma8",
+      "value": 3.1446
+    },
+    {
+      "source": "Tif308",
+      "target": "Vma8",
+      "value": 5.7468
+    },
+    {
       "source": "Prr1",
       "target": "Vma8",
       "value": 16.9698
     },
     {
+      "source": "Hsp90",
+      "target": "Vma8",
+      "value": 4.4284
+    },
+    {
       "source": "Cct4",
       "target": "Vma8",
       "value": 9.4836
+    },
+    {
+      "source": "Spi1",
+      "target": "Vma8",
+      "value": 4.4311
     },
     {
       "source": "Fma2",
@@ -1163,9 +6843,29 @@
       "value": 9.0048
     },
     {
+      "source": "Pfk1",
+      "target": "Vma8",
+      "value": 4.7451
+    },
+    {
       "source": "Aha1",
       "target": "Vma8",
       "value": 13.4733
+    },
+    {
+      "source": "Tif213",
+      "target": "Vma8",
+      "value": 4.1116
+    },
+    {
+      "source": "SPBC19F5.04",
+      "target": "Vma8",
+      "value": 5.6037
+    },
+    {
+      "source": "Leu1",
+      "target": "Vma8",
+      "value": 3.3936
     },
     {
       "source": "Cct3",
@@ -1173,14 +6873,109 @@
       "value": 11.2443
     },
     {
+      "source": "Grx4",
+      "target": "Vma8",
+      "value": 5.5041
+    },
+    {
+      "source": "Fib1",
+      "target": "Vma8",
+      "value": 3.085
+    },
+    {
+      "source": "Act1",
+      "target": "Vma8",
+      "value": 4.384
+    },
+    {
       "source": "Cct8",
       "target": "Vma8",
       "value": 10.3519
     },
     {
+      "source": "Rpt2",
+      "target": "Vma8",
+      "value": 5.1554
+    },
+    {
       "source": "Cct6",
       "target": "Vma8",
       "value": 6.7988
+    },
+    {
+      "source": "Nog1",
+      "target": "Vma8",
+      "value": 5.6726
+    },
+    {
+      "source": "Ilv1",
+      "target": "Vma8",
+      "value": 3.7983
+    },
+    {
+      "source": "Dfr1",
+      "target": "Vma8",
+      "value": 4.3922
+    },
+    {
+      "source": "Adh1",
+      "target": "Vma8",
+      "value": 3.8841
+    },
+    {
+      "source": "Sum3",
+      "target": "Vma8",
+      "value": 3.3039
+    },
+    {
+      "source": "Tef3",
+      "target": "Vma8",
+      "value": 4.4733
+    },
+    {
+      "source": "Rpt3",
+      "target": "Vma8",
+      "value": 5.2226
+    },
+    {
+      "source": "SPAC8F11.04",
+      "target": "SPCC965.10",
+      "value": 3.8352
+    },
+    {
+      "source": "Rps402",
+      "target": "SPCC965.10",
+      "value": 3.5491
+    },
+    {
+      "source": "Ssa2",
+      "target": "SPCC965.10",
+      "value": 3.4484
+    },
+    {
+      "source": "Map1",
+      "target": "SPCC965.13",
+      "value": 4.4279
+    },
+    {
+      "source": "Rst2",
+      "target": "SPCC965.13",
+      "value": 3.532
+    },
+    {
+      "source": "SPAC11D3.17",
+      "target": "Cbr1",
+      "value": 3.2375
+    },
+    {
+      "source": "Map1",
+      "target": "Cbr1",
+      "value": 4.3924
+    },
+    {
+      "source": "Map1",
+      "target": "Amt1",
+      "value": 3.5881
     }
   ]
 }
