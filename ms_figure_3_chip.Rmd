@@ -1166,7 +1166,7 @@ Assemble the panels into Figure 3:
 
 ```{r Fig3}
 #| fig.width: 11.5
-#| fig.height: 11.1
+#| fig.height: 11.6
 #| warning: false
 
 cowplot::plot_grid(
