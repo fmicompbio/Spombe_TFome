@@ -814,6 +814,7 @@ conditions.
 #| fig.width: 6
 #| fig.height: 7
 #| message: false
+#| warning: false
 
 ## Extract results from statistical tests
 rdlow <- rowData(sce150)
@@ -1033,6 +1034,8 @@ to the complement consisting of all non-`Atf1` pull-down samples obtained
 with the same protocol). 
 
 ```{r}
+#| warning: false
+
 df <- as.data.frame(rowData(sce150)) |>
     dplyr::select(einprotId, Atf1_150_tube_vs_compl_Atf1_150_tube.t, 
                   Atf1_150_plate_vs_compl_Atf1_150_plate.t) |>
@@ -1138,6 +1141,7 @@ plot_grid(hm_histones)
 ```{r Fig5}
 #| fig.width: 9.8
 #| fig.height: 14.5
+#| warning: false
 
 cowplot::plot_grid(
     cowplot::plot_grid(
