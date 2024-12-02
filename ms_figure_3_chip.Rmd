@@ -297,6 +297,35 @@ heatmapDataChip <- toJSON(
 write(heatmapDataChip, "data/heatmapDataChIP.json")
 ```
 
+# Calculate peak distances to nearest TSS
+
+Using bound peaks for each TF (without "common peaks (ubiquitous)"), we
+want to measure the distance of peak mid-points to the nearest TSS, using
+negative distances to indicate TF binding upstream of the TSS.
+
+```{r peak-mid-to-tss-dist, fig.width=7, fig.height=5}
+tss <- GRanges(seqnames = txannot$seqnames, ranges = IRanges(
+    start = txannot$TSS.coordinate, width = 1, names = txannot$tx_id),
+    strand = txannot$strand)
+peakSel <- peakgr[peakgr$peaktype != "common peaks (ubiquitous)"]
+is_enr <- as.matrix(mcols(peakSel)[, grep("^is_enr_in[.]", colnames(mcols(peakSel)))])
+colnames(is_enr) <- sub("^is_enr_in.", "", colnames(is_enr))
+inclTFs <- colnames(is_enr) != "Untagged" & colSums(is_enr) > 0
+peakSelAll <- peakSel[unlist(apply(is_enr[, inclTFs], 2, which))]
+d <- distanceToNearest(x = resize(peakSelAll, width = 1, fix = "center"), subject = tss)
+isUpstream <- ifelse(strand(tss)[subjectHits(d)] == "+", -1, 1) * sign(start(resize(peakSelAll, width = 1, fix = "center"))[queryHits(d)] - start(tss)[subjectHits(d)]) > 0 
+signedDistToTSS <- mcols(d)$distance * (2 * (!isUpstream) - 1)
+
+ggplot(data.frame(d = signedDistToTSS), aes(d)) +
+    geom_density() +
+    labs(x = "Position of peak mid relative to nearest TSS (bp)",
+         y = "Density of peaks",
+         caption = "Dashed line: TSS, dotted lines: promoter boundaries") +
+    geom_vline(xintercept = 0, linetype = "dashed") +
+    geom_vline(xintercept = c(-500, 500), linetype = "dotted", color = main_colors[3]) +
+    theme_cowplot()
+```
+
 # Calculate peak distances to tRNA or rRNA genes
 
 We want to identify ChIP-seq peaks that are near a tRNA or rRNA gene. We can
