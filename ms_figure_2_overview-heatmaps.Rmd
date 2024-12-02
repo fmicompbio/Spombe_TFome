@@ -269,6 +269,17 @@ dist.peak2rRNA <- calcDistanceToNearest(from = peakgr, to = genegr[is_rRNA])
 dist.rRNA2peak <- calcDistanceToNearest(from = genegr[is_rRNA], to = peakgr)
 ```
 
+# Facts and numbers - ChIP-seq heatmap
+
+```{r calc-numbers-heatmap, class.source="fold-show", warning=FALSE}
+# percent of peaks in low H3 regions (log2 IP/input < 1.0)
+usePeaks <- peakgr$peaktype != "common peaks (ubiquitous)"
+cat(sprintf("Percent of binding sites in regions of low H3 ChIP-seq enrichment: %.1f %%\n",
+            mean(chip_enr[usePeaks, "GSE108668_H3"] < 1.0) * 100))
+cat(sprintf("Percent of binding sites in regions of high H3K14ac ChIP-seq enrichment: %.1f %%\n",
+            mean(chip_enr[usePeaks, "GSE108668_H3K14ac"] >= 1.0) * 100))
+```
+
 # Figure 2
 
 ## Settings
