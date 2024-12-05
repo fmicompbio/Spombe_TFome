@@ -13,6 +13,7 @@ params:
     rdsrnaseq_del: "data/rnaseq_del.rds"
     rdsrnaseq_ko: "data/rnaseq_ko.rds"
     dist_from_ne: "data/Fig7_lacR_quantification_distance_radius.txt"
+    dist_from_ne_doubleko: "data/Fig7_lacR_quantification_distance_radius_doubleKO.txt"
     gtf: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
     idmap: "data/id_mapping_table.txt"
     rnatracks_ko: "data/genome_browser_tracks_rnaseq_ko.csv.gz"
@@ -79,15 +80,20 @@ idmap <- read.delim(params$idmap)
 ```{r}
 ## Read data with distances from nuclear envelope + cell radius and 
 ## calculate relative distance from NE
-dist_ne <- read.delim(params$dist_from_ne) |>
+dist_ne <- bind_rows(
+    read.delim(params$dist_from_ne),
+    read.delim(params$dist_from_ne_doubleko)) |>
     group_by(Condition, Replicate) |>
+    filter(Condition != "wt_dKO") |>
     mutate(rel_distance_from_ne = Distance_from_nuc_envelope / Radius_of_cell) |>
     mutate(Condition = ifelse(Condition == "ntu1D", "ntu1\U141E", 
-                              ifelse(Condition == "ntu2D", "ntu2\U141E", Condition))) |>
+                              ifelse(Condition == "ntu2D", "ntu2\U141E", 
+                                     ifelse(Condition == "dKO", "ntu1\U141Entu2\U141E", Condition)))) |>
     mutate(SampleID = factor(paste0(Condition, "\n", Replicate),
                              levels = c("wt\nrep1", "wt\nrep2", "ntu1\U141E\nrep1",
                                         "ntu1\U141E\nrep2", "ntu2\U141E\nrep1",
-                                        "ntu2\U141E\nrep2"))) |>
+                                        "ntu2\U141E\nrep2","ntu1\U141Entu2\U141E\nrep1",
+                                        "ntu1\U141Entu2\U141E\nrep2"))) |>
     dplyr::ungroup()
 
 ## Remove one cell where Distance was slightly larger than the Radius
@@ -95,7 +101,8 @@ dist_ne <- read.delim(params$dist_from_ne) |>
 dist_ne <- dist_ne |>
     filter(rel_distance_from_ne >= 0 & rel_distance_from_ne <= 1) |>
     dplyr::mutate(Condition = factor(Condition, 
-                                     levels = c("wt", "ntu1\U141E", "ntu2\U141E")),
+                                     levels = c("wt", "ntu1\U141E", "ntu2\U141E",
+                                                "ntu1\U141Entu2\U141E")),
                   Replicate = factor(Replicate, 
                                      levels = c("rep1", "rep2")))
 
@@ -180,22 +187,26 @@ p_ntu1 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu1\U141
 ## wt vs ntu2D
 p_ntu2 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu2\U141E"], 3))
 
+## wt vs ntu1Dntu2D
+p_ntu12 <- paste0("p==", signif(aggreg$p.value[aggreg$term == "Conditionntu1\U141Entu2\U141E"], 3))
+
 (p_rel_dis <- ggplot(dist_ne, 
                      aes(x = SampleID, y = rel_distance_from_ne, 
                          fill = Condition)) + 
         geom_violin(trim = TRUE, bounds = c(0, 1)) +
-        geom_signif(annotations = c(p_ntu1, p_ntu2),
-                    xmin = c(1.5, 1.5), xmax = c(3.5, 5.5), 
-                    y = c(1.05, 1.15),
+        geom_signif(annotations = c(p_ntu1, p_ntu2, p_ntu12),
+                    xmin = c(1.5, 1.5, 1.5), xmax = c(3.5, 5.5, 7.5), 
+                    y = c(1.05, 1.15, 1.25),
                     tip_length = 0, step_increase = 0.1, parse = TRUE) + 
         geom_boxplot(width = 0.1, fill = "white") +
         labs(x = "", y = "Distance from NE relative to radius") + 
-        scale_fill_manual(values = c(na_color, main_colors[5], main_colors[1]),
+        scale_fill_manual(values = c(na_color, main_colors[5], main_colors[1],
+                                     main_colors[3]),
                           name = "Condition") + 
         scale_x_discrete(labels = get_xlabs) +
-        scale_y_continuous(breaks = c(0, 0.5, 1), limits = c(0, 1.2)) + 
+        scale_y_continuous(breaks = c(0, 0.5, 1), limits = c(0, 1.3)) + 
         theme_cowplot() + 
-        theme(axis.text.x = element_markdown(),
+        theme(axis.text.x = element_markdown(size = 8),
               legend.text = element_text(face = "italic")))
 ```
 
