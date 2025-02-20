@@ -1,0 +1,192 @@
+---
+title: "PomBase data export"
+author: "Charlotte Soneson, Michael Stadler, Merle Skribbe"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: united
+        toc: true
+        toc_float: true
+        code_folding: hide
+        self_contained: true
+params:
+    rds150: "data/ipms_150_sce.rds"
+    rds500: "data/ipms_500_sce.rds"
+    peakcsv: "data/fused_peaks_filtered.csv.gz"
+    baitclass: "data/ipms_bait_class.txt"
+    idmap: "data/id_mapping_table.txt"
+    motifrds: "data/motifs_annotated.rds"
+    gtffile: "reference/Schizosaccharomyces_pombe.ASM294v2.55.gtf"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = c("png", "cairo_pdf"))
+options(scipen = 6)
+```
+
+# Goal
+
+This report load, reformats and export data for inclusion in [PomBase](https://www.pombase.org/).
+
+# Parameter values
+
+```{r params}
+params
+```
+
+# Load required packages and helper functions
+
+```{r load-packages, class.source="fold-show"}
+suppressPackageStartupMessages({
+    library(SingleCellExperiment)
+    library(GenomicFeatures)
+    library(universalmotif)
+    library(BiocIO)
+    library(dplyr)
+})
+
+source("params/mapping_functions.R")
+```
+
+# Read data
+
+```{r load-data, class.source="fold-show", warning=FALSE}
+## Feature ID mapping table
+idmap <- read.delim(params$idmap)
+
+## Bait class table
+baitclass <- read.delim(params$baitclass)
+
+## IP-MS data
+sce150 <- readRDS(params$rds150)
+sce500 <- readRDS(params$rds500)
+
+## ChIP-seq peaks
+peaks <- read.csv(params$peakcsv, row.names = 1)
+peaksgr <- as(peaks, "GenomicRanges")
+peakgrNonubi <- as(peaks[peaks$peaktype != "common peaks (ubiquitous)", 1:5],
+                   "GenomicRanges")
+enrNonubi <- as.matrix(peaks[peaks$peaktype != "common peaks (ubiquitous)",
+                             grep("^is_enr_in[.]", colnames(peaks))])
+colnames(enrNonubi) <- sub("^is_enr_in[.]", "", colnames(enrNonubi))
+enrNonubi <- enrNonubi[, setdiff(colnames(enrNonubi), "Untagged")]
+
+## Transcript database and promoters
+txdb <- makeTxDbFromGFF(params$gtffile)
+txs <- transcripts(txdb, columns = c("GENEID", "TXNAME"))
+colnames(mcols(txs)) <- c("gene_id", "tx_name")
+txs$gene_id <- unlist(txs$gene_id, use.names = FALSE)
+names(txs) <- txs$tx_name
+tss <- resize(txs, width = 1, fix = "start")
+prom <- resize(x = tss, width = 1000, fix = "center")
+
+## Motifs
+motifs <- readRDS(params$motifrds)
+```
+
+# Export data for PomBase
+
+## IP-MS data
+
+Table of proteins pulled-down by each TF at low salt and high salt conditions.
+
+```{r export-ip-ms, class.source="fold-show"}
+testL150 <- metadata(sce150)$testres$tests
+res150 <- do.call(bind_rows, lapply(names(testL150), function(nm) {
+    testL150[[nm]] |>
+        dplyr::filter(adj.P.Val < 0.05 & logFC > 1) |>
+        dplyr::select(pid, adj.P.Val, logFC) |>
+        dplyr::rename(prey = pid) |>
+        dplyr::mutate(bait = .getProteinNameFromComparison(nm))
+})) |>
+    dplyr::filter(bait != prey) |>
+    dplyr::filter(!bait %in% baitclass$Gene_name[baitclass$class == "nobait"]) |>
+    dplyr::select(bait, prey, adj.P.Val, logFC)
+
+write.table(res150, file = "PomBase/ipms_150mM_pulldowns.csv", row.names = FALSE, 
+            col.names = TRUE, sep = ",", quote = FALSE)
+
+testL500 <- metadata(sce500)$testres$tests
+res500 <- do.call(bind_rows, lapply(names(testL500), function(nm) {
+    testL500[[nm]] |>
+        dplyr::filter(adj.P.Val < 0.05 & logFC > 1) |>
+        dplyr::select(pid, adj.P.Val, logFC) |>
+        dplyr::rename(prey = pid) |>
+        dplyr::mutate(bait = .getProteinNameFromComparison(nm))
+})) |>
+    dplyr::filter(bait != prey) |>
+    dplyr::filter(!bait %in% baitclass$Gene_name[baitclass$class == "nobait"]) |>
+    dplyr::select(bait, prey, adj.P.Val, logFC)
+
+write.table(res500, file = "PomBase/ipms_500mM_pulldowns.csv", row.names = FALSE, 
+            col.names = TRUE, sep = ",", quote = FALSE)
+```
+ 
+## Motifs
+
+Table of identified motif consensus sequences.
+
+```{r export-motifs, class.source="fold-show"}
+motiftab <- motifs |>
+    dplyr::filter(unique_version_of_motif) |>
+    dplyr::select(tf_name, name, consensus) |>
+    dplyr::mutate(gene_stable_id = ifelse(
+        tf_name %in% idmap$gene_stable_id,
+        tf_name,
+        idmap$gene_stable_id[match(tolower(tf_name), idmap$gene_name)])) |>
+    dplyr::rename(motif_name = name,
+                  motif_consensus = consensus) |>
+    dplyr::select(tf_name, gene_stable_id, motif_name, motif_consensus)
+
+write.table(motiftab, file = "PomBase/motif_consensus_sequences.csv",
+            row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+```
+
+## ChIP-seq data
+
+Table of gene promoters bound by a TF (excluding common ubiquitous peaks).
+Promoters are defined as 1kb windows centerd on annotated transcript
+start sites. Promoter binding is defined as a peak that overlaps a promoter.
+
+```{r export-bound-promoters, class.source="fold-show"}
+prombinding <- do.call(bind_rows, lapply(colnames(enrNonubi), function(tf_name) {
+    peakgrSel <- peakgrNonubi[enrNonubi[, tf_name], ]
+    ovprom <- overlapsAny(query = prom, subject = peakgrSel)
+    data.frame(tf_name = tf_name,
+               bound_promoters = paste(unique(prom$gene_id[ovprom]),
+                                       collapse = ";"))
+}))
+
+# add Zas1 (SPBC1198.04c) promoter to Zas1
+# (was missed due to unresolved peak near common-ubiquitous peak)
+prombinding[match("Zas1", prombinding$tf_name), "bound_promoters"] <- paste0(
+    prombinding[match("Zas1", prombinding$tf_name), "bound_promoters"],
+    ";SPBC1198.04c"
+)
+
+write.table(prombinding, file = "PomBase/tf_binding_promoters.csv",
+            row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+```
+ 
+## Peaks by type as BED files
+
+```{r export-peaks-bed, class.source="fold-show"}
+for (peaktype in unique(peaksgr$peaktype)) {
+    peakgrSel <- peaksgr[peaksgr$peaktype == peaktype]
+    mcols(peakgrSel) <- NULL
+    peaktypeClean <- gsub("[.]", "-", make.names(gsub("[()]", "", peaktype)))
+    export(peakgrSel, paste0("PomBase/peaks_", peaktypeClean, ".bed"))
+}
+```
+
+# Session info
+
+<details>
+<summary><b>
+Session info
+</b></summary>
+```{r}
+sessionInfo()
+```
+</details>
+
