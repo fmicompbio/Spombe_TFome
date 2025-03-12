@@ -11,7 +11,7 @@
 
 <meta name="author" content="Charlotte Soneson, Michael Stadler, Merle Skribbe" />
 
-<meta name="date" content="2025-02-20" />
+<meta name="date" content="2025-03-12" />
 
 <title>PomBase data export</title>
 
@@ -252,7 +252,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">PomBase data export</h1>
 <h4 class="author">Charlotte Soneson, Michael Stadler, Merle Skribbe</h4>
-<h4 class="date">2025-02-20</h4>
+<h4 class="date">2025-03-12</h4>
 
 </div>
 
@@ -269,6 +269,9 @@ div.tocify {
 ## 
 ## $rds500
 ## [1] &quot;data/ipms_500_sce.rds&quot;
+## 
+## $rds150untag
+## [1] &quot;data/ipms_150_untag_sce.rds&quot;
 ## 
 ## $peakcsv
 ## [1] &quot;data/fused_peaks_filtered.csv.gz&quot;
@@ -308,6 +311,7 @@ baitclass &lt;- read.delim(params$baitclass)
 ## IP-MS data
 sce150 &lt;- readRDS(params$rds150)
 sce500 &lt;- readRDS(params$rds500)
+sce150untag &lt;- readRDS(params$rds150untag)
 
 ## ChIP-seq peaks
 peaks &lt;- read.csv(params$peakcsv, row.names = 1)
@@ -338,9 +342,15 @@ motifs &lt;- readRDS(params$motifrds)</code></pre>
 <h1>Export data for PomBase</h1>
 <div id="ip-ms-data" class="section level2">
 <h2>IP-MS data</h2>
-<p>Table of proteins pulled-down by each TF at low salt and high salt conditions.</p>
+<p>Table of proteins pulled-down by each TF at low salt and high salt conditions, in comparisons to the broad complement group.</p>
 <pre class="r fold-show"><code>testL150 &lt;- metadata(sce150)$testres$tests
-res150 &lt;- do.call(bind_rows, lapply(names(testL150), function(nm) {
+# exclude highsaltcompl comparisons
+testL150 &lt;- testL150[grep(&quot;_vs_compl_&quot;, names(testL150), value = TRUE)]
+# only keep plate Atf1 comparison
+testL150 &lt;- testL150[names(testL150) != &quot;Atf1_150_tube_vs_compl_Atf1_150_tube&quot;]
+length(testL150)</code></pre>
+<pre><code>## [1] 91</code></pre>
+<pre class="r fold-show"><code>res150 &lt;- do.call(bind_rows, lapply(names(testL150), function(nm) {
     testL150[[nm]] |&gt;
         dplyr::filter(adj.P.Val &lt; 0.05 &amp; logFC &gt; 1) |&gt;
         dplyr::select(pid, adj.P.Val, logFC) |&gt;
@@ -355,7 +365,9 @@ write.table(res150, file = &quot;PomBase/ipms_150mM_pulldowns.csv&quot;, row.nam
             col.names = TRUE, sep = &quot;,&quot;, quote = FALSE)
 
 testL500 &lt;- metadata(sce500)$testres$tests
-res500 &lt;- do.call(bind_rows, lapply(names(testL500), function(nm) {
+length(testL500)</code></pre>
+<pre><code>## [1] 41</code></pre>
+<pre class="r fold-show"><code>res500 &lt;- do.call(bind_rows, lapply(names(testL500), function(nm) {
     testL500[[nm]] |&gt;
         dplyr::filter(adj.P.Val &lt; 0.05 &amp; logFC &gt; 1) |&gt;
         dplyr::select(pid, adj.P.Val, logFC) |&gt;
@@ -368,6 +380,26 @@ res500 &lt;- do.call(bind_rows, lapply(names(testL500), function(nm) {
 
 write.table(res500, file = &quot;PomBase/ipms_500mM_pulldowns.csv&quot;, row.names = FALSE, 
             col.names = TRUE, sep = &quot;,&quot;, quote = FALSE)</code></pre>
+<p>Table of proteins pulled-down by each TF at low salt condition, in comparisons to the untagged controls.</p>
+<pre class="r"><code>testL150untag &lt;- metadata(sce150untag)$testres$tests
+# only keep plate Atf1 comparison
+testL150untag &lt;- testL150untag[names(testL150untag) != 
+                                   &quot;Atf1_150_tube_vs_Untagged_150_tube&quot;]
+length(testL150untag)</code></pre>
+<pre><code>## [1] 89</code></pre>
+<pre class="r"><code>res150untag &lt;- do.call(bind_rows, lapply(names(testL150untag), function(nm) {
+    testL150untag[[nm]] |&gt;
+        dplyr::filter(adj.P.Val &lt; 0.05 &amp; logFC &gt; 1) |&gt;
+        dplyr::select(pid, adj.P.Val, logFC) |&gt;
+        dplyr::rename(prey = pid) |&gt;
+        dplyr::mutate(bait = .getProteinNameFromComparison(nm))
+})) |&gt;
+    dplyr::filter(bait != prey) |&gt;
+    dplyr::filter(!bait %in% baitclass$Gene_name[baitclass$class == &quot;nobait&quot;]) |&gt;
+    dplyr::select(bait, prey, adj.P.Val, logFC)
+
+write.table(res150untag, file = &quot;PomBase/ipms_150mM_vs_untagged_pulldowns.csv&quot;, 
+            row.names = FALSE, col.names = TRUE, sep = &quot;,&quot;, quote = FALSE)</code></pre>
 </div>
 <div id="motifs" class="section level2">
 <h2>Motifs</h2>
@@ -432,44 +464,58 @@ write.table(prombinding, file = &quot;PomBase/tf_binding_promoters.csv&quot;,
 ## BLAS/LAPACK: FlexiBLAS OPENBLAS;  LAPACK version 3.10.1
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## time zone: Europe/Zurich
 ## tzcode source: system (glibc)
 ## 
 ## attached base packages:
-## [1] stats4    stats     graphics  grDevices utils     datasets  methods   base     
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-##  [1] dplyr_1.1.4                 BiocIO_1.12.0               universalmotif_1.20.0       GenomicFeatures_1.54.4     
-##  [5] AnnotationDbi_1.64.1        SingleCellExperiment_1.24.0 SummarizedExperiment_1.32.0 Biobase_2.62.0             
-##  [9] GenomicRanges_1.54.1        GenomeInfoDb_1.38.8         IRanges_2.36.0              S4Vectors_0.40.2           
-## [13] BiocGenerics_0.48.1         MatrixGenerics_1.14.0       matrixStats_1.3.0          
+##  [1] dplyr_1.1.4                 BiocIO_1.12.0              
+##  [3] universalmotif_1.20.0       GenomicFeatures_1.54.4     
+##  [5] AnnotationDbi_1.64.1        SingleCellExperiment_1.24.0
+##  [7] SummarizedExperiment_1.32.0 Biobase_2.62.0             
+##  [9] GenomicRanges_1.54.1        GenomeInfoDb_1.38.8        
+## [11] IRanges_2.36.0              S4Vectors_0.40.2           
+## [13] BiocGenerics_0.48.1         MatrixGenerics_1.14.0      
+## [15] matrixStats_1.3.0          
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.2.1         blob_1.2.4               filelock_1.0.3           Biostrings_2.70.3       
-##  [5] bitops_1.0-7             fastmap_1.1.1            RCurl_1.98-1.14          BiocFileCache_2.10.2    
-##  [9] GenomicAlignments_1.38.2 XML_3.99-0.16.1          digest_0.6.35            lifecycle_1.0.4         
-## [13] KEGGREST_1.42.0          RSQLite_2.3.6            magrittr_2.0.3           compiler_4.3.2          
-## [17] rlang_1.1.3              sass_0.4.9               progress_1.2.3           tools_4.3.2             
-## [21] utf8_1.2.4               yaml_2.3.8               rtracklayer_1.62.0       knitr_1.46              
-## [25] prettyunits_1.2.0        S4Arrays_1.2.1           bit_4.0.5                curl_5.2.1              
-## [29] DelayedArray_0.28.0      xml2_1.3.6               abind_1.4-5              BiocParallel_1.36.0     
-## [33] withr_3.0.0              grid_4.3.2               fansi_1.0.6              colorspace_2.1-0        
-## [37] ggplot2_3.5.0            scales_1.3.0             MASS_7.3-60              biomaRt_2.58.2          
-## [41] cli_3.6.2                rmarkdown_2.26           crayon_1.5.2             generics_0.1.3          
-## [45] httr_1.4.7               rjson_0.2.21             DBI_1.2.2                cachem_1.0.8            
-## [49] stringr_1.5.1            zlibbioc_1.48.2          parallel_4.3.2           XVector_0.42.0          
-## [53] restfulr_0.0.15          vctrs_0.6.5              Matrix_1.6-5             jsonlite_1.8.8          
-## [57] hms_1.1.3                bit64_4.0.5              jquerylib_0.1.4          glue_1.7.0              
-## [61] codetools_0.2-19         gtable_0.3.5             stringi_1.8.3            munsell_0.5.1           
-## [65] tibble_3.2.1             pillar_1.9.0             rappdirs_0.3.3           htmltools_0.5.8.1       
-## [69] GenomeInfoDbData_1.2.11  R6_2.5.1                 dbplyr_2.5.0             evaluate_0.23           
-## [73] lattice_0.22-6           png_0.1-8                Rsamtools_2.18.0         memoise_2.0.1           
-## [77] bslib_0.7.0              Rcpp_1.0.12              SparseArray_1.2.4        xfun_0.43               
-## [81] pkgconfig_2.0.3</code></pre>
+##  [1] tidyselect_1.2.1         blob_1.2.4               filelock_1.0.3          
+##  [4] Biostrings_2.70.3        bitops_1.0-7             fastmap_1.1.1           
+##  [7] RCurl_1.98-1.14          BiocFileCache_2.10.2     GenomicAlignments_1.38.2
+## [10] XML_3.99-0.16.1          digest_0.6.35            lifecycle_1.0.4         
+## [13] KEGGREST_1.42.0          RSQLite_2.3.6            magrittr_2.0.3          
+## [16] compiler_4.3.2           rlang_1.1.3              sass_0.4.9              
+## [19] progress_1.2.3           tools_4.3.2              utf8_1.2.4              
+## [22] yaml_2.3.8               rtracklayer_1.62.0       knitr_1.46              
+## [25] prettyunits_1.2.0        S4Arrays_1.2.1           bit_4.0.5               
+## [28] curl_5.2.1               DelayedArray_0.28.0      xml2_1.3.6              
+## [31] abind_1.4-5              BiocParallel_1.36.0      withr_3.0.0             
+## [34] grid_4.3.2               fansi_1.0.6              colorspace_2.1-0        
+## [37] ggplot2_3.5.0            scales_1.3.0             MASS_7.3-60             
+## [40] biomaRt_2.58.2           cli_3.6.2                rmarkdown_2.26          
+## [43] crayon_1.5.2             generics_0.1.3           httr_1.4.7              
+## [46] rjson_0.2.21             DBI_1.2.2                cachem_1.0.8            
+## [49] stringr_1.5.1            zlibbioc_1.48.2          parallel_4.3.2          
+## [52] XVector_0.42.0           restfulr_0.0.15          vctrs_0.6.5             
+## [55] Matrix_1.6-5             jsonlite_1.8.8           hms_1.1.3               
+## [58] bit64_4.0.5              jquerylib_0.1.4          glue_1.7.0              
+## [61] codetools_0.2-19         gtable_0.3.5             stringi_1.8.3           
+## [64] munsell_0.5.1            tibble_3.2.1             pillar_1.9.0            
+## [67] rappdirs_0.3.3           htmltools_0.5.8.1        GenomeInfoDbData_1.2.11 
+## [70] R6_2.5.1                 dbplyr_2.5.0             evaluate_0.23           
+## [73] lattice_0.22-6           png_0.1-8                Rsamtools_2.18.0        
+## [76] memoise_2.0.1            bslib_0.7.0              Rcpp_1.0.12             
+## [79] SparseArray_1.2.4        xfun_0.43                pkgconfig_2.0.3</code></pre>
 </details>
 </div>
 

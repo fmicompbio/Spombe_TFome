@@ -12,6 +12,7 @@ output:
 params:
     rds150: "data/ipms_150_sce.rds"
     rds500: "data/ipms_500_sce.rds"
+    rds150untag: "data/ipms_150_untag_sce.rds"
     peakcsv: "data/fused_peaks_filtered.csv.gz"
     baitclass: "data/ipms_bait_class.txt"
     idmap: "data/id_mapping_table.txt"
@@ -60,6 +61,7 @@ baitclass <- read.delim(params$baitclass)
 ## IP-MS data
 sce150 <- readRDS(params$rds150)
 sce500 <- readRDS(params$rds500)
+sce150untag <- readRDS(params$rds150untag)
 
 ## ChIP-seq peaks
 peaks <- read.csv(params$peakcsv, row.names = 1)
@@ -88,10 +90,16 @@ motifs <- readRDS(params$motifrds)
 
 ## IP-MS data
 
-Table of proteins pulled-down by each TF at low salt and high salt conditions.
+Table of proteins pulled-down by each TF at low salt and high salt conditions, 
+in comparisons to the broad complement group.
 
 ```{r export-ip-ms, class.source="fold-show"}
 testL150 <- metadata(sce150)$testres$tests
+# exclude highsaltcompl comparisons
+testL150 <- testL150[grep("_vs_compl_", names(testL150), value = TRUE)]
+# only keep plate Atf1 comparison
+testL150 <- testL150[names(testL150) != "Atf1_150_tube_vs_compl_Atf1_150_tube"]
+length(testL150)
 res150 <- do.call(bind_rows, lapply(names(testL150), function(nm) {
     testL150[[nm]] |>
         dplyr::filter(adj.P.Val < 0.05 & logFC > 1) |>
@@ -107,6 +115,7 @@ write.table(res150, file = "PomBase/ipms_150mM_pulldowns.csv", row.names = FALSE
             col.names = TRUE, sep = ",", quote = FALSE)
 
 testL500 <- metadata(sce500)$testres$tests
+length(testL500)
 res500 <- do.call(bind_rows, lapply(names(testL500), function(nm) {
     testL500[[nm]] |>
         dplyr::filter(adj.P.Val < 0.05 & logFC > 1) |>
@@ -121,7 +130,31 @@ res500 <- do.call(bind_rows, lapply(names(testL500), function(nm) {
 write.table(res500, file = "PomBase/ipms_500mM_pulldowns.csv", row.names = FALSE, 
             col.names = TRUE, sep = ",", quote = FALSE)
 ```
- 
+
+Table of proteins pulled-down by each TF at low salt condition, 
+in comparisons to the untagged controls.
+
+```{r}
+testL150untag <- metadata(sce150untag)$testres$tests
+# only keep plate Atf1 comparison
+testL150untag <- testL150untag[names(testL150untag) != 
+                                   "Atf1_150_tube_vs_Untagged_150_tube"]
+length(testL150untag)
+res150untag <- do.call(bind_rows, lapply(names(testL150untag), function(nm) {
+    testL150untag[[nm]] |>
+        dplyr::filter(adj.P.Val < 0.05 & logFC > 1) |>
+        dplyr::select(pid, adj.P.Val, logFC) |>
+        dplyr::rename(prey = pid) |>
+        dplyr::mutate(bait = .getProteinNameFromComparison(nm))
+})) |>
+    dplyr::filter(bait != prey) |>
+    dplyr::filter(!bait %in% baitclass$Gene_name[baitclass$class == "nobait"]) |>
+    dplyr::select(bait, prey, adj.P.Val, logFC)
+
+write.table(res150untag, file = "PomBase/ipms_150mM_vs_untagged_pulldowns.csv", 
+            row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+```
+
 ## Motifs
 
 Table of identified motif consensus sequences.
