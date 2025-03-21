@@ -106,7 +106,7 @@ format:
 You can interactively explore IP-MS and ChIP-seq data using `TFexplorer` at:
 [https://data.fmi.ch/TFexplorer/](https://data.fmi.ch/TFexplorer/)
 
-## Links to raw data
+## Links to raw data and strain library
 
 Raw and processed data generated as part of this study is available from:
 
@@ -114,14 +114,21 @@ Raw and processed data generated as part of this study is available from:
 - **RNA-seq data (GEO)**: [GSE274238](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274238)
 - **ChIP-seq data (GEO)**: [GSE274240](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274240)
 
+The *S. pombe* strain library is available as set **FYS8** from [NBRP – Yeast, Japan](https://yeast.nig.ac.jp/yeast/fy/StrainSetAllItemsList.jsf)
+
 ## Links to publication
 
-The accompanying manuscript is available from:
+The accompanying manuscript is:
+**A comprehensive Schizosaccharomyces pombe atlas of physical transcription factor
+interactions with proteins and chromatin** Skribbe, Soneson, Stadler et al.
+*Molecular Cell* (2025)
 
-- [bioRxiv](https://www.biorxiv.org/content/10.1101/2024.08.20.607873): 
-  **A comprehensive Schizosaccharomyces pombe atlas of physical transcription
-  factor interactions with proteins and chromatin.** Skribbe et al.
-  bioRxiv 2024.08.20.607873; doi: https://doi.org/10.1101/2024.08.20.607873 
+and is available from:
+
+- [DOI: 10.1016/j.molcel.2025.01.032](https://doi.org/10.1016/j.molcel.2025.01.032)
+- [PubMed 40015273](https://pubmed.ncbi.nlm.nih.gov/40015273/)
+- [HTML (fulltext)](https://www.cell.com/molecular-cell/fulltext/S1097-2765(25)00099-1)
+- [bioRxiv 2024.08.20.607873](https://doi.org/10.1101/2024.08.20.607873)
 
 ## Links to code for generating figures
 
